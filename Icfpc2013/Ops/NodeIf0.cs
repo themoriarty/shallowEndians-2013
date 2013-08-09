@@ -12,14 +12,14 @@
 
         #endregion
 
-        public long Eval()
+        public long Eval(ExecContext context)
         {
-            if (Node0.Eval() == 0)
+            if (Node0.Eval(context) == 0)
             {
-                return Node1.Eval();
+                return Node1.Eval(context);
             }
 
-            return Node2.Eval();
+            return Node2.Eval(context);
         }
 
         public long Cost()

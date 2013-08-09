@@ -4,7 +4,7 @@
     {
         public Node Node0 { get; set; }
 
-        public virtual long Eval()
+        public virtual long Eval(ExecContext context)
         {
             throw new System.NotImplementedException();
         }

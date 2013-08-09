@@ -2,7 +2,7 @@
 {
     internal class Node1 : Node
     {
-        public long Eval()
+        public long Eval(ExecContext context)
         {
             return 1;
         }

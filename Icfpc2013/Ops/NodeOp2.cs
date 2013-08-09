@@ -2,7 +2,7 @@
 {
     class NodeOp2 : Node
     {
-        public virtual long Eval()
+        public virtual long Eval(ExecContext context)
         {
             throw new System.NotImplementedException();
         }

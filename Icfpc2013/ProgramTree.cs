@@ -2,5 +2,6 @@
 {
     internal class ProgramTree
     {
+        public Lambda1 Program { get; set; } 
     }
 }

@@ -2,7 +2,7 @@
 {
     interface Node
     {
-        long Eval();
+        long Eval(ExecContext context);
 
         long Cost();
     }

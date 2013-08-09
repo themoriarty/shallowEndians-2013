@@ -2,9 +2,9 @@
 {
     internal class NodeOp2Or : NodeOp2
     {
-        public override long Eval()
+        public override long Eval(ExecContext context)
         {
-            return Node0.Eval() | Node1.Eval();
+            return Node0.Eval(context) | Node1.Eval(context);
         }
     }
 }

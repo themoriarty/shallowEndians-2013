@@ -6,6 +6,7 @@
 
         private static void Main(string[] args)
         {
+            var program = new ProgramTree();
         }
 
         #endregion
