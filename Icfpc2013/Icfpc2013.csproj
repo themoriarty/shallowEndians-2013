@@ -75,6 +75,7 @@
     <Compile Include="Ops\NodeIf0.cs" />
     <Compile Include="Ops\NodeOp1.cs" />
     <Compile Include="Ops\NodeOp1Not.cs" />
+    <Compile Include="Ops\Parser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProgramTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

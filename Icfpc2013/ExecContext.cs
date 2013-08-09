@@ -2,11 +2,11 @@
 {
     using System.Collections.Generic;
 
-    internal class ExecContext
+    public class ExecContext
     {
         #region Fields
 
-        public Dictionary<string, long> Vars = new Dictionary<string, long>();
+        public Dictionary<string, ulong> Vars = new Dictionary<string, ulong>();
 
         #endregion
     }

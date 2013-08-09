@@ -1,6 +1,8 @@
-﻿namespace Icfpc2013
+﻿namespace Icfpc2013.Ops
 {
-    internal class Lambda2
+    using System;
+
+    public class Lambda2
     {
         #region Public Properties
 
@@ -10,6 +12,59 @@
 
         public Node Node0 { get; set; }
 
+        #endregion
+
+        #region Public Methods and Operators
+
+        public static Lambda2 Parse(string input)
+        {
+            int pos = 1;
+            string token1 = Parser.ReadToken(input, ref pos, input.Length);
+            string token2 = Parser.ReadToken(input, ref pos, input.Length);
+            string token3 = Parser.ReadToken(input, ref pos, input.Length);
+
+            if (!string.Equals(token1, "lambda") || string.IsNullOrEmpty(token2) || string.IsNullOrEmpty(token3))
+            {
+                throw new Exception("format");
+            }
+
+            pos = 1;
+            string tokenId1 = Parser.ReadToken(token2, ref pos, token2.Length);
+            string tokenId2 = Parser.ReadToken(token2, ref pos, token2.Length);
+
+            if (string.IsNullOrEmpty(tokenId1) || string.IsNullOrEmpty(tokenId2))
+            {
+                throw new Exception("format");
+            }
+
+            var result = new Lambda2();
+
+            result.Id0 = NodeId.Parse(tokenId1);
+            result.Id1 = NodeId.Parse(tokenId2);
+            result.Node0 = Parser.Parse(token3);
+
+            return result;
+        }
+
+        public Lambda2 Clone()
+        {
+            return new Lambda2 { Id0 = (NodeId)this.Id0.Clone(), Id1 = (NodeId)this.Id1.Clone(), Node0 = this.Node0.Clone() };
+        }
+
+        public ulong Eval(ulong value1, ulong value2)
+        {
+            var state = new ExecContext();
+            state.Vars[this.Id0.Name] = value1;
+            state.Vars[this.Id1.Name] = value2;
+
+            return this.Node0.Eval(state);
+        }
+
+        public string Serialize()
+        {
+            return string.Format("(lambda ({0} {1}) {2})", this.Id0.Serialize(), this.Id1.Serialize(), this.Node0.Serialize());
+        }
+
         public string ToString(int indentLevel)
         {
             string output = "\n";
@@ -17,32 +72,11 @@
             {
                 output += "  ";
             }
+
             output += "( ";
-            output += "lambda " + Id0.ToString(indentLevel + 1) + " " + Id1.ToString(indentLevel + 1) + " ";
-            output += Node0.ToString(indentLevel + 1) + " )";
+            output += "lambda " + this.Id0.ToString(indentLevel + 1) + " " + this.Id1.ToString(indentLevel + 1) + " ";
+            output += this.Node0.ToString(indentLevel + 1) + " )";
             return output;
-        }
-        #endregion
-
-        #region Public Methods and Operators
-
-        public Lambda2 Clone()
-        {
-            return new Lambda2 { Id0 = (NodeId)Id0.Clone(), Id1 = (NodeId)Id1.Clone(), Node0 = Node0.Clone() };
-        }
-
-        public long Eval(long value1, long value2)
-        {
-            var state = new ExecContext();
-            state.Vars[Id0.Name] = value1;
-            state.Vars[Id1.Name] = value2;
-
-            return Node0.Eval(state);
-        }
-
-        public string Serialize()
-        {
-            return string.Format("(lambda ({0} {1}) {2})", Id0.Serialize(), Id1.Serialize(), Node0.Serialize());
         }
 
         #endregion

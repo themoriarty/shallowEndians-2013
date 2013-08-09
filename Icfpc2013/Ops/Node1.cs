@@ -1,6 +1,6 @@
-﻿namespace Icfpc2013
+﻿namespace Icfpc2013.Ops
 {
-    internal class Node1 : Node
+    public class Node1 : Node
     {
         #region Public Methods and Operators
 
@@ -9,8 +9,12 @@
             return new Node1();
         }
 
+        public ulong Eval(ExecContext context)
+        {
+            return 1;
+        }
 
-        public string ToString(int indentLevel)
+        public string Serialize()
         {
             return "1";
         }
@@ -20,12 +24,7 @@
             return 1;
         }
 
-        public long Eval(ExecContext context)
-        {
-            return 1;
-        }
-
-        public string Serialize()
+        public string ToString(int indentLevel)
         {
             return "1";
         }
