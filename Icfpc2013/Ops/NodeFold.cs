@@ -23,12 +23,24 @@
 
         public long Cost()
         {
-            return 1 + Node0.Cost() + Node1.Cost() + Node2.Node0.Cost();
+            return 2 + Node0.Cost() + Node1.Cost() + Node2.Node0.Cost();
         }
 
         public long Eval(ExecContext context)
         {
-            throw new NotImplementedException();
+            var input = Node0.Eval(context);
+            var init = Node1.Eval(context);
+
+            var current = init;
+
+            for (int i = 0; i < 8; ++i)
+            {
+                var left = (input >> (i * 8)) & 0x00ff;
+
+                current = Node2.Eval(left, current);
+            }
+
+            return current;
         }
 
         #endregion
