@@ -1,4 +1,9 @@
-﻿namespace Icfpc2013
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+
+namespace Icfpc2013
 {
     using System;
 
@@ -7,6 +12,21 @@
         #region Methods
 
         private static void Main(string[] args)
+        {
+            List<Node> validNodes = new List<Node>();
+            validNodes.Add(new Node0());
+            validNodes.Add(new Node1());
+            validNodes.Add(new NodeOp1Shl1());
+            validNodes.Add(new NodeOp1Shr1());
+
+            var builder = new TreeGenerator(validNodes, 1);
+            foreach (var program in builder.GenerateAllPrograms())
+            {
+                Console.WriteLine("{0}", program.ToString());
+            }
+        }
+
+        private static void Main2(string[] args)
         {
             /*
              (lambda (x_18991) 
