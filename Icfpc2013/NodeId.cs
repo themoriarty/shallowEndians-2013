@@ -2,5 +2,9 @@
 {
     internal class NodeId : Node
     {
+        public long Eval()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

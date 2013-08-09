@@ -11,5 +11,15 @@
         public Node Node2 { get; set; }
 
         #endregion
+
+        public long Eval()
+        {
+            if (Node0.Eval() == 0)
+            {
+                return Node1.Eval();
+            }
+
+            return Node2.Eval();
+        }
     }
 }
