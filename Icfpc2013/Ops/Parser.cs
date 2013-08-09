@@ -1,5 +1,9 @@
 ﻿namespace Icfpc2013.Ops
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     public static class Parser
     {
         #region Public Methods and Operators
@@ -79,6 +83,11 @@
             }
 
             return input.Substring(pos0, pos - pos0 - 1);
+        }
+        
+        public static List<OpTypes> ParseOps(IEnumerable<string> operators)
+        {
+            return operators.Select(s => (OpTypes)Enum.Parse(typeof(OpTypes), s)).ToList();
         }
 
         #endregion

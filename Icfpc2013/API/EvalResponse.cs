@@ -11,5 +11,10 @@ namespace Icfpc2013
         public string status { get; set; }
         public string[] outputs { get; set; }
         public string message { get; set; }
+
+        public override string ToString()
+        {
+            return Utils.ToString(this);
+        }
     }
 }

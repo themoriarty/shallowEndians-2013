@@ -12,29 +12,16 @@
 
         private static void Main(string[] args)
         {
-            const int judgesProgramSize = 4;
+            const int judgesProgramSize = 5;
             const int programSize = judgesProgramSize - 1;
 
-            var validNodes = new List<Node>();
-            var inputArg = new NodeId();
-            inputArg.Name = "x";
-            validNodes.Add(inputArg);
-            validNodes.Add(new Node0());
-            validNodes.Add(new Node1());
+            var operators = new string[] { "plus", "shr16" };
 
-            //validNodes.Add(new NodeOp1Shl1());
-            //validNodes.Add(new NodeOp1Not());
-            //validNodes.Add(new NodeOp1Shr16());
-            //validNodes.Add(new NodeOp1Shr4());
-            //validNodes.Add(new NodeOp1Shr1());
-
-            //validNodes.Add(new NodeOp2And());
-            validNodes.Add(new NodeOp2Plus());
-            //validNodes.Add(new NodeOp2Xor());
-            //validNodes.Add(new NodeOp2Or());
+            var ops = ProgramTree.GetOpTypes(operators);
+            var validNodes = ProgramTree.GetAvailableNodes(ops);
 
             ulong[] inputs = { 0, 0x12, 0x137 }; //{0x12, 0x137};
-            ulong[] outputs = { 0x0000000000000000, 0x0000000000000024, 0x000000000000026E };
+            ulong[] outputs = { 0x0000000000000000, 0x0000000000000000, 0x0000000000000000 };
 
             var builder = new TreeGenerator(validNodes, programSize);
             int totalCount = 0;
@@ -59,7 +46,13 @@
                     }
                     if (valid)
                     {
-                        Console.WriteLine(new Lambda1 { Id0 = new NodeId { Name = "x" }, Node0 = root }.Serialize());
+                        var currentOps = OpTypes.none;
+                        root.Op(ref currentOps);
+
+                        if (currentOps == ops)
+                        {
+                            Console.WriteLine(new Lambda1 { Id0 = new NodeId { Name = "x" }, Node0 = root }.Serialize());
+                        }
                     }
 
                     //Console.WriteLine();
