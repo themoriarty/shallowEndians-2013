@@ -79,6 +79,14 @@
             return output;
         }
 
+        public void Op(ref OpTypes ops)
+        {
+            ops |= OpTypes.fold;
+            Node0.Op(ref ops);
+            Node1.Op(ref ops);
+            Node2.Node0.Op(ref ops);
+        }
+
         #endregion
     }
 }

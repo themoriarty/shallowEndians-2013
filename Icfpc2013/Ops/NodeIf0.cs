@@ -73,6 +73,14 @@
             return output;
         }
 
+        public void Op(ref OpTypes ops)
+        {
+            ops |= OpTypes.if0;
+            Node0.Op(ref ops);
+            Node1.Op(ref ops);
+            Node2.Op(ref ops);
+        }
+
         #endregion
     }
 }

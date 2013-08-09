@@ -58,6 +58,15 @@
             return output;
         }
 
+        public OpTypes Op()
+        {
+            var ops = OpTypes.none;
+
+            Node0.Op(ref ops);
+
+            return ops;
+        }
+
         #endregion
     }
 }

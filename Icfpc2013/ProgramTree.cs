@@ -113,6 +113,11 @@
             return Program.Serialize();
         }
 
+        public OpTypes Op()
+        {
+            return Program.Op();
+        }
+
         #endregion
     }
 }
