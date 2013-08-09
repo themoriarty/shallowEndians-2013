@@ -78,53 +78,61 @@ namespace Icfpc2013
 
             if (root is NodeOp1)
             {
-                var subtrees = new List<Node>();
-                foreach (var node in ValidNodes)
+                if (depth > 1)
                 {
-                    var subtree = GetNLevelTree(node, depth - 1);
-                    if (subtree != null)
+                    var subtrees = new List<Node>();
+                    foreach (var node in ValidNodes)
                     {
-                        subtrees.AddRange(subtree);
+                        var subtree = GetNLevelTree(node, depth - 1);
+                        if (subtree != null)
+                        {
+                            subtrees.AddRange(subtree);
+                        }
                     }
-                }
 
-                var ret = new List<Node>();
-                foreach (var subtree in subtrees)
-                {
-                    var newRoot = root.Clone();
-                    (newRoot as NodeOp1).Node0 = subtree;
-                    ret.Add(newRoot);
-                }
+                    var ret = new List<Node>();
+                    foreach (var subtree in subtrees)
+                    {
+                        var newRoot = root.Clone();
+                        (newRoot as NodeOp1).Node0 = subtree;
+                        ret.Add(newRoot);
+                    }
 
-                Cache[cacheKey] = ret;
-                return ret;
+                    Cache[cacheKey] = ret;
+                    return ret;
+                }
+                return null;
             }
             else if (root is NodeOp2)
             {
-                var subtrees = new List<Node>();
-                foreach (var node in ValidNodes)
+                if (depth > 2)
                 {
-                    var subtree = GetNLevelTree(node, depth - 1);
-                    if (subtree != null)
+                    var subtrees = new List<Node>();
+                    foreach (var node in ValidNodes)
                     {
-                        subtrees.AddRange(subtree);
+                        var subtree = GetNLevelTree(node, depth - 1);
+                        if (subtree != null)
+                        {
+                            subtrees.AddRange(subtree);
+                        }
                     }
-                }
 
-                var ret = new List<Node>();
-                for (var i = 0; i < subtrees.Count; ++i)
-                {
-                    for (var j = i; j < subtrees.Count; ++j)
+                    var ret = new List<Node>();
+                    for (var i = 0; i < subtrees.Count; ++i)
                     {
-                        var newRoot = root.Clone();
-                        (newRoot as NodeOp2).Node0 = subtrees[i];
-                        (newRoot as NodeOp2).Node1 = subtrees[j];
-                        ret.Add(newRoot);
+                        for (var j = i; j < subtrees.Count; ++j)
+                        {
+                            var newRoot = root.Clone();
+                            (newRoot as NodeOp2).Node0 = subtrees[i];
+                            (newRoot as NodeOp2).Node1 = subtrees[j];
+                            ret.Add(newRoot);
+                        }
                     }
-                }
 
-                Cache[cacheKey] = ret;
-                return ret;
+                    Cache[cacheKey] = ret;
+                    return ret;
+                }
+                return null;
             }
 
             throw new Exception("unknown node");
