@@ -136,7 +136,7 @@ namespace Z3Test
                     Console.WriteLine("OK, model: " + s.Model);
                     break;
                 case Status.UNSATISFIABLE:
-                    throw new Exception();
+                    throw new Exception("UNSATISFIABLE");
             }
         }
 
@@ -158,22 +158,38 @@ namespace Z3Test
 
             /* construct x ^ y - 103 == x * y */
             Sort bv_type = ctx.MkBitVecSort(64);
-            BitVecExpr x = ctx.MkBVConst("x", 64);
+            //BitVecExpr x = ctx.MkBVConst("x", 64);
             BitVecExpr y = ctx.MkBVConst("y", 64);
-            BitVecExpr x_xor_y = ctx.MkBVXOR(x, y);
+            BitVecExpr i1 = ctx.MkBVConst("i1", 64);
+
+            BitVecExpr cfalse = (BitVecNum)ctx.MkNumeral((0x0000000000000000).ToString(), bv_type);
+            BitVecExpr ctrue = (BitVecNum)ctx.MkNumeral((0xffffffffffffffff).ToString(), bv_type);
+
+
             BitVecExpr cinput0 = (BitVecNum)ctx.MkNumeral((0x0000000000000002).ToString(), bv_type);
             BitVecExpr coutput0 = (BitVecNum)ctx.MkNumeral((0x0000000000000003).ToString(), bv_type);
-            BitVecExpr lhs = ctx.MkBVSub(x_xor_y, cinput0);
-            BitVecExpr rhs = ctx.MkBVMul(x, y);
-            BoolExpr ctr = ctx.MkEq(lhs, rhs);
+            BitVecExpr cinput1 = (BitVecNum)ctx.MkNumeral((0x000000000000000E).ToString(), bv_type);
+            BitVecExpr coutput1 = (BitVecNum)ctx.MkNumeral((0x000000000000000F).ToString(), bv_type);
+            BitVecExpr cinput2 = (BitVecNum)ctx.MkNumeral((0x00000000000000FF).ToString(), bv_type);
+            BitVecExpr coutput2 = (BitVecNum)ctx.MkNumeral((0x00000000000000FE).ToString(), bv_type);
+
+            Func<BitVecExpr, BitVecExpr> func = (x) => ctx.MkBVOR(ctx.MkBVAND(i1, ctx.MkBVXOR(x, y)), ctx.MkBVAND(ctx.MkBVNot(i1), ctx.MkBVAND(x, y)));
+
+            BoolExpr ctr1 = ctx.MkEq(func(cinput0), coutput0);
+            BoolExpr ctr2 = ctx.MkEq(func(cinput1), coutput1);
+            BoolExpr ctr3 = ctx.MkEq(func(cinput2), coutput2);
+
+            BoolExpr i1ctr = ctx.MkOr(ctx.MkEq(i1, ctrue), ctx.MkEq(i1, cfalse));
+            BoolExpr ctr = ctx.MkAnd(ctr1, ctr2, ctr3, i1ctr);
 
             Console.WriteLine("ctr = {0}", ctr);
 
-            Console.WriteLine("find values of x and y, such that x ^ y - 103 == x * y");
+            Console.WriteLine(">>>>>");
 
             /* find a model (i.e., values for x an y that satisfy the constraint */
             Model m = Check(ctx, ctr, Status.SATISFIABLE);
-            Console.WriteLine(m); 
+            Console.WriteLine(m);
+            Console.WriteLine(m.Eval(y)); 
         } 
 
         static void Main(string[] args)
