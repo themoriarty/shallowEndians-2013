@@ -160,10 +160,15 @@ namespace Z3Test
             Sort bv_type = ctx.MkBitVecSort(64);
             //BitVecExpr x = ctx.MkBVConst("x", 64);
             BitVecExpr y = ctx.MkBVConst("y", 64);
+            BitVecExpr z = ctx.MkBVConst("z", 64);
             BitVecExpr i1 = ctx.MkBVConst("i1", 64);
+            BitVecExpr i2 = ctx.MkBVConst("i2", 64);
+            BitVecExpr i3 = ctx.MkBVConst("i3", 64);
 
             BitVecExpr cfalse = (BitVecNum)ctx.MkNumeral((0x0000000000000000).ToString(), bv_type);
             BitVecExpr ctrue = (BitVecNum)ctx.MkNumeral((0xffffffffffffffff).ToString(), bv_type);
+            BitVecExpr czero = (BitVecNum)ctx.MkNumeral((0x0000000000000000).ToString(), bv_type);
+            BitVecExpr cone = (BitVecNum)ctx.MkNumeral((0x0000000000000001).ToString(), bv_type);
 
 
             BitVecExpr cinput0 = (BitVecNum)ctx.MkNumeral((0x0000000000000002).ToString(), bv_type);
@@ -173,14 +178,20 @@ namespace Z3Test
             BitVecExpr cinput2 = (BitVecNum)ctx.MkNumeral((0x00000000000000FF).ToString(), bv_type);
             BitVecExpr coutput2 = (BitVecNum)ctx.MkNumeral((0x00000000000000FE).ToString(), bv_type);
 
-            Func<BitVecExpr, BitVecExpr> func = (x) => ctx.MkBVOR(ctx.MkBVAND(i1, ctx.MkBVXOR(x, y)), ctx.MkBVAND(ctx.MkBVNot(i1), ctx.MkBVAND(x, y)));
+            Func<BitVecExpr, BitVecExpr> funcz = (x) => ctx.MkBVOR(ctx.MkBVAND(i3, x), ctx.MkBVAND(ctx.MkBVNot(i3), z));
+            Func<BitVecExpr, BitVecExpr> funcy = (x) => ctx.MkBVOR(ctx.MkBVAND(i2, x), ctx.MkBVAND(ctx.MkBVNot(i2), y));
+            Func<BitVecExpr, BitVecExpr> func = (x) => ctx.MkBVOR(ctx.MkBVAND(i1, ctx.MkBVXOR(funcz(x), funcy(x))), ctx.MkBVAND(ctx.MkBVNot(i1), ctx.MkBVAND(funcz(x), funcy(x))));
 
             BoolExpr ctr1 = ctx.MkEq(func(cinput0), coutput0);
             BoolExpr ctr2 = ctx.MkEq(func(cinput1), coutput1);
             BoolExpr ctr3 = ctx.MkEq(func(cinput2), coutput2);
 
             BoolExpr i1ctr = ctx.MkOr(ctx.MkEq(i1, ctrue), ctx.MkEq(i1, cfalse));
-            BoolExpr ctr = ctx.MkAnd(ctr1, ctr2, ctr3, i1ctr);
+            BoolExpr i2ctr = ctx.MkOr(ctx.MkEq(i2, ctrue), ctx.MkEq(i2, cfalse));
+            BoolExpr i3ctr = ctx.MkOr(ctx.MkEq(i3, ctrue), ctx.MkEq(i3, cfalse));
+            BoolExpr yctr = ctx.MkOr(ctx.MkEq(y, czero), ctx.MkEq(y, cone));
+            BoolExpr zctr = ctx.MkOr(ctx.MkEq(z, czero), ctx.MkEq(z, cone));
+            BoolExpr ctr = ctx.MkAnd(ctr1, ctr2, ctr3, yctr, zctr, i1ctr, i2ctr, i3ctr);
 
             Console.WriteLine("ctr = {0}", ctr);
 
