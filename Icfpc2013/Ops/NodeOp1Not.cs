@@ -2,11 +2,9 @@
 {
     internal class NodeOp1Not : NodeOp1
     {
-        public long Eval()
+        public override long Eval()
         {
             return ~Node0.Eval();
         }
-
-        public Node Node0 { get; set; }
     }
 }

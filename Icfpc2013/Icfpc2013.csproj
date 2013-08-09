@@ -44,13 +44,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Node.cs" />
-    <Compile Include="Node0.cs" />
-    <Compile Include="Node1.cs" />
-    <Compile Include="NodeId.cs" />
-    <Compile Include="NodeIf0.cs" />
-    <Compile Include="NodeOp1.cs" />
-    <Compile Include="NodeOp1Not.cs" />
+    <Compile Include="Ops\Lambda2.cs" />
+    <Compile Include="Ops\Lambda1.cs" />
+    <Compile Include="Ops\NodeFold.cs" />
+    <Compile Include="Ops\NodeOp2Plus.cs" />
+    <Compile Include="Ops\NodeOp2Xor.cs" />
+    <Compile Include="Ops\NodeOp2Or.cs" />
+    <Compile Include="Ops\NodeOp2And.cs" />
+    <Compile Include="Ops\NodeOp2.cs" />
+    <Compile Include="Ops\NodeOp1Shr16.cs" />
+    <Compile Include="Ops\NodeOp1Shr4.cs" />
+    <Compile Include="Ops\NodeOp1Shr1.cs" />
+    <Compile Include="Ops\NodeOp1Shl1.cs" />
+    <Compile Include="Ops\Node.cs" />
+    <Compile Include="Ops\Node0.cs" />
+    <Compile Include="Ops\Node1.cs" />
+    <Compile Include="Ops\NodeId.cs" />
+    <Compile Include="Ops\NodeIf0.cs" />
+    <Compile Include="Ops\NodeOp1.cs" />
+    <Compile Include="Ops\NodeOp1Not.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProgramTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

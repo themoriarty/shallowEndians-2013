@@ -6,5 +6,12 @@
         {
             throw new System.NotImplementedException();
         }
+
+        public string Name { get; set; }
+
+        public long Cost()
+        {
+            return 1;
+        }
     }
 }
