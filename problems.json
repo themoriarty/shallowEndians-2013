@@ -83,7 +83,9 @@
         "operators": [
             "plus"
         ],
-        "solved": "true"
+        "solved": "true",
+        "inputs": [0, 12, 137],
+        "outputs": [0x0000000000000000, 0x0000000000000024, 0x000000000000026E]
     },
     {
         "id": "0P4nRBhxlGiRtAcxbqKCBQaA",
