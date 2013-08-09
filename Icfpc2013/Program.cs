@@ -4,9 +4,13 @@
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Globalization;
+    using System.IO;
     using System.Linq;
+    using System.Threading;
 
     using Icfpc2013.Ops;
+
+    using Newtonsoft.Json.Linq;
 
     public class Program
     {
@@ -14,23 +18,61 @@
 
         private static void Main(string[] args)
         {
-            const int judgesProgramSize = 5;
+
+            const int judgesProgramSize = 6;
             const int programSize = judgesProgramSize - 1;
-
             var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, null));
-
             var programId = training.id;
 
-            Console.WriteLine("ProgramId: {0}", training.id);
-            Console.WriteLine("Training: {0}", string.Join(", ", training.operators));
             Console.WriteLine("Challenge: {0}", string.Join(", ", training.challenge));
 
             var operators = training.operators;
 
+            Solve(programId, judgesProgramSize, operators);
+
+            //const int judgesProgramSize = 6;
+            //const int programSize = judgesProgramSize - 1;
+            //var programId = "6dLNiZzzCXaI6ssMunzDXX8i";
+            //var operators = new string[] { "plus", "xor" };
+
+            //Solve(programId, judgesProgramSize, operators);
+
+            //var todo = JArray.Parse(File.ReadAllText(@"..\..\..\..\myproblems.json"));
+
+            //foreach (var task in todo)
+            //{
+            //    //Console.WriteLine("\n");
+            //    var solved = (bool?)task["solved"];
+            //    var id = (string)task["id"];
+            //    var size = (int)task["size"];
+            //    var operators = task["operators"].Select(s => (string)s).ToArray();
+            //    var ops = ProgramTree.GetOpTypes(operators);
+
+            //    if (solved.GetValueOrDefault() == false && size == 6 && ((ops & (OpTypes.fold | OpTypes.tfold | OpTypes.if0)) == OpTypes.none))
+            //    {
+                    
+            //        Console.WriteLine("{0} {1} {2}", id, size, ops);
+
+            //        Solve(id, size, operators);
+            //        Thread.Sleep(20000);
+            //    }
+
+            //}
+
+            
+        }
+
+        private static void Solve(string programId, int judgesProgramSize, string[] operators)
+        {
+            int programSize = judgesProgramSize - 1;
+
+            Console.WriteLine("ProgramId: {0}", programId);
+            Console.WriteLine("Training: {0}", string.Join(", ", operators));
+
             var ops = ProgramTree.GetOpTypes(operators);
             var validNodes = ProgramTree.GetAvailableNodes(ops);
 
-            ulong[] inputs = { 0, 0x12, 0x137 }; //{0x12, 0x137};
+            ulong[] inputs = ProgramTree.GetInputVectorList(8).ToArray(); //{0x12, 0x137};
             var inputStrings = inputs.Select(s => string.Format("0x{0:X16}", s)).ToArray();
 
             Console.WriteLine("Input: {{{0}}}", string.Join(", ", inputStrings));
@@ -45,6 +87,8 @@
             Console.WriteLine("Output: {{{0}}}", string.Join(", ", outputsResponse.outputs));
 
             ulong[] outputs = outputsResponse.outputs.Select(s => ulong.Parse(s.Replace("0x", string.Empty), NumberStyles.HexNumber)).ToArray();
+
+            //var outputs = new ulong[] { 0x0000000000000001, 0x0000000000000000, 0x0000000000000003, 0x0000000000000002, 0x0000000000000005, 0x0000000000000004, 0x0000000000000007, 0x0000000000000006, 0x0000000000000009, 0x0000000000000008, 0x000000000000000B, 0x000000000000000A, 0x000000000000000D, 0x000000000000000C, 0x000000000000000F, 0x000000000000000E };
 
             var builder = new TreeGenerator(validNodes, programSize);
             int totalCount = 0;
@@ -79,7 +123,7 @@
 
                             var response = API.Guess(new Guess(programId, finalResult));
 
-                            Console.WriteLine("Gues: {0} {1} {2}", response.status, response.message, string.Join(", ", response.values ?? new string[]{}));
+                            Console.WriteLine("Gues: {0} {1} {2}", response.status, response.message, string.Join(", ", response.values ?? new string[] { }));
 
                             break;
                         }
