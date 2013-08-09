@@ -12,14 +12,14 @@
 
         #region Public Methods and Operators
 
+        public Node Clone()
+        {
+            return new NodeId { Name = Name };
+        }
+
         public long Cost()
         {
             return 1;
-        }
-
-        public Node Clone()
-        {
-            return new NodeId{Name = Name};
         }
 
         public long Eval(ExecContext context)

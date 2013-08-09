@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Icfpc2013
+﻿namespace Icfpc2013
 {
-    class ExecContext
+    using System.Collections.Generic;
+
+    internal class ExecContext
     {
+        #region Fields
+
         public Dictionary<string, long> Vars = new Dictionary<string, long>();
+
+        #endregion
     }
 }

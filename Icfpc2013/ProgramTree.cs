@@ -2,7 +2,18 @@
 {
     internal class ProgramTree
     {
-        public Lambda1 Program { get; set; } 
+        #region Public Properties
+
+        public Lambda1 Program { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        public ProgramTree Clone()
+        {
+            return new ProgramTree { Program = Program.Clone() };
+        }
 
         public long Run(long value)
         {
@@ -12,9 +23,6 @@
             return Program.Node0.Eval(state);
         }
 
-        public ProgramTree Clone()
-        {
-            return new ProgramTree { Program = Program.Clone() };
-        }
+        #endregion
     }
 }

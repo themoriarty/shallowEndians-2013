@@ -14,9 +14,11 @@
 
         #endregion
 
-        public long Eval(ExecContext context)
+        #region Public Methods and Operators
+
+        public Node Clone()
         {
-            throw new NotImplementedException();
+            return new NodeFold { Node0 = Node0.Clone(), Node1 = Node1.Clone(), Node2 = Node2.Clone() };
         }
 
         public long Cost()
@@ -24,9 +26,11 @@
             return 1 + Node0.Cost() + Node1.Cost() + Node2.Node0.Cost();
         }
 
-        public Node Clone()
+        public long Eval(ExecContext context)
         {
-            return new NodeFold { Node0 = Node0.Clone(), Node1 = Node1.Clone(), Node2 = Node2.Clone() };
+            throw new NotImplementedException();
         }
+
+        #endregion
     }
 }

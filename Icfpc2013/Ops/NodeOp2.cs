@@ -1,10 +1,22 @@
 ﻿namespace Icfpc2013
 {
-    class NodeOp2 : Node
+    using System;
+
+    internal class NodeOp2 : Node
     {
-        public virtual long Eval(ExecContext context)
+        #region Public Properties
+
+        public Node Node0 { get; set; }
+
+        public Node Node1 { get; set; }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        public virtual Node Clone()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public long Cost()
@@ -12,14 +24,11 @@
             return 1 + Node0.Cost() + Node1.Cost();
         }
 
-        public virtual Node Clone()
+        public virtual long Eval(ExecContext context)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public Node Node0 { get; set; }
-
-        public Node Node1 { get; set; }
+        #endregion
     }
-
 }

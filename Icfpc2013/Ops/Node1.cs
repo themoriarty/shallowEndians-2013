@@ -2,9 +2,11 @@
 {
     internal class Node1 : Node
     {
-        public long Eval(ExecContext context)
+        #region Public Methods and Operators
+
+        public Node Clone()
         {
-            return 1;
+            return new Node1();
         }
 
         public long Cost()
@@ -12,9 +14,11 @@
             return 1;
         }
 
-        public Node Clone()
+        public long Eval(ExecContext context)
         {
-            return new Node1();
+            return 1;
         }
+
+        #endregion
     }
 }

@@ -1,11 +1,15 @@
 ﻿namespace Icfpc2013
 {
-    interface Node
+    internal interface Node
     {
-        long Eval(ExecContext context);
+        #region Public Methods and Operators
+
+        Node Clone();
 
         long Cost();
 
-        Node Clone();
+        long Eval(ExecContext context);
+
+        #endregion
     }
 }
