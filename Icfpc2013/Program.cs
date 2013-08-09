@@ -12,7 +12,8 @@
 
         private static void Main(string[] args)
         {
-            const int programSize = 4;
+            const int judgesProgramSize = 5;
+            const int programSize = judgesProgramSize - 1;
 
             var validNodes = new List<Node>();
             var inputArg = new NodeId();
