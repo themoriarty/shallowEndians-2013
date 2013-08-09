@@ -8,6 +8,8 @@
 
         private static void Main(string[] args)
         {
+            API.Test();
+
             Lambda2 p = new Lambda2
             {
                 Node0 = new NodeFold

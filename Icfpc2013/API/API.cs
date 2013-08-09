@@ -19,6 +19,14 @@ namespace Icfpc2013
         private static string AuthPosfix = "vpsH1H";
         private static string FullAuthStr = string.Format("{0}{1}", AuthKey, AuthPosfix);
 
+        public static void Test()
+        {
+            //Console.WriteLine(API.GetTeamStatus());
+            var status = API.GetTeamStatus();
+            Console.WriteLine(status);
+            Console.ReadKey(); 
+        }
+
         private static string HttpGet(string url, out HttpStatusCode? code)
         {
             try
