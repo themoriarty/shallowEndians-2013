@@ -51,6 +51,8 @@
     <Compile Include="API\Problem.cs" />
     <Compile Include="API\RequestWindow.cs" />
     <Compile Include="API\Status.cs" />
+    <Compile Include="API\TrainingProblem.cs" />
+    <Compile Include="API\TrainRequest.cs" />
     <Compile Include="API\Utils.cs" />
     <Compile Include="Compiler.cs" />
     <Compile Include="ExecContext.cs" />
