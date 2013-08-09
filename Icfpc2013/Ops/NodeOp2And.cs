@@ -9,17 +9,13 @@
 
         public override string ToString(int indentLevel)
         {
-            string output = "";
+            string output = "\n";
             for (int i = 0; i < indentLevel; ++i)
             {
-                output += " ";
+                output += "  ";
             }
-            output += "and (" + Node0.ToString(indentLevel) + ")\n";
-            for (int i = 0; i < indentLevel; i++)
-            {
-                output += " ";
-            }
-            output += "(" + Node1.ToString(indentLevel + 1) + ")";
+            output += "and " + Node0.ToString(indentLevel + 1) + " ";
+            output += Node1.ToString(indentLevel + 1) + " )";
             return output;
         }
     }

@@ -25,19 +25,18 @@
 
         public string ToString(int indentLevel)
         {
-            string output = "";
+            string output = "\n";
             for (int i = 0; i < indentLevel; ++i)
             {
-                output += " ";
+                output += "  ";
             }
-            output += "if0 (" + Node0.ToString(indentLevel) + ")\n";
-            for(int i = 0; i < indentLevel; ++i)
-                output += " ";
-            output += "(" + Node1.ToString(indentLevel + 1) + ")\n";
-            for(int i = 0; i < indentLevel; ++i)
-                output += " ";
-            output += "(" + Node2.ToString(indentLevel + 1) + ")\n";
+            output += "( ";
+            output += "if0 " + Node0.ToString(indentLevel + 1) + " ";
+            output += Node1.ToString(indentLevel + 1) + " ";
+            output += Node2.ToString(indentLevel + 1);
+            output += " )";
             return output;
+        }
 
         public long Cost()
         {

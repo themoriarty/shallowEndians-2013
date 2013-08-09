@@ -9,12 +9,13 @@
 
         public override string ToString(int indentLevel)
         {
-            string output = "";
+            string output = "\n";
             for (int i = 0; i < indentLevel; ++i)
             {
-                output += " ";
+                output += "  ";
             }
-            return output + "shr1 (" + Node0.ToString(indentLevel) + ")";
+            output += "( ";
+            return output + "shr1 " + Node0.ToString(indentLevel + 1) + " )";
         }
     }
 }

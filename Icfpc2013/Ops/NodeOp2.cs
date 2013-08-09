@@ -16,7 +16,7 @@
 
         public Node Node1 { get; set; }
 
-        public string ToString(int indentLevel)
+        public virtual string ToString(int indentLevel)
         {
             throw new System.NotImplementedException();
         }

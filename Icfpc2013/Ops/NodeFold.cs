@@ -26,18 +26,15 @@
 
         public string ToString(int indentLevel)
         {
-            string output = "";
+            string output = "\n";
             for (int i = 0; i < indentLevel; ++i)
             {
-                output += " ";
+                output += "  ";
             }
-            output += "fold (" + Node0.ToString(indentLevel + 1) + ")";
-            output += "(" + Node1.ToString(indentLevel + 2) + ")\n";
-            for (int i = 0; i < indentLevel; ++i)
-            {
-                output += " ";
-            }
-            output += "(" + Node2.ToString(indentLevel) + ")";
+            output += "( ";
+            output += "fold " + Node0.ToString(indentLevel + 1) + " ";
+            output += Node1.ToString(indentLevel + 1) + " ";
+            output += Node2.ToString(indentLevel + 1) + " )";
             return output;
         }
     }

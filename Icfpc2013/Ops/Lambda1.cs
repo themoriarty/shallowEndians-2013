@@ -8,17 +8,14 @@
 
         public string ToString(int indentLevel)
         {
-            string output = "";
+            string output = "\n";
             for (int i = 0; i < indentLevel; ++i)
             {
-                output += " ";
+                output += "\t";
             }
-            output += "lambda (" + Id0.ToString(indentLevel) + ")\n";
-            for (int i = 0; i < indentLevel; i++)
-            {
-                output += " ";
-            }
-            output += "(" + Node0.ToString(indentLevel + 1) + ")";
+            output += "( ";
+            output += "lambda " + Id0.ToString(indentLevel + 1) + " ";
+            output += Node0.ToString(indentLevel + 1) + " )";
             return output;
         }
     }

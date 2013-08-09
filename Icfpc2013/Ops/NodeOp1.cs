@@ -14,7 +14,7 @@
             return 1 + Node0.Cost();
         }
 
-        public string ToString(int indentLevel)
+        public virtual string ToString(int indentLevel)
         {
             throw new System.NotImplementedException();
         }
