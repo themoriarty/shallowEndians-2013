@@ -223,7 +223,7 @@ namespace Icfpc2013
         private static string GetTrainingProblemRaw(TrainRequest trainRequest, out HttpStatusCode? code)
         {
             string url = string.Format("{0}train?auth={1}", ServerBaseURL, FullAuthStr);
-            return HttpGet(url, out code);
+            return HttpPost(url, trainRequest, out code);
         }
 
         public static TrainingProblem GetTrainingProblem(TrainRequest trainRequest, out HttpStatusCode? code)
