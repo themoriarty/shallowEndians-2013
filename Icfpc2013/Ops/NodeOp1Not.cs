@@ -34,6 +34,7 @@
         public override void Op(ref OpTypes ops)
         {
             ops |= OpTypes.not;
+            Node0.Op(ref ops);
         }
 
         #endregion
