@@ -132,12 +132,6 @@ namespace Icfpc2013
 
         #region GetTeamStatus
 
-        private static string GetTeamStatusRaw()
-        {
-            HttpStatusCode? code;
-            return GetTeamStatusRaw(out code);
-        }
-
         private static string GetTeamStatusRaw(out HttpStatusCode? code)
         {
             string url = string.Format("{0}status?auth={1}", ServerBaseURL, FullAuthStr);
@@ -172,12 +166,6 @@ namespace Icfpc2013
         #endregion GetTeamStatus
 
         #region GetRealProblems
-
-        private static string GetRealProblemsRaw()
-        {
-            HttpStatusCode? code;
-            return GetRealProblemsRaw(out code);
-        }
 
         private static string GetRealProblemsRaw(out HttpStatusCode? code)
         {
@@ -214,16 +202,10 @@ namespace Icfpc2013
 
         #region GetTrainingProblem
 
-        private static string GetTrainingProblemRaw(TrainRequest trainRequest)
-        {
-            HttpStatusCode? code;
-            return GetTrainingProblemRaw(trainRequest, out code);
-        }
-
         private static string GetTrainingProblemRaw(TrainRequest trainRequest, out HttpStatusCode? code)
         {
             string url = string.Format("{0}train?auth={1}", ServerBaseURL, FullAuthStr);
-            return HttpGet(url, out code);
+            return HttpPost(url, trainRequest, out code);
         }
 
         public static TrainingProblem GetTrainingProblem(TrainRequest trainRequest, out HttpStatusCode? code)
@@ -252,6 +234,76 @@ namespace Icfpc2013
         }
 
         #endregion GetTrainingProblem
+
+        #region Eval
+
+        private static string EvalRaw(EvalRequest evalRequest, out HttpStatusCode? code)
+        {
+            string url = string.Format("{0}eval?auth={1}", ServerBaseURL, FullAuthStr);
+            return HttpPost(url, evalRequest, out code);
+        }
+
+        public static EvalResponse Eval(EvalRequest evalRequest, out HttpStatusCode? code)
+        {
+            try
+            {
+                var trainingProblemRaw = EvalRaw(evalRequest, out code);
+                return JsonConvert.DeserializeObject<EvalResponse>(trainingProblemRaw);
+            }
+            catch (Exception ex)
+            {
+                if (PrintDebug)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
+
+            code = null;
+            return null;
+        }
+
+        public static EvalResponse Eval(EvalRequest evalRequest)
+        {
+            HttpStatusCode? code;
+            return Eval(evalRequest, out code);
+        }
+
+        #endregion Eval
+
+        #region Guess
+
+        private static string GuessRaw(Guess guess, out HttpStatusCode? code)
+        {
+            string url = string.Format("{0}guess?auth={1}", ServerBaseURL, FullAuthStr);
+            return HttpPost(url, guess, out code);
+        }
+
+        public static GuessResponse Guess(Guess GuessRequest, out HttpStatusCode? code)
+        {
+            try
+            {
+                var trainingProblemRaw = GuessRaw(GuessRequest, out code);
+                return JsonConvert.DeserializeObject<GuessResponse>(trainingProblemRaw);
+            }
+            catch (Exception ex)
+            {
+                if (PrintDebug)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
+
+            code = null;
+            return null;
+        }
+
+        public static GuessResponse Guess(Guess GuessRequest)
+        {
+            HttpStatusCode? code;
+            return Guess(GuessRequest, out code);
+        }
+
+        #endregion Guess
     }
 }
 
