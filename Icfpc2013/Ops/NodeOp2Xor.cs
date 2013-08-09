@@ -2,9 +2,18 @@
 {
     internal class NodeOp2Xor : NodeOp2
     {
-        public override long Eval()
+        #region Public Methods and Operators
+
+        public override Node Clone()
         {
-            return Node0.Eval() ^ Node1.Eval();
+            return new NodeOp2Xor { Node0 = Node0.Clone(), Node1 = Node1.Clone() };
         }
+
+        public override long Eval(ExecContext context)
+        {
+            return Node0.Eval(context) ^ Node1.Eval(context);
+        }
+
+        #endregion
     }
 }

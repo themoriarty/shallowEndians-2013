@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Compiler.cs" />
+    <Compile Include="ExecContext.cs" />
     <Compile Include="Ops\Lambda2.cs" />
     <Compile Include="Ops\Lambda1.cs" />
     <Compile Include="Ops\NodeFold.cs" />

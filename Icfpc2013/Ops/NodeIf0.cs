@@ -12,19 +12,28 @@
 
         #endregion
 
-        public long Eval()
-        {
-            if (Node0.Eval() == 0)
-            {
-                return Node1.Eval();
-            }
+        #region Public Methods and Operators
 
-            return Node2.Eval();
+        public Node Clone()
+        {
+            return new NodeIf0 { Node0 = Node0.Clone(), Node1 = Node1.Clone(), Node2 = Node2.Clone() };
         }
 
         public long Cost()
         {
             return 1 + Node0.Cost() + Node1.Cost() + Node2.Cost();
         }
+
+        public long Eval(ExecContext context)
+        {
+            if (Node0.Eval(context) == 0)
+            {
+                return Node1.Eval(context);
+            }
+
+            return Node2.Eval(context);
+        }
+
+        #endregion
     }
 }
