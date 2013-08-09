@@ -21,7 +21,7 @@
 
         public long Size()
         {
-            return 1 + Node0.Size() + Node1.Size();
+            return 1 + (Node0 == null ? 0 : Node0.Size()) + (Node1 == null ? 0 : Node1.Size());
         }
 
         public virtual long Eval(ExecContext context)
