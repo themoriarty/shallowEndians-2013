@@ -24,7 +24,7 @@
 
             //validNodes.Add(new NodeOp1Shl1());
             //validNodes.Add(new NodeOp1Not());
-            //validNodes.Add(new NodeOp1Shr16());
+            validNodes.Add(new NodeOp1Shr16());
             //validNodes.Add(new NodeOp1Shr4());
             //validNodes.Add(new NodeOp1Shr1());
 
@@ -34,7 +34,7 @@
             //validNodes.Add(new NodeOp2Or());
 
             ulong[] inputs = { 0, 0x12, 0x137 }; //{0x12, 0x137};
-            ulong[] outputs = { 0x0000000000000000, 0x0000000000000024, 0x000000000000026E };
+            ulong[] outputs = { 0x0000000000000000, 0x000000000000000, 0 };
 
             var builder = new TreeGenerator(validNodes, programSize);
             foreach (var root in builder.GenerateAllPrograms())
