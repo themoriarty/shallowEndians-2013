@@ -28,7 +28,7 @@
 
         public int GetHashCodeFromInputs(List<ulong> inputs)
         {
-            List<ulong> outputs = inputs.Select(x => Run(x)).ToList();
+            List<ulong> outputs = inputs.Select(Run).ToList();
             return GetHashCodeFromOutputs(outputs);
         }
 
