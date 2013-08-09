@@ -9,7 +9,7 @@
             return new Node0();
         }
 
-        public long Eval(ExecContext context)
+        public ulong Eval(ExecContext context)
         {
             return 0;
         }

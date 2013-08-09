@@ -34,9 +34,9 @@
             return new NodeId { Name = this.Name };
         }
 
-        public long Eval(ExecContext context)
+        public ulong Eval(ExecContext context)
         {
-            long value;
+            ulong value;
             if (!context.Vars.TryGetValue(this.Name, out value))
             {
                 throw new Exception("Var " + this.Name + " is undefined");

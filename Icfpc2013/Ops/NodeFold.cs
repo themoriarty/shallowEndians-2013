@@ -37,7 +37,7 @@
             return new NodeFold { Node0 = this.Node0.Clone(), Node1 = this.Node1.Clone(), Node2 = this.Node2.Clone() };
         }
 
-        public long Eval(ExecContext context)
+        public ulong Eval(ExecContext context)
         {
             var input = this.Node0.Eval(context);
             var init = this.Node1.Eval(context);

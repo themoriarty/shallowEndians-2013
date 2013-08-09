@@ -9,7 +9,7 @@
             return new NodeOp1Shl1 { Node0 = Node0 != null ? Node0.Clone() : null };
         }
 
-        public override long Eval(ExecContext context)
+        public override ulong Eval(ExecContext context)
         {
             return this.Node0.Eval(context) << 1;
         }

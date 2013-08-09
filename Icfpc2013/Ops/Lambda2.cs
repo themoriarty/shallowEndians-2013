@@ -51,7 +51,7 @@
             return new Lambda2 { Id0 = (NodeId)this.Id0.Clone(), Id1 = (NodeId)this.Id1.Clone(), Node0 = this.Node0.Clone() };
         }
 
-        public long Eval(long value1, long value2)
+        public ulong Eval(ulong value1, ulong value2)
         {
             var state = new ExecContext();
             state.Vars[this.Id0.Name] = value1;

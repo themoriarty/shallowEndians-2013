@@ -6,7 +6,7 @@
 
         Node Clone();
 
-        long Eval(ExecContext context);
+        ulong Eval(ExecContext context);
 
         string Serialize();
 

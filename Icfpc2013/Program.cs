@@ -30,7 +30,7 @@
             validNodes.Add(new NodeOp2Xor());
             validNodes.Add(new NodeOp2Or());
 
-            int[] inputs = { 0, 13, 137, 1337 };
+            ulong[] inputs = { 0, 13, 137, 1337 };
 
             var builder = new TreeGenerator(validNodes, programSize);
             foreach (var root in builder.GenerateAllPrograms())
@@ -42,7 +42,7 @@
                     {
                         var ctx = new ExecContext();
                         ctx.Vars["x"] = input;
-                        long output = root.Eval(ctx);
+                        ulong output = root.Eval(ctx);
                         Console.WriteLine("f({0}) = {1}", input, output);
                     }
 

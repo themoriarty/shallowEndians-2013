@@ -37,7 +37,7 @@
             return new NodeIf0 { Node0 = this.Node0.Clone(), Node1 = this.Node1.Clone(), Node2 = this.Node2.Clone() };
         }
 
-        public long Eval(ExecContext context)
+        public ulong Eval(ExecContext context)
         {
             if (this.Node0.Eval(context) == 0)
             {

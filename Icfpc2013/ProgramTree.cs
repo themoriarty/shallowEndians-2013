@@ -31,7 +31,7 @@
             return outputs.Select(x => x.GetHashCode()).Sum();
         }
 
-        public long Run(long value)
+        public ulong Run(ulong value)
         {
             var state = new ExecContext();
             state.Vars[Program.Id0.Name] = value;

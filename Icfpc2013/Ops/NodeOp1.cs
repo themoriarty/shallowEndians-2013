@@ -56,7 +56,7 @@
             throw new NotImplementedException();
         }
 
-        public virtual long Eval(ExecContext context)
+        public virtual ulong Eval(ExecContext context)
         {
             throw new NotImplementedException();
         }
