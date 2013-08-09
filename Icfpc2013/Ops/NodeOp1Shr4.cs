@@ -14,6 +14,11 @@
             return Node0.Eval(context) >> 4;
         }
 
+        public override string ToString()
+        {
+            return string.Format("(shr4 {0})", Node0);
+        }
+
         #endregion
     }
 }

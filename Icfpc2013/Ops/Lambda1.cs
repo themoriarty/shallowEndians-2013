@@ -17,6 +17,11 @@
             return new Lambda1 { Id0 = (NodeId)Id0.Clone(), Node0 = Node0.Clone() };
         }
 
+        public override string ToString()
+        {
+            return string.Format("(lambda ({0}) {1})", Id0, Node0);
+        }
+
         #endregion
     }
 }

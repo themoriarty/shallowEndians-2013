@@ -43,6 +43,11 @@
             return current;
         }
 
+        public override string ToString()
+        {
+            return string.Format("(fold {0} {1} {2})", Node0, Node1, Node2);
+        }
+
         #endregion
     }
 }

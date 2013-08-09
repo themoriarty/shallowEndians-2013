@@ -28,6 +28,11 @@
             return Node0.Eval(state);
         }
 
+        public override string ToString()
+        {
+            return string.Format("(lambda ({0} {1}) {2})", Id0, Id1, Node0);
+        }
+
         #endregion
     }
 }

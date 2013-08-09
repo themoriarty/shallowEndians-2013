@@ -14,6 +14,11 @@
             return Node0.Eval(context) | Node1.Eval(context);
         }
 
+        public override string ToString()
+        {
+            return string.Format("(or {0} {1})", Node0, Node1);
+        }
+
         #endregion
     }
 }

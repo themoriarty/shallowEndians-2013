@@ -14,6 +14,11 @@
             return ~Node0.Eval(context);
         }
 
+        public override string ToString()
+        {
+            return string.Format("(not {0})", Node0);
+        }
+
         #endregion
     }
 }

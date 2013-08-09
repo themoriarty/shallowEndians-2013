@@ -33,6 +33,11 @@
             return value;
         }
 
+        public override string ToString()
+        {
+            return Name;
+        }
+
         #endregion
     }
 }

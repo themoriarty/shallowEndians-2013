@@ -23,6 +23,11 @@
             return Program.Node0.Eval(state);
         }
 
+        public override string ToString()
+        {
+            return Program.ToString();
+        }
+
         #endregion
     }
 }

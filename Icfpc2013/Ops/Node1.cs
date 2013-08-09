@@ -19,6 +19,11 @@
             return 1;
         }
 
+        public override string ToString()
+        {
+            return "1";
+        }
+
         #endregion
     }
 }
