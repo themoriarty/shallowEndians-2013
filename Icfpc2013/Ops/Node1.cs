@@ -15,7 +15,7 @@
             return "1";
         }
 
-        public long Cost()
+        public long Size()
         {
             return 1;
         }

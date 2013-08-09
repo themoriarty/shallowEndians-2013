@@ -17,9 +17,9 @@
             throw new NotImplementedException();
         }
 
-        public long Cost()
+        public long Size()
         {
-            return 1 + Node0.Cost();
+            return 1 + Node0.Size();
         }
 
         public virtual string ToString(int indentLevel)

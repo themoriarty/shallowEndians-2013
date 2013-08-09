@@ -35,9 +35,9 @@
             return output;
         }
 
-        public long Cost()
+        public long Size()
         {
-            return 1 + Node0.Cost() + Node1.Cost() + Node2.Cost();
+            return 1 + Node0.Size() + Node1.Size() + Node2.Size();
         }
 
         public long Eval(ExecContext context)

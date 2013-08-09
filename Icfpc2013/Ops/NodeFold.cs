@@ -21,9 +21,9 @@
             return new NodeFold { Node0 = Node0.Clone(), Node1 = Node1.Clone(), Node2 = Node2.Clone() };
         }
 
-        public long Cost()
+        public long Size()
         {
-            return 2 + Node0.Cost() + Node1.Cost() + Node2.Node0.Cost();
+            return 2 + Node0.Size() + Node1.Size() + Node2.Node0.Size();
         }
 
         public string ToString(int indentLevel)

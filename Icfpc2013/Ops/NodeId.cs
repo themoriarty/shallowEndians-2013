@@ -23,7 +23,7 @@
             return new NodeId { Name = Name };
         }
 
-        public long Cost()
+        public long Size()
         {
             return 1;
         }
