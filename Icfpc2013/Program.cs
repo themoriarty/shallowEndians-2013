@@ -3,6 +3,8 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Globalization;
+    using System.Linq;
 
     using Icfpc2013.Ops;
 
@@ -15,13 +17,34 @@
             const int judgesProgramSize = 5;
             const int programSize = judgesProgramSize - 1;
 
-            var operators = new string[] { "plus", "shr16" };
+            var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, null));
+
+            var programId = training.id;
+
+            Console.WriteLine("ProgramId: {0}", training.id);
+            Console.WriteLine("Training: {0}", string.Join(", ", training.operators));
+            Console.WriteLine("Challenge: {0}", string.Join(", ", training.challenge));
+
+            var operators = training.operators;
 
             var ops = ProgramTree.GetOpTypes(operators);
             var validNodes = ProgramTree.GetAvailableNodes(ops);
 
             ulong[] inputs = { 0, 0x12, 0x137 }; //{0x12, 0x137};
-            ulong[] outputs = { 0x0000000000000000, 0x0000000000000000, 0x0000000000000000 };
+            var inputStrings = inputs.Select(s => string.Format("0x{0:X16}", s)).ToArray();
+
+            Console.WriteLine("Input: {{{0}}}", string.Join(", ", inputStrings));
+
+            var outputsResponse = API.Eval(new EvalRequest(programId, null, inputStrings));
+
+            if (outputsResponse.status != "ok" || outputsResponse.outputs == null)
+            {
+                throw new Exception("eval failed");
+            }
+
+            Console.WriteLine("Output: {{{0}}}", string.Join(", ", outputsResponse.outputs));
+
+            ulong[] outputs = outputsResponse.outputs.Select(s => ulong.Parse(s.Replace("0x", string.Empty), NumberStyles.HexNumber)).ToArray();
 
             var builder = new TreeGenerator(validNodes, programSize);
             int totalCount = 0;
@@ -51,7 +74,14 @@
 
                         if (currentOps == ops)
                         {
-                            Console.WriteLine(new Lambda1 { Id0 = new NodeId { Name = "x" }, Node0 = root }.Serialize());
+                            var finalResult = new Lambda1 { Id0 = new NodeId { Name = "x" }, Node0 = root }.Serialize();
+                            Console.WriteLine("Submitting: {0}", finalResult);
+
+                            var response = API.Guess(new Guess(programId, finalResult));
+
+                            Console.WriteLine("Gues: {0} {1} {2}", response.status, response.message, string.Join(", ", response.values ?? new string[]{}));
+
+                            break;
                         }
                     }
 
