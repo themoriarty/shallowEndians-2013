@@ -7,9 +7,17 @@
             throw new System.NotImplementedException();
         }
 
+
         public string ToString(int indentLevel)
         {
-            return "";
+            return Name;
+        }
+
+        public string Name { get; set; }
+
+        public long Cost()
+        {
+            return 1;
         }
     }
 }

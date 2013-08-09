@@ -4,5 +4,6 @@
     {
         long Eval();
         string ToString(int indentLevel);
+        long Cost();
     }
 }
