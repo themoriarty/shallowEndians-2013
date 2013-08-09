@@ -2,9 +2,11 @@
 {
     internal class NodeOp1Shr16 : NodeOp1
     {
-        public override long Eval()
+        #region Public Methods and Operators
+
+        public override Node Clone()
         {
-            return Node0.Eval()>>16;
+            return new NodeOp1Shr16 { Node0 = Node0.Clone() };
         }
 
         public override string ToString(int indentLevel)
@@ -17,5 +19,11 @@
             output += "( ";
             return output + "shr16 " + Node0.ToString(indentLevel + 1) + " )";
         }
+        public override long Eval(ExecContext context)
+        {
+            return Node0.Eval(context) >> 16;
+        }
+
+        #endregion
     }
 }

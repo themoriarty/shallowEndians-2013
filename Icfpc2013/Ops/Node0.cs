@@ -2,9 +2,11 @@
 {
     internal class Node0 : Node
     {
-        public long Eval()
+        #region Public Methods and Operators
+
+        public Node Clone()
         {
-            return 0;
+            return new Node0();
         }
 
         public string ToString(int indentLevel)
@@ -16,5 +18,12 @@
         {
             return 1;
         }
+
+        public long Eval(ExecContext context)
+        {
+            return 0;
+        }
+
+        #endregion
     }
 }

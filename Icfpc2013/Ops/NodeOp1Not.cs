@@ -2,9 +2,11 @@
 {
     internal class NodeOp1Not : NodeOp1
     {
-        public override long Eval()
+        #region Public Methods and Operators
+
+        public override Node Clone()
         {
-            return ~Node0.Eval();
+            return new NodeOp1Not { Node0 = Node0.Clone() };
         }
 
         public Node Node0 { get; set; }
@@ -20,5 +22,11 @@
             return output + "not " + Node0.ToString(indentLevel + 1) + " )";
         }
 
+        public override long Eval(ExecContext context)
+        {
+            return ~Node0.Eval(context);
+        }
+
+        #endregion
     }
 }
