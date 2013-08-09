@@ -29,6 +29,10 @@
             return "0";
         }
 
+        public void Op(ref OpTypes ops)
+        {
+        }
+
         #endregion
     }
 }

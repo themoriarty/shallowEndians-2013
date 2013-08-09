@@ -31,6 +31,11 @@
             return output + "shr1 " + this.Node0.ToString(indentLevel + 1) + " )";
         }
 
+        public override void Op(ref OpTypes ops)
+        {
+            ops |= OpTypes.shr1;
+        }
+
         #endregion
     }
 }

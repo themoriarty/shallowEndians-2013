@@ -60,6 +60,10 @@
             return this.Name;
         }
 
+        public void Op(ref OpTypes ops)
+        {
+        }
+
         #endregion
     }
 }

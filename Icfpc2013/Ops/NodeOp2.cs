@@ -77,6 +77,11 @@
             throw new NotImplementedException();
         }
 
+        public virtual void Op(ref OpTypes ops)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

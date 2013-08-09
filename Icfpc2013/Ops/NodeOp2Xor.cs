@@ -32,6 +32,11 @@
             return output;
         }
 
+        public override void Op(ref OpTypes ops)
+        {
+            ops |= OpTypes.xor;
+        }
+
         #endregion
     }
 }
