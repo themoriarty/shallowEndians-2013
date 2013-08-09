@@ -1,4 +1,4 @@
-﻿namespace Icfpc2013.API
+﻿namespace Icfpc2013
 {
     public class CpuWindow
     {
