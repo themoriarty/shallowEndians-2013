@@ -21,11 +21,23 @@ namespace Icfpc2013
 
         public static void Test()
         {
-            //Console.WriteLine(API.GetTeamStatus());
-            var status = API.GetTeamStatus();
-            Console.WriteLine(status);
+            // var status = API.GetTeamStatus();
+            // Console.WriteLine(status);
+
+            var problems = API.GetProblems();
+
+            if (problems != null && problems.Length > 0)
+            {
+                foreach (var problem in problems)
+                {
+                    Console.WriteLine(problem);
+                }
+            }
+
             Console.ReadKey(); 
         }
+
+        #region HttpGetPost
 
         private static string HttpGet(string url, out HttpStatusCode? code)
         {
@@ -63,6 +75,10 @@ namespace Icfpc2013
             return null;
         }
 
+        #endregion HttpGetPost
+
+        #region GetTeamStatus
+
         private static string GetTeamStatusRaw()
         {
             HttpStatusCode? code;
@@ -99,6 +115,49 @@ namespace Icfpc2013
             HttpStatusCode? code;
             return GetTeamStatus(out code);
         }
+
+        #endregion GetTeamStatus
+
+        #region GetProblems
+
+        private static string GetProblemsRaw()
+        {
+            HttpStatusCode? code;
+            return GetProblemsRaw(out code);
+        }
+
+        private static string GetProblemsRaw(out HttpStatusCode? code)
+        {
+            string url = string.Format("{0}/myproblems?auth={1}", ServerBaseURL, FullAuthStr);
+            return HttpGet(url, out code);
+        }
+
+        public static Problem[] GetProblems(out HttpStatusCode? code)
+        {
+            try
+            {
+                var statusRaw = GetProblemsRaw(out code);
+                return JsonConvert.DeserializeObject<Problem[]>(statusRaw);
+            }
+            catch (Exception ex)
+            {
+                if (PrintDebug)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
+
+            code = null;
+            return null;
+        }
+
+        public static Problem[] GetProblems()
+        {
+            HttpStatusCode? code;
+            return GetProblems(out code);
+        }
+
+        #endregion GetProblems
     }
 }
 
