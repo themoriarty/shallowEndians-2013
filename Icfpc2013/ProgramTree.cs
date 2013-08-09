@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-
-namespace Icfpc2013
+﻿namespace Icfpc2013
 {
-    internal class ProgramTree
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Icfpc2013.Ops;
+
+    public class ProgramTree
     {
         #region Public Properties
 
@@ -15,17 +16,22 @@ namespace Icfpc2013
 
         #region Public Methods and Operators
 
+        public static ProgramTree Parse(string input)
+        {
+            return new ProgramTree { Program = Lambda1.Parse(input) };
+        }
+
         public ProgramTree Clone()
         {
             return new ProgramTree { Program = Program.Clone() };
         }
- 
-        public int GetHashCode(List<UInt64> outputs)
+
+        public int GetHashCode(List<ulong> outputs)
         {
             return outputs.Select(x => x.GetHashCode()).Sum();
         }
 
-        public long Run(long value)
+        public ulong Run(ulong value)
         {
             var state = new ExecContext();
             state.Vars[Program.Id0.Name] = value;

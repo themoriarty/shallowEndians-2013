@@ -1,16 +1,17 @@
-﻿namespace Icfpc2013
+﻿namespace Icfpc2013.Ops
 {
-    internal interface Node
+    public interface Node
     {
         #region Public Methods and Operators
 
         Node Clone();
 
-        long Size();
-
-        long Eval(ExecContext context);
+        ulong Eval(ExecContext context);
 
         string Serialize();
+
+        long Size();
+
         string ToString(int indentLevel);
 
         #endregion
