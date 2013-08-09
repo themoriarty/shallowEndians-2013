@@ -24,7 +24,8 @@ namespace Icfpc2013
             // var status = API.GetTeamStatus();
             // Console.WriteLine(status);
 
-            var problems = API.GetProblems();
+            /*
+            var problems = API.GetRealProblems();
 
             if (problems != null && problems.Length > 0)
             {
@@ -33,11 +34,63 @@ namespace Icfpc2013
                     Console.WriteLine(problem);
                 }
             }
+            */
+
+            var trainingProblem = GetTrainingProblem(new TrainRequest(4, new string[]{}));
+            Console.WriteLine(trainingProblem);
 
             Console.ReadKey(); 
         }
 
         #region HttpGetPost
+
+        private static string HttpPost(string url, Object obj, out HttpStatusCode? code)
+        {
+            try
+            {
+                string json = JsonConvert.SerializeObject(obj);
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "POST";
+
+                var outStream = request.GetRequestStream();
+
+                using (var writer = new StreamWriter(outStream))
+                {
+                    writer.Write(json);
+                }
+
+                outStream.Close();
+
+                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+                {
+                    code = response.StatusCode;
+
+                    if (PrintDebug)
+                    {
+                        Console.WriteLine("HTTP response for URL {0} is {1} - {2}", url, response.StatusCode, response.StatusDescription);
+                    }
+
+                    using (var inStream = response.GetResponseStream())
+                    {
+                        using (var reader = new StreamReader(inStream))
+                        {
+                            return reader.ReadToEnd();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                if (PrintDebug)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
+
+            code = null;
+            return null;
+        }
 
         private static string HttpGet(string url, out HttpStatusCode? code)
         {
@@ -87,7 +140,7 @@ namespace Icfpc2013
 
         private static string GetTeamStatusRaw(out HttpStatusCode? code)
         {
-            string url = string.Format("{0}/status?auth={1}", ServerBaseURL, FullAuthStr);
+            string url = string.Format("{0}status?auth={1}", ServerBaseURL, FullAuthStr);
             return HttpGet(url, out code);
         }
 
@@ -118,25 +171,25 @@ namespace Icfpc2013
 
         #endregion GetTeamStatus
 
-        #region GetProblems
+        #region GetRealProblems
 
-        private static string GetProblemsRaw()
+        private static string GetRealProblemsRaw()
         {
             HttpStatusCode? code;
-            return GetProblemsRaw(out code);
+            return GetRealProblemsRaw(out code);
         }
 
-        private static string GetProblemsRaw(out HttpStatusCode? code)
+        private static string GetRealProblemsRaw(out HttpStatusCode? code)
         {
-            string url = string.Format("{0}/myproblems?auth={1}", ServerBaseURL, FullAuthStr);
+            string url = string.Format("{0}myproblems?auth={1}", ServerBaseURL, FullAuthStr);
             return HttpGet(url, out code);
         }
 
-        public static Problem[] GetProblems(out HttpStatusCode? code)
+        public static Problem[] GetRealProblems(out HttpStatusCode? code)
         {
             try
             {
-                var statusRaw = GetProblemsRaw(out code);
+                var statusRaw = GetRealProblemsRaw(out code);
                 return JsonConvert.DeserializeObject<Problem[]>(statusRaw);
             }
             catch (Exception ex)
@@ -151,13 +204,54 @@ namespace Icfpc2013
             return null;
         }
 
-        public static Problem[] GetProblems()
+        public static Problem[] GetRealProblems()
         {
             HttpStatusCode? code;
-            return GetProblems(out code);
+            return GetRealProblems(out code);
         }
 
-        #endregion GetProblems
+        #endregion GetRealProblems
+
+        #region GetTrainingProblem
+
+        private static string GetTrainingProblemRaw(TrainRequest trainRequest)
+        {
+            HttpStatusCode? code;
+            return GetTrainingProblemRaw(trainRequest, out code);
+        }
+
+        private static string GetTrainingProblemRaw(TrainRequest trainRequest, out HttpStatusCode? code)
+        {
+            string url = string.Format("{0}train?auth={1}", ServerBaseURL, FullAuthStr);
+            return HttpPost(url, trainRequest, out code);
+        }
+
+        public static TrainingProblem GetTrainingProblem(TrainRequest trainRequest, out HttpStatusCode? code)
+        {
+            try
+            {
+                var trainingProblemRaw = GetTrainingProblemRaw(trainRequest, out code);
+                return JsonConvert.DeserializeObject<TrainingProblem>(trainingProblemRaw);
+            }
+            catch (Exception ex)
+            {
+                if (PrintDebug)
+                {
+                    Console.WriteLine(ex);
+                }
+            }
+
+            code = null;
+            return null;
+        }
+
+        public static TrainingProblem GetTrainingProblem(TrainRequest trainRequest)
+        {
+            HttpStatusCode? code;
+            return GetTrainingProblem(trainRequest, out code);
+        }
+
+        #endregion GetTrainingProblem
     }
 }
 
