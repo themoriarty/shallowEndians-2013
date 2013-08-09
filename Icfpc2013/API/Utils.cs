@@ -1,4 +1,4 @@
-﻿namespace Icfpc2013.API
+﻿namespace Icfpc2013
 {
     using System;
     using System.Text;
