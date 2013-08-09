@@ -33,6 +33,12 @@
         {
             throw new NotImplementedException();
         }
+        
+        public virtual string ToString(int indentLevel)
+        {
+            throw new System.NotImplementedException();
+        }
+
 
         #endregion
     }

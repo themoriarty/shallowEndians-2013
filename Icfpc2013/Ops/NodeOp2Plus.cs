@@ -17,8 +17,19 @@
         public override string Serialize()
         {
             return string.Format("(plus {0} {1})", Node0.Serialize(), Node1.Serialize());
+        }        
+        
+        public override string ToString(int indentLevel)
+        {
+            string output = "\n";
+            for (int i = 0; i < indentLevel; ++i)
+            {
+                output += "  ";
+            }
+            output += "plus " + Node0.ToString(indentLevel + 1) + " ";
+            output += Node1.ToString(indentLevel + 1) + " )";
+            return output;
         }
-
         #endregion
     }
 }

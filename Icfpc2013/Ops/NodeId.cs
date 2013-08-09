@@ -6,6 +6,12 @@
     {
         #region Public Properties
 
+
+        public string ToString(int indentLevel)
+        {
+            return Name;
+        }
+
         public string Name { get; set; }
 
         #endregion

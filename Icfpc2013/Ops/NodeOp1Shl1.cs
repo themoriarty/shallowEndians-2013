@@ -9,6 +9,16 @@
             return new NodeOp1Shl1 { Node0 = Node0.Clone() };
         }
 
+        public override string ToString(int indentLevel)
+        {
+            string output = "\n";
+            for (int i = 0; i < indentLevel; ++i)
+            {
+                output += "  ";
+            }
+            output += "( ";
+            return output + "shl1 " + Node0.ToString(indentLevel + 1) + " )";
+        }
         public override long Eval(ExecContext context)
         {
             return Node0.Eval(context) << 1;

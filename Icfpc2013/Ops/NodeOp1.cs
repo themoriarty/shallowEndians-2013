@@ -22,6 +22,10 @@
             return 1 + Node0.Cost();
         }
 
+        public virtual string ToString(int indentLevel)
+        {
+            throw new System.NotImplementedException();
+        }
         public virtual long Eval(ExecContext context)
         {
             throw new NotImplementedException();

@@ -9,6 +9,12 @@
             return new Node1();
         }
 
+
+        public string ToString(int indentLevel)
+        {
+            return "1";
+        }
+
         public long Cost()
         {
             return 1;

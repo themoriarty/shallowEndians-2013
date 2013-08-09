@@ -26,6 +26,20 @@
             return 2 + Node0.Cost() + Node1.Cost() + Node2.Node0.Cost();
         }
 
+        public string ToString(int indentLevel)
+        {
+            string output = "\n";
+            for (int i = 0; i < indentLevel; ++i)
+            {
+                output += "  ";
+            }
+            output += "( ";
+            output += "fold " + Node0.ToString(indentLevel + 1) + " ";
+            output += Node1.ToString(indentLevel + 1) + " ";
+            output += Node2.ToString(indentLevel + 1) + " )";
+            return output;
+        }
+
         public long Eval(ExecContext context)
         {
             var input = Node0.Eval(context);
