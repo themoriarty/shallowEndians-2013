@@ -5,6 +5,12 @@
 
     public class NodeId : Node
     {
+        #region Static Fields
+
+        private static readonly Regex nameRegex = new Regex("[a-z][a-z_0-9]*", RegexOptions.Compiled);
+
+        #endregion
+
         #region Public Properties
 
         public string Name { get; set; }
@@ -13,14 +19,13 @@
 
         #region Public Methods and Operators
 
-        private static Regex nameRegex = new Regex("[a-z][a-z_0-9]*", RegexOptions.Compiled);
-
         public static NodeId Parse(string input)
         {
             if (nameRegex.Match(input) == null)
             {
                 throw new Exception("format");
             }
+
             return new NodeId { Name = input };
         }
 

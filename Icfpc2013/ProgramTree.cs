@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-
-namespace Icfpc2013
+﻿namespace Icfpc2013
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     using Icfpc2013.Ops;
 
     public class ProgramTree
@@ -26,8 +25,8 @@ namespace Icfpc2013
         {
             return new ProgramTree { Program = Program.Clone() };
         }
- 
-        public int GetHashCode(List<UInt64> outputs)
+
+        public int GetHashCode(List<ulong> outputs)
         {
             return outputs.Select(x => x.GetHashCode()).Sum();
         }

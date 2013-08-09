@@ -9,7 +9,12 @@
             return new Node0();
         }
 
-        public string ToString(int indentLevel)
+        public long Eval(ExecContext context)
+        {
+            return 0;
+        }
+
+        public string Serialize()
         {
             return "0";
         }
@@ -19,12 +24,7 @@
             return 1;
         }
 
-        public long Eval(ExecContext context)
-        {
-            return 0;
-        }
-
-        public string Serialize()
+        public string ToString(int indentLevel)
         {
             return "0";
         }
