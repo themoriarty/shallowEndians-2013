@@ -24,7 +24,7 @@ namespace Icfpc2013
             Tuple<Node, int> cacheKey = new Tuple<Node, int>(root, depth);
             if (Cache.ContainsKey(cacheKey))
             {
-                Console.WriteLine("{0}/{1} cache hit", root, depth);
+                //Console.WriteLine("{0}/{1} cache hit", root, depth);
                 return Cache[cacheKey];
             }
             if (root is Node0 || root is Node1 || root is NodeId)

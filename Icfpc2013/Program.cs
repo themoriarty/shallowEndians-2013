@@ -22,30 +22,40 @@ namespace Icfpc2013
             validNodes.Add(new Node0());
             validNodes.Add(new Node1());
 
-            //validNodes.Add(new NodeOp1Shl1());
+            validNodes.Add(new NodeOp1Shl1());
+            validNodes.Add(new NodeOp1Not());
             //validNodes.Add(new NodeOp1Shr16());
             //validNodes.Add(new NodeOp1Shr4());
             //validNodes.Add(new NodeOp1Shr1());
 
-            validNodes.Add(new NodeOp2And());
-            validNodes.Add(new NodeOp2Plus());
-            validNodes.Add(new NodeOp2Xor());
-            validNodes.Add(new NodeOp2Or());
+            //validNodes.Add(new NodeOp2And());
+            //validNodes.Add(new NodeOp2Plus());
+            //validNodes.Add(new NodeOp2Xor());
+            //validNodes.Add(new NodeOp2Or());
 
-            int[] inputs = {0, 13, 137, 1337};
+            int[] inputs = {12, 137};
+            ulong[] outputs = { 0xFFFFFFFFFFFFFFDA, 0xFFFFFFFFFFFFFD90 };
 
             var builder = new TreeGenerator(validNodes, programSize);
             foreach (var root in builder.GenerateAllPrograms())
             {
                 if (root.Size() == programSize)
                 {
-                    Console.WriteLine("{0}", root.Serialize());
-                    foreach (var input in inputs)
+                    //Console.WriteLine(root.Serialize());
+                    bool valid = true;
+                    for (int i = 0; i < inputs.Length; ++i)
                     {
                         ExecContext ctx = new ExecContext();
-                        ctx.Vars["x"] = input;
-                        long output = root.Eval(ctx);
-                        Console.WriteLine("f({0}) = {1}", input, output);
+                        ctx.Vars["x"] = inputs[i];
+                        var output = root.Eval(ctx);
+                        if (output != outputs[i])
+                        {
+                            valid = false;
+                        }
+                    }
+                    if (valid)
+                    {
+                        Console.WriteLine(root.Serialize());
                     }
                     Console.WriteLine();
                 }
