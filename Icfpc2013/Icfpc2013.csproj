@@ -48,6 +48,10 @@
   <ItemGroup>
     <Compile Include="API\API.cs" />
     <Compile Include="API\CpuWindow.cs" />
+    <Compile Include="API\EvalRequest.cs" />
+    <Compile Include="API\EvalResponse.cs" />
+    <Compile Include="API\Guess.cs" />
+    <Compile Include="API\GuessResponse.cs" />
     <Compile Include="API\Problem.cs" />
     <Compile Include="API\RequestWindow.cs" />
     <Compile Include="API\Status.cs" />
