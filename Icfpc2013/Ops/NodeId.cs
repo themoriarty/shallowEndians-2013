@@ -20,7 +20,7 @@
         public long Eval(ExecContext context)
         {
             long value;
-            if (context.Vars.TryGetValue(Name, out value))
+            if (!context.Vars.TryGetValue(Name, out value))
             {
                 throw new Exception("Var " + Name + " is undefined");
             }
