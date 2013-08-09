@@ -18,5 +18,10 @@
         {
             throw new NotImplementedException();
         }
+
+        public long Cost()
+        {
+            return 1 + Node0.Cost() + Node1.Cost() + Node2.Node0.Cost();
+        }
     }
 }

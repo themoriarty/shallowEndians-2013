@@ -3,5 +3,7 @@
     interface Node
     {
         long Eval();
+
+        long Cost();
     }
 }

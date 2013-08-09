@@ -1,8 +1,20 @@
 ﻿namespace Icfpc2013
 {
-    interface NodeOp2 : Node
+    class NodeOp2 : Node
     {
-        Node Node0 { get; set; }
-        Node Node1 { get; set; }
+        public virtual long Eval()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public long Cost()
+        {
+            return 1 + Node0.Cost() + Node1.Cost();
+        }
+
+        public Node Node0 { get; set; }
+
+        public Node Node1 { get; set; }
     }
+
 }

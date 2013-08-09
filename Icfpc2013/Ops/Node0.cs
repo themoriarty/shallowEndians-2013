@@ -6,5 +6,10 @@
         {
             return 0;
         }
+
+        public long Cost()
+        {
+            return 1;
+        }
     }
 }
