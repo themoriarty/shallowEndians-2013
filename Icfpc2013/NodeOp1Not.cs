@@ -8,5 +8,10 @@
         }
 
         public Node Node0 { get; set; }
+
+        public string ToString(int indentLevel)
+        {
+            string output = "not " + Node0.ToString(indentLevel);
+        }
     }
 }

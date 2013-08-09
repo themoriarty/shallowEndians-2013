@@ -3,5 +3,6 @@
     interface Node
     {
         long Eval();
+        string ToString(int indentLevel);
     }
 }

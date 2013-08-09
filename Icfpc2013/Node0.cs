@@ -6,5 +6,10 @@
         {
             return 0;
         }
+
+        public string ToString(int indentLevel)
+        {
+            return "0";
+        }
     }
 }

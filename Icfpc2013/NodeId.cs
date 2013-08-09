@@ -6,5 +6,10 @@
         {
             throw new System.NotImplementedException();
         }
+
+        public string ToString(int indentLevel)
+        {
+            return "";
+        }
     }
 }

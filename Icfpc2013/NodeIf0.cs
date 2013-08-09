@@ -21,5 +21,17 @@
 
             return Node2.Eval();
         }
+
+        public string ToString(int indentLevel)
+        {
+            string output = "if0 (" + Node0.ToString(indentLevel) + ")\n";
+            for(int i = 0; i < indentLevel; ++i)
+                output += " ";
+            output += "(" + Node1.ToString(indentLevel + 1) + ")\n";
+            for(int i = 0; i < indentLevel; ++i)
+                output += " ";
+            output += "(" + Node2.ToString(indentLevel + 1) + ")\n";
+            return output;
+        }
     }
 }
