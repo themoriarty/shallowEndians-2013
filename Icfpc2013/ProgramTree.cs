@@ -23,6 +23,11 @@
             return Program.Node0.Eval(state);
         }
 
+        public string Serialize()
+        {
+            return Program.Serialize();
+        }
+
         #endregion
     }
 }

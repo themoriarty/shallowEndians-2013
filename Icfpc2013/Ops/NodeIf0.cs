@@ -19,9 +19,25 @@
             return new NodeIf0 { Node0 = Node0.Clone(), Node1 = Node1.Clone(), Node2 = Node2.Clone() };
         }
 
-        public long Cost()
+
+        public string ToString(int indentLevel)
         {
-            return 1 + Node0.Cost() + Node1.Cost() + Node2.Cost();
+            string output = "\n";
+            for (int i = 0; i < indentLevel; ++i)
+            {
+                output += "  ";
+            }
+            output += "( ";
+            output += "if0 " + Node0.ToString(indentLevel + 1) + " ";
+            output += Node1.ToString(indentLevel + 1) + " ";
+            output += Node2.ToString(indentLevel + 1);
+            output += " )";
+            return output;
+        }
+
+        public long Size()
+        {
+            return 1 + Node0.Size() + Node1.Size() + Node2.Size();
         }
 
         public long Eval(ExecContext context)
@@ -32,6 +48,11 @@
             }
 
             return Node2.Eval(context);
+        }
+
+        public string Serialize()
+        {
+            return string.Format("(if0 {0} {1} {2})", Node0.Serialize(), Node1.Serialize(), Node2.Serialize());
         }
 
         #endregion

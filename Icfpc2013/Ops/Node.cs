@@ -6,9 +6,12 @@
 
         Node Clone();
 
-        long Cost();
+        long Size();
 
         long Eval(ExecContext context);
+
+        string Serialize();
+        string ToString(int indentLevel);
 
         #endregion
     }

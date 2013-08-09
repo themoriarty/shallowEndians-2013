@@ -13,21 +13,79 @@ namespace Icfpc2013
 
         private static void Main(string[] args)
         {
+            const int programSize = 3;
+
             List<Node> validNodes = new List<Node>();
+            var inputArg = new NodeId();
+            inputArg.Name = "x";
+            validNodes.Add(inputArg);
             validNodes.Add(new Node0());
             validNodes.Add(new Node1());
-            validNodes.Add(new NodeOp1Shl1());
-            validNodes.Add(new NodeOp1Shr1());
 
-            var builder = new TreeGenerator(validNodes, 1);
-            foreach (var program in builder.GenerateAllPrograms())
+            //validNodes.Add(new NodeOp1Shl1());
+            //validNodes.Add(new NodeOp1Shr16());
+            //validNodes.Add(new NodeOp1Shr4());
+            //validNodes.Add(new NodeOp1Shr1());
+
+            validNodes.Add(new NodeOp2And());
+            validNodes.Add(new NodeOp2Plus());
+            validNodes.Add(new NodeOp2Xor());
+            validNodes.Add(new NodeOp2Or());
+
+            int[] inputs = {0, 13, 137, 1337};
+
+            var builder = new TreeGenerator(validNodes, programSize);
+            foreach (var root in builder.GenerateAllPrograms())
             {
-                Console.WriteLine("{0}", program.ToString());
+                if (root.Size() == programSize)
+                {
+                    Console.WriteLine("{0}", root.Serialize());
+                    foreach (var input in inputs)
+                    {
+                        ExecContext ctx = new ExecContext();
+                        ctx.Vars["x"] = input;
+                        long output = root.Eval(ctx);
+                        Console.WriteLine("f({0}) = {1}", input, output);
+                    }
+                    Console.WriteLine();
+                }
             }
         }
 
         private static void Main2(string[] args)
         {
+            //API.Test();
+
+            Lambda2 p = new Lambda2
+            {
+                Node0 = new NodeFold
+                {
+                    Node0 = new NodeId { Name = "X" },
+                    Node1 = new Node0(),
+                    Node2 = new Lambda2
+                    {
+                        Id0 = new NodeId { Name = "X" },
+                        Id1 = new NodeId { Name = "Y" },
+                        Node0 = new NodeIf0
+                        {
+                            Node0 = new Node1(),
+                            Node1 = new NodeOp1Not()
+                            {
+                                Node0 = new NodeId { Name = "Y" }
+                            },
+                            Node2 = new NodeOp2And()
+                            {
+                                Node0 = new Node1(),
+                                Node1 = new Node1()
+                            }
+                        }
+                    }
+                },
+                Id0 = new NodeId { Name = "X" },
+                Id1 = new NodeId { Name = "Y" }
+            };
+            System.Console.WriteLine(p.ToString(0));
+            
             /*
              (lambda (x_18991) 
                 (
@@ -99,6 +157,9 @@ namespace Icfpc2013
             Console.WriteLine("{0:X16}", program.Clone().Run(0x0011223344556677));
 
             Console.WriteLine(new Compiler().Run());
+
+            Console.WriteLine(program.Program.ToString(0));
+            Console.WriteLine("{0}", program.Serialize());
         }
 
         #endregion

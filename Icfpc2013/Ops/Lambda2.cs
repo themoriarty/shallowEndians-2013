@@ -10,6 +10,18 @@
 
         public Node Node0 { get; set; }
 
+        public string ToString(int indentLevel)
+        {
+            string output = "\n";
+            for (int i = 0; i < indentLevel; ++i)
+            {
+                output += "  ";
+            }
+            output += "( ";
+            output += "lambda " + Id0.ToString(indentLevel + 1) + " " + Id1.ToString(indentLevel + 1) + " ";
+            output += Node0.ToString(indentLevel + 1) + " )";
+            return output;
+        }
         #endregion
 
         #region Public Methods and Operators
@@ -17,6 +29,20 @@
         public Lambda2 Clone()
         {
             return new Lambda2 { Id0 = (NodeId)Id0.Clone(), Id1 = (NodeId)Id1.Clone(), Node0 = Node0.Clone() };
+        }
+
+        public long Eval(long value1, long value2)
+        {
+            var state = new ExecContext();
+            state.Vars[Id0.Name] = value1;
+            state.Vars[Id1.Name] = value2;
+
+            return Node0.Eval(state);
+        }
+
+        public string Serialize()
+        {
+            return string.Format("(lambda ({0} {1}) {2})", Id0.Serialize(), Id1.Serialize(), Node0.Serialize());
         }
 
         #endregion

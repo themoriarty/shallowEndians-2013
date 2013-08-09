@@ -9,7 +9,12 @@
             return new Node0();
         }
 
-        public long Cost()
+        public string ToString(int indentLevel)
+        {
+            return "0";
+        }
+
+        public long Size()
         {
             return 1;
         }
@@ -17,6 +22,11 @@
         public long Eval(ExecContext context)
         {
             return 0;
+        }
+
+        public string Serialize()
+        {
+            return "0";
         }
 
         #endregion

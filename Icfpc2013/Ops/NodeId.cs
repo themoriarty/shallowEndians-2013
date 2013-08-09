@@ -6,6 +6,12 @@
     {
         #region Public Properties
 
+
+        public string ToString(int indentLevel)
+        {
+            return Name;
+        }
+
         public string Name { get; set; }
 
         #endregion
@@ -17,7 +23,7 @@
             return new NodeId { Name = Name };
         }
 
-        public long Cost()
+        public long Size()
         {
             return 1;
         }
@@ -31,6 +37,11 @@
             }
 
             return value;
+        }
+
+        public string Serialize()
+        {
+            return Name;
         }
 
         #endregion
