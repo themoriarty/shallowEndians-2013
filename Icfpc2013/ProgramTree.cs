@@ -37,7 +37,7 @@
             return outputs.Select(x => x.GetHashCode()).Sum();
         }
 
-        public List<ulong> GetInputVectorList(ulong level /* = 0 to 6 */)
+        public static List<ulong> GetInputVectorList(ulong level /* = 0 to 6 */)
         {
             var result = new List<ulong>();
 
