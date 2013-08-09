@@ -12,7 +12,7 @@
 
         private static void Main(string[] args)
         {
-            const int programSize = 4;
+            const int programSize = 3;
 
             var validNodes = new List<Node>();
             var inputArg = new NodeId();
@@ -22,7 +22,7 @@
             validNodes.Add(new Node1());
 
             //validNodes.Add(new NodeOp1Shl1());
-            validNodes.Add(new NodeOp1Not());
+            //validNodes.Add(new NodeOp1Not());
             //validNodes.Add(new NodeOp1Shr16());
             //validNodes.Add(new NodeOp1Shr4());
             //validNodes.Add(new NodeOp1Shr1());
@@ -32,8 +32,8 @@
             //validNodes.Add(new NodeOp2Xor());
             //validNodes.Add(new NodeOp2Or());
 
-            ulong[] inputs = {0x12, 0x137};
-            ulong[] outputs = { 0x0000000000000011, 0x0000000000000136 };
+            ulong[] inputs = { 0, 0x12, 0x137 }; //{0x12, 0x137};
+            ulong[] outputs = { 0x0000000000000000, 0x0000000000000024, 0x000000000000026E };
 
             var builder = new TreeGenerator(validNodes, programSize);
             foreach (var root in builder.GenerateAllPrograms())
@@ -55,7 +55,7 @@
                     }
                     if (valid)
                     {
-                        Console.WriteLine(root.Serialize());
+                        Console.WriteLine(new Lambda1 { Id0 = new NodeId { Name = "x" }, Node0 = root }.Serialize());
                     }
 
                     //Console.WriteLine();
