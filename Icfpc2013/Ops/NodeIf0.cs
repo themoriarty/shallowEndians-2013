@@ -1,5 +1,7 @@
 ﻿namespace Icfpc2013.Ops
 {
+    using System;
+
     public class NodeIf0 : Node
     {
         #region Public Properties
@@ -53,6 +55,27 @@
         public string Serialize()
         {
             return string.Format("(if0 {0} {1} {2})", this.Node0.Serialize(), this.Node1.Serialize(), this.Node2.Serialize());
+        }
+
+        public static NodeIf0 Parse(string input)
+        {
+            int pos = 1;
+            string token1 = Parser.ReadToken(input, ref pos, input.Length);
+            string token2 = Parser.ReadToken(input, ref pos, input.Length);
+            string token3 = Parser.ReadToken(input, ref pos, input.Length);
+            string token4 = Parser.ReadToken(input, ref pos, input.Length);
+
+            if (!string.Equals(token1, "if0") || string.IsNullOrEmpty(token2) || string.IsNullOrEmpty(token3) || string.IsNullOrEmpty(token4))
+            {
+                throw new Exception("format");
+            }
+
+            return new NodeIf0()
+            {
+                Node0 = Parser.Parse(token2),
+                Node1 = Parser.Parse(token3),
+                Node2 = Parser.Parse(token4)
+            };
         }
 
         #endregion

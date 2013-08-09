@@ -1,5 +1,7 @@
 ﻿namespace Icfpc2013.Ops
 {
+    using System;
+
     public class NodeFold : Node
     {
         #region Public Properties
@@ -64,9 +66,21 @@
         {
             int pos = 1;
             string token1 = Parser.ReadToken(input, ref pos, input.Length);
+            string token2 = Parser.ReadToken(input, ref pos, input.Length);
+            string token3 = Parser.ReadToken(input, ref pos, input.Length);
+            string token4 = Parser.ReadToken(input, ref pos, input.Length);
 
+            if (!string.Equals(token1, "fold") || string.IsNullOrEmpty(token2) || string.IsNullOrEmpty(token3) || string.IsNullOrEmpty(token4))
+            {
+                throw new Exception("format");
+            }
 
-            return null;
+            return new NodeFold
+                       {
+                           Node0 = Parser.Parse(token2),
+                           Node1 = Parser.Parse(token3),
+                           Node2 = Lambda2.Parse(token4)
+                       };
         }
 
         #endregion

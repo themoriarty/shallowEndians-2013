@@ -36,6 +36,45 @@
             throw new NotImplementedException();
         }
 
+        public static NodeOp1 Parse(string input)
+        {
+            int pos = 1;
+            string token1 = Parser.ReadToken(input, ref pos, input.Length);
+            string token2 = Parser.ReadToken(input, ref pos, input.Length);
+
+            if (string.IsNullOrEmpty(token1) || string.IsNullOrEmpty(token2))
+            {
+                throw new Exception("format");
+            }
+
+            NodeOp1 result = null;
+
+            switch (token1)
+            {
+                case "not":
+                    result = new NodeOp1Not();
+                    break;
+                case "shl1":
+                    result = new NodeOp1Shl1();
+                    break;
+                case "shr1":
+                    result = new NodeOp1Shr1();
+                    break;
+                case "shr4":
+                    result = new NodeOp1Shr4();
+                    break;
+                case "shr16":
+                    result = new NodeOp1Shr16();
+                    break;
+                default:
+                    throw new Exception("format");
+            }
+
+            result.Node0 = Parser.Parse(token2);
+
+            return result;
+        }
+
         #endregion
     }
 }
