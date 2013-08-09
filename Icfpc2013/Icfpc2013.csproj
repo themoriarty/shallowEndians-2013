@@ -44,6 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\API.cs" />
+    <Compile Include="API\CpuWindow.cs" />
+    <Compile Include="API\Problem.cs" />
+    <Compile Include="API\RequestWindow.cs" />
+    <Compile Include="API\Status.cs" />
+    <Compile Include="API\Utils.cs" />
     <Compile Include="Ops\Lambda2.cs" />
     <Compile Include="Ops\Lambda1.cs" />
     <Compile Include="Ops\NodeFold.cs" />
