@@ -26,5 +26,10 @@
         {
             return 1 + Node0.Cost() + Node1.Cost() + Node2.Cost();
         }
+
+        public Node Clone()
+        {
+            return new NodeIf0 { Node0 = Node0.Clone(), Node1 = Node1.Clone(), Node2 = Node2.Clone() };
+        }
     }
 }

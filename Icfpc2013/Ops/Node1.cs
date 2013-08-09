@@ -11,5 +11,10 @@
         {
             return 1;
         }
+
+        public Node Clone()
+        {
+            return new Node1();
+        }
     }
 }

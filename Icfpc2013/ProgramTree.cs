@@ -11,5 +11,10 @@
 
             return Program.Node0.Eval(state);
         }
+
+        public ProgramTree Clone()
+        {
+            return new ProgramTree { Program = Program.Clone() };
+        }
     }
 }

@@ -6,5 +6,11 @@
         {
             return ~Node0.Eval(context);
         }
+
+        public override Node Clone()
+        {
+            return new NodeOp1Not { Node0 = Node0.Clone() };
+        }
+
     }
 }

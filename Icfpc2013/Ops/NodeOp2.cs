@@ -12,6 +12,11 @@
             return 1 + Node0.Cost() + Node1.Cost();
         }
 
+        public virtual Node Clone()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public Node Node0 { get; set; }
 
         public Node Node1 { get; set; }

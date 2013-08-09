@@ -5,5 +5,7 @@
         long Eval(ExecContext context);
 
         long Cost();
+
+        Node Clone();
     }
 }

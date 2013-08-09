@@ -66,6 +66,7 @@
                               };
 
             Console.WriteLine("{0:X16}", program.Run(0x0011223344556677));
+            Console.WriteLine("{0:X16}", program.Clone().Run(0x0011223344556677));
 
             Console.WriteLine(new Compiler().Run());
         }

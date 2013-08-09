@@ -6,5 +6,10 @@
         {
             return Node0.Eval(context) ^ Node1.Eval(context);
         }
+
+        public override Node Clone()
+        {
+            return new NodeOp2Xor { Node0 = Node0.Clone(), Node1 = Node1.Clone() };
+        }
     }
 }

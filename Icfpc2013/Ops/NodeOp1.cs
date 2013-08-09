@@ -13,5 +13,10 @@
         {
             return 1 + Node0.Cost();
         }
+
+        public virtual Node Clone()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

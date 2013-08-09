@@ -17,6 +17,11 @@
             return 1;
         }
 
+        public Node Clone()
+        {
+            return new NodeId{Name = Name};
+        }
+
         public long Eval(ExecContext context)
         {
             long value;
