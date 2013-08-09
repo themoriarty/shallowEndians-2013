@@ -4,9 +4,13 @@
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Globalization;
+    using System.IO;
     using System.Linq;
+    using System.Threading;
 
     using Icfpc2013.Ops;
+
+    using Newtonsoft.Json.Linq;
 
     public class Program
     {
@@ -15,19 +19,40 @@
         private static void Main(string[] args)
         {
 
-            const int judgesProgramSize = 4;
-            const int programSize = judgesProgramSize - 1;
-            var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, null));
-            var programId = training.id;
+            //const int judgesProgramSize = 4;
+            //const int programSize = judgesProgramSize - 1;
+            //var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, null));
+            //var programId = training.id;
 
-            Console.WriteLine("Challenge: {0}", string.Join(", ", training.challenge));
+            //Console.WriteLine("Challenge: {0}", string.Join(", ", training.challenge));
 
-            var operators = training.operators;
+            //var operators = training.operators;
 
             //const int judgesProgramSize = 4;
             //const int programSize = judgesProgramSize - 1;
             //var programId = "IQiqcWp8Cmr4TuBbHNE4OOBI";
             //var operators = new string[] { "shr1", "shr4" };
+
+            var todo = JArray.Parse(File.ReadAllText(@"..\..\..\todo.json"));
+
+            foreach (var task in todo)
+            {
+                Console.WriteLine("\n");
+                var id = (string)task["id"];
+                var size = (int)task["size"];
+                var operators = task["operators"].Select(s => (string)s).ToArray();
+
+                Solve(id, size, operators);
+
+                Thread.Sleep(20000);
+            }
+
+            //Solve("JJwJSyQnSB4DzZ0t17Xw5Aj6", 4, new string[] {"shr1", "shr4"});
+        }
+
+        private static void Solve(string programId, int judgesProgramSize, string[] operators)
+        {
+            int programSize = judgesProgramSize - 1;
 
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
@@ -48,9 +73,9 @@
             }
 
             Console.WriteLine("Output: {{{0}}}", string.Join(", ", outputsResponse.outputs));
-             
-             ulong[] outputs = outputsResponse.outputs.Select(s => ulong.Parse(s.Replace("0x", string.Empty), NumberStyles.HexNumber)).ToArray();
-            
+
+            ulong[] outputs = outputsResponse.outputs.Select(s => ulong.Parse(s.Replace("0x", string.Empty), NumberStyles.HexNumber)).ToArray();
+
             //var outputs = new ulong[] { 0x0000000000000001, 0x0000000000000000, 0x0000000000000003, 0x0000000000000002, 0x0000000000000005, 0x0000000000000004, 0x0000000000000007, 0x0000000000000006, 0x0000000000000009, 0x0000000000000008, 0x000000000000000B, 0x000000000000000A, 0x000000000000000D, 0x000000000000000C, 0x000000000000000F, 0x000000000000000E };
 
             var builder = new TreeGenerator(validNodes, programSize);
@@ -86,7 +111,7 @@
 
                             var response = API.Guess(new Guess(programId, finalResult));
 
-                            Console.WriteLine("Gues: {0} {1} {2}", response.status, response.message, string.Join(", ", response.values ?? new string[]{}));
+                            Console.WriteLine("Gues: {0} {1} {2}", response.status, response.message, string.Join(", ", response.values ?? new string[] { }));
 
                             break;
                         }
