@@ -62,40 +62,15 @@
             
         }
 
-        private static void Solve(string programId, int judgesProgramSize, string[] operators)
+        public static Lambda1 Solve(int judgesProgramSize, OpTypes validOps, ulong[] inputs, ulong[] outputs)
         {
             int programSize = judgesProgramSize - 1;
-
-            Console.WriteLine("ProgramId: {0}", programId);
-            Console.WriteLine("Training: {0}", string.Join(", ", operators));
-
-            var ops = ProgramTree.GetOpTypes(operators);
-            var validNodes = ProgramTree.GetAvailableNodes(ops);
-
-            ulong[] inputs = ProgramTree.GetInputVectorList(8).ToArray(); //{0x12, 0x137};
             var inputStrings = inputs.Select(s => string.Format("0x{0:X16}", s)).ToArray();
 
-            Console.WriteLine("Input: {{{0}}}", string.Join(", ", inputStrings));
-
-            var outputsResponse = API.Eval(new EvalRequest(programId, null, inputStrings));
-
-            if (outputsResponse.status != "ok" || outputsResponse.outputs == null)
-            {
-                throw new Exception("eval failed");
-            }
-
-            Console.WriteLine("Output: {{{0}}}", string.Join(", ", outputsResponse.outputs));
-
-            ulong[] outputs = outputsResponse.outputs.Select(s => ulong.Parse(s.Replace("0x", string.Empty), NumberStyles.HexNumber)).ToArray();
-
-            //var outputs = new ulong[] { 0x0000000000000001, 0x0000000000000000, 0x0000000000000003, 0x0000000000000002, 0x0000000000000005, 0x0000000000000004, 0x0000000000000007, 0x0000000000000006, 0x0000000000000009, 0x0000000000000008, 0x000000000000000B, 0x000000000000000A, 0x000000000000000D, 0x000000000000000C, 0x000000000000000F, 0x000000000000000E };
-
-            var builder = new TreeGenerator(validNodes, programSize);
-            int totalCount = 0;
+            var builder = new TreeGenerator(ProgramTree.GetAvailableNodes(validOps), programSize);
             foreach (var root in builder.GenerateAllPrograms())
             {
                 //Console.WriteLine(root.Serialize());
-                //totalCount++;
                 if (root.Size() == programSize)
                 {
                     //Console.WriteLine(root.Serialize());
@@ -116,23 +91,46 @@
                         var currentOps = OpTypes.none;
                         root.Op(ref currentOps);
 
-                        if (currentOps == ops)
+                        if (currentOps == validOps)
                         {
-                            var finalResult = new Lambda1 { Id0 = new NodeId { Name = "x" }, Node0 = root }.Serialize();
-                            Console.WriteLine("Submitting: {0}", finalResult);
-
-                            var response = API.Guess(new Guess(programId, finalResult));
-
-                            Console.WriteLine("Gues: {0} {1} {2}", response.status, response.message, string.Join(", ", response.values ?? new string[] { }));
-
-                            break;
+                            var finalResult = new Lambda1 { Id0 = new NodeId { Name = "x" }, Node0 = root };
+                            return finalResult;
                         }
                     }
-
-                    //Console.WriteLine();
                 }
             }
-            Console.WriteLine(totalCount);
+            return null;
+        }
+        private static void Solve(string programId, int judgesProgramSize, string[] operators)
+        {
+            int programSize = judgesProgramSize - 1;
+
+            Console.WriteLine("ProgramId: {0}", programId);
+            Console.WriteLine("Training: {0}", string.Join(", ", operators));
+
+            var ops = ProgramTree.GetOpTypes(operators);
+            ulong[] inputs = ProgramTree.GetInputVectorList(8).ToArray(); //{0x12, 0x137};
+            var inputStrings = inputs.Select(s => string.Format("0x{0:X16}", s)).ToArray();
+
+            Console.WriteLine("Input: {{{0}}}", string.Join(", ", inputStrings));
+
+            var outputsResponse = API.Eval(new EvalRequest(programId, null, inputStrings));
+
+            if (outputsResponse.status != "ok" || outputsResponse.outputs == null)
+            {
+                throw new Exception("eval failed");
+            }
+
+            Console.WriteLine("Output: {{{0}}}", string.Join(", ", outputsResponse.outputs));
+
+            ulong[] outputs = outputsResponse.outputs.Select(s => ulong.Parse(s.Replace("0x", string.Empty), NumberStyles.HexNumber)).ToArray();
+
+            var solution = Solve(judgesProgramSize, ops, inputs, outputs);
+            var finalResult = solution.Serialize();
+
+            Console.WriteLine("Submitting: {0}", finalResult);
+            var response = API.Guess(new Guess(programId, finalResult));
+            Console.WriteLine("Gues: {0} {1} {2}", response.status, response.message, string.Join(", ", response.values ?? new string[] { }));
         }
 
         private static void Main2(string[] args)
