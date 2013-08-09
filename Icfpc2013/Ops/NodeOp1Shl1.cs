@@ -6,7 +6,7 @@
 
         public override Node Clone()
         {
-            return new NodeOp1Shl1 { Node0 = this.Node0.Clone() };
+            return new NodeOp1Shl1 { Node0 = Node0 != null ? Node0.Clone() : null };
         }
 
         public override string ToString(int indentLevel)

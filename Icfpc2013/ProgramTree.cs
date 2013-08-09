@@ -1,4 +1,9 @@
-﻿namespace Icfpc2013
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+
+namespace Icfpc2013
 {
     using Icfpc2013.Ops;
 
@@ -20,6 +25,11 @@
         public ProgramTree Clone()
         {
             return new ProgramTree { Program = Program.Clone() };
+        }
+ 
+        public int GetHashCode(List<UInt64> outputs)
+        {
+            return outputs.Select(x => x.GetHashCode()).Sum();
         }
 
         public long Run(long value)

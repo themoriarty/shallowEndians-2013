@@ -1,4 +1,9 @@
-﻿namespace Icfpc2013
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+
+namespace Icfpc2013
 {
     using System;
     using System.Diagnostics;
@@ -10,6 +15,47 @@
         #region Methods
 
         private static void Main(string[] args)
+        {
+            const int programSize = 3;
+
+            List<Node> validNodes = new List<Node>();
+            var inputArg = new NodeId();
+            inputArg.Name = "x";
+            validNodes.Add(inputArg);
+            validNodes.Add(new Node0());
+            validNodes.Add(new Node1());
+
+            //validNodes.Add(new NodeOp1Shl1());
+            //validNodes.Add(new NodeOp1Shr16());
+            //validNodes.Add(new NodeOp1Shr4());
+            //validNodes.Add(new NodeOp1Shr1());
+
+            validNodes.Add(new NodeOp2And());
+            validNodes.Add(new NodeOp2Plus());
+            validNodes.Add(new NodeOp2Xor());
+            validNodes.Add(new NodeOp2Or());
+
+            int[] inputs = {0, 13, 137, 1337};
+
+            var builder = new TreeGenerator(validNodes, programSize);
+            foreach (var root in builder.GenerateAllPrograms())
+            {
+                if (root.Size() == programSize)
+                {
+                    Console.WriteLine("{0}", root.Serialize());
+                    foreach (var input in inputs)
+                    {
+                        ExecContext ctx = new ExecContext();
+                        ctx.Vars["x"] = input;
+                        long output = root.Eval(ctx);
+                        Console.WriteLine("f({0}) = {1}", input, output);
+                    }
+                    Console.WriteLine();
+                }
+            }
+        }
+
+        private static void Main2(string[] args)
         {
             //API.Test();
 
