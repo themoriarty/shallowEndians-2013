@@ -58,7 +58,7 @@
                         Console.WriteLine(root.Serialize());
                     }
 
-                    Console.WriteLine();
+                    //Console.WriteLine();
                 }
             }
         }
