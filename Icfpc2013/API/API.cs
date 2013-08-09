@@ -36,8 +36,13 @@ namespace Icfpc2013
             }
             */
 
-            var trainingProblem = GetTrainingProblem(new TrainRequest(4, new string[]{}));
-            Console.WriteLine(trainingProblem);
+            //var trainingProblem = GetTrainingProblem(new TrainRequest(4, new string[]{}));
+            //Console.WriteLine(trainingProblem);
+
+            // Will return HTTP 412 Already solved
+            //Console.WriteLine(API.Guess(new Guess("MwIK3VB3KckHpe3sladeiKfD", "(lambda (x_1768) (shl1 (not x_1768)))")));
+            
+            Console.WriteLine(API.Eval(new EvalRequest("DYWkZVqPOrE9HOwh0YpB4r3c", "(lambda (x_2366) (or 1 x_2366))", new string[] {"0x1"})));
 
             Console.ReadKey(); 
         }
