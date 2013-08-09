@@ -27,6 +27,11 @@
             throw new NotImplementedException();
         }
 
+        public virtual string Serialize()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

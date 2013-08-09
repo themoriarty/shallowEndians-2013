@@ -14,9 +14,9 @@
             return ~Node0.Eval(context);
         }
 
-        public override string ToString()
+        public override string Serialize()
         {
-            return string.Format("(not {0})", Node0);
+            return string.Format("(not {0})", Node0.Serialize());
         }
 
         #endregion

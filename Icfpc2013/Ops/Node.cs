@@ -10,6 +10,8 @@
 
         long Eval(ExecContext context);
 
+        string Serialize();
+
         #endregion
     }
 }

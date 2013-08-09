@@ -23,9 +23,9 @@
             return Program.Node0.Eval(state);
         }
 
-        public override string ToString()
+        public string Serialize()
         {
-            return Program.ToString();
+            return Program.Serialize();
         }
 
         #endregion

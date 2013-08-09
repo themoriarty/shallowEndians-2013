@@ -33,7 +33,7 @@
             return value;
         }
 
-        public override string ToString()
+        public string Serialize()
         {
             return Name;
         }

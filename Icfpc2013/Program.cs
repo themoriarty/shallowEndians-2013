@@ -80,7 +80,7 @@
 
             Console.WriteLine(new Compiler().Run());
 
-            Console.WriteLine("{0}", program.ToString());
+            Console.WriteLine("{0}", program.Serialize());
         }
 
         #endregion

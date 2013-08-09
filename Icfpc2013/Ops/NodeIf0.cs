@@ -34,9 +34,9 @@
             return Node2.Eval(context);
         }
 
-        public override string ToString()
+        public string Serialize()
         {
-            return string.Format("(if0 {0} {1} {2})", Node0, Node1, Node2);
+            return string.Format("(if0 {0} {1} {2})", Node0.Serialize(), Node1.Serialize(), Node2.Serialize());
         }
 
         #endregion

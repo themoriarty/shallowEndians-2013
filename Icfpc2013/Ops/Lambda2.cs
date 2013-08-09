@@ -28,9 +28,9 @@
             return Node0.Eval(state);
         }
 
-        public override string ToString()
+        public string Serialize()
         {
-            return string.Format("(lambda ({0} {1}) {2})", Id0, Id1, Node0);
+            return string.Format("(lambda ({0} {1}) {2})", Id0.Serialize(), Id1.Serialize(), Node0.Serialize());
         }
 
         #endregion

@@ -19,7 +19,7 @@
             return 1;
         }
 
-        public override string ToString()
+        public string Serialize()
         {
             return "1";
         }
