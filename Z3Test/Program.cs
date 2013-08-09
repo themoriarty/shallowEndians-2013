@@ -113,6 +113,67 @@ namespace Z3Test
                 Console.WriteLine("Failed to solve sudoku");
                 throw new Exception();
             }
+        }
+
+        static void Disprove(Context ctx, BoolExpr f, bool useMBQI = false, params BoolExpr[] assumptions)
+        {
+            Console.WriteLine("Disproving: " + f);
+            Solver s = ctx.MkSolver();
+            Params p = ctx.MkParams();
+            p.Add("mbqi", useMBQI);
+            s.Parameters = p;
+            foreach (BoolExpr a in assumptions)
+                s.Assert(a);
+            s.Assert(ctx.MkNot(f));
+            Status q = s.Check();
+
+            switch (q)
+            {
+                case Status.UNKNOWN:
+                    Console.WriteLine("Unknown because: " + s.ReasonUnknown);
+                    break;
+                case Status.SATISFIABLE:
+                    Console.WriteLine("OK, model: " + s.Model);
+                    break;
+                case Status.UNSATISFIABLE:
+                    throw new Exception();
+            }
+        }
+
+        static Model Check(Context ctx, BoolExpr f, Status sat)
+        {
+            Solver s = ctx.MkSolver();
+            s.Assert(f);
+            if (s.Check() != sat)
+                throw new Exception();
+            if (sat == Status.SATISFIABLE)
+                return s.Model;
+            else
+                return null;
+        } 
+
+        static void Test1(Context ctx)
+        {
+            Console.WriteLine("BitvectorExample2");
+
+            /* construct x ^ y - 103 == x * y */
+            Sort bv_type = ctx.MkBitVecSort(64);
+            BitVecExpr x = ctx.MkBVConst("x", 64);
+            BitVecExpr y = ctx.MkBVConst("y", 64);
+            BitVecExpr x_xor_y = ctx.MkBVXOR(x, y);
+            BitVecExpr cinput0 = (BitVecNum)ctx.MkNumeral((0x0000000000000002).ToString(), bv_type);
+            BitVecExpr coutput0 = (BitVecNum)ctx.MkNumeral((0x0000000000000003).ToString(), bv_type);
+            BitVecExpr lhs = ctx.MkBVSub(x_xor_y, cinput0);
+            BitVecExpr rhs = ctx.MkBVMul(x, y);
+            BoolExpr ctr = ctx.MkEq(lhs, rhs);
+
+            Console.WriteLine("ctr = {0}", ctr);
+
+            Console.WriteLine("find values of x and y, such that x ^ y - 103 == x * y");
+
+            /* find a model (i.e., values for x an y that satisfy the constraint */
+            Model m = Check(ctx, ctr, Status.SATISFIABLE);
+            Console.WriteLine(m); 
         } 
 
         static void Main(string[] args)
@@ -120,7 +181,7 @@ namespace Z3Test
                             // These examples need model generation turned on.
             using (Context ctx = new Context(new Dictionary<string, string>() { { "model", "true" } }))
             {
-                SudokuExample(ctx);
+                Test1(ctx);
             }
         }
     }
