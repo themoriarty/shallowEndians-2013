@@ -1,4 +1,6 @@
-﻿namespace Icfpc2013
+﻿using System.Diagnostics;
+
+namespace Icfpc2013
 {
     using System;
     using System.Collections.Generic;
@@ -37,70 +39,129 @@
             return outputs.Select(x => x.GetHashCode()).Sum();
         }
 
-        public static List<ulong> GetInputVectorList(ulong level /* = 0 to 6 */)
+        // TODO: Remove off-by-one errors, which surely exist, because I was falling asleep when I wrote this. -jmc
+        public List<ulong> GetInputVectorList(ulong maxCount)
         {
             var result = new List<ulong>();
+            ulong prevCount = 0;
+
+            if (maxCount < 16)
+            {
+                if (maxCount > 0)
+                {
+                    result.Add(0);
+                }
+                if (maxCount > 1)
+                {
+                    result.Add(ulong.MaxValue);
+                }
+                for (ulong i = 2; i < maxCount; i++)
+                {
+                    result.Add(Random.GetRandomULong());
+                }
+                prevCount = Math.Min(15, maxCount);
+            }
 
             // First 64 values
-            ulong upperBound = level > 3 ? 64 : 16 + 16*level;
-            for (ulong i = 0; i < upperBound; i++) // 63 values
+            if (maxCount > prevCount)
             {
-                result.Add(i);
+                ulong upperBound = Math.Max(maxCount, 64);
+                for (ulong i = 0; i < upperBound; i++) // 64 values
+                {
+                    result.Add(i);
+                }
+                prevCount = upperBound;
             }
 
             // Powers of two, +-1
-            if (level >= 4)
+            if (maxCount > prevCount)
             {
-                for (int power = 6; power < 64; power++) // 57*3 = 171 values
+                ulong upperBound = Math.Min(64, maxCount - prevCount - 6);
+                for (ulong power = 6; power < upperBound; power++) // 57*3 = 171 values
                 {
-                    int shift = power - 1;
+                    int shift = (int) power - 1;
                     ulong x = 2UL << shift;
                     result.Add(x - 1);
                     result.Add(x);
                     result.Add(x + 1);
                 }
+                prevCount += upperBound - 6;
             }
 
             // Single hex digit repeated: 15 values
-            if (level >= 5)
+            if (maxCount > prevCount)
             {
-                result.Add(0x1111111111111111);
-                result.Add(0x2222222222222222);
-                result.Add(0x3333333333333333);
-                result.Add(0x4444444444444444);
-                result.Add(0x5555555555555555);
-                result.Add(0x6666666666666666);
-                result.Add(0x7777777777777777);
-                result.Add(0x8888888888888888);
-                result.Add(0x9999999999999999);
-                result.Add(0xaaaaaaaaaaaaaaaa);
-                result.Add(0xbbbbbbbbbbbbbbbb);
-                result.Add(0xcccccccccccccccc);
-                result.Add(0xdddddddddddddddd);
-                result.Add(0xeeeeeeeeeeeeeeee);
-                result.Add(0xffffffffffffffff);
-                result.Add(ulong.MaxValue);
+                ulong stutterCount = Math.Max(15, maxCount - prevCount);
+                switch (stutterCount)
+                {
+                    case 1:
+                        result.Add(0x1111111111111111);
+                        break;
+                    case 2:
+                        result.Add(0x2222222222222222);
+                        break;
+                    case 3:
+                        result.Add(0x3333333333333333);
+                        break;
+                    case 4:
+                        result.Add(0x4444444444444444);
+                        break;
+                    case 5:
+                        result.Add(0x5555555555555555);
+                        break;
+                    case 6:
+                        result.Add(0x6666666666666666);
+                        break;
+                    case 7:
+                        result.Add(0x7777777777777777);
+                        break;
+                    case 8:
+                        result.Add(0x8888888888888888);
+                        break;
+                    case 9:
+                        result.Add(0x9999999999999999);
+                        break;
+                    case 10:
+                        result.Add(0xaaaaaaaaaaaaaaaa);
+                        break;
+                    case 11:
+                        result.Add(0xbbbbbbbbbbbbbbbb);
+                        break;
+                    case 12:
+                        result.Add(0xcccccccccccccccc);
+                        break;
+                    case 13:
+                        result.Add(0xdddddddddddddddd);
+                        break;
+                    case 14:
+                        result.Add(0xeeeeeeeeeeeeeeee);
+                        break;
+                    case 15:
+                        result.Add(ulong.MaxValue);
+                        break;
+                    default:
+                        Debug.Assert(false, "Internal error in tracking of input vectors returned");
+                        break;
+                }
+                prevCount += stutterCount;
             }
 
             // Byte-sized shifts of 0xff
-            if (level >= 6)
+            if (maxCount > prevCount)
             {
-                for (int bShift = 0; bShift < 8; bShift++) // 8 values
+                ulong localCount = maxCount - prevCount;
+                for (ulong bShift = 0; bShift < localCount; bShift++) // 8 values
                 {
                     const ulong ff = 0xff;
-                    result.Add(ff << 8*bShift);
+                    result.Add(ff << 8 * (int) bShift);
                 }
             }
-            // More bit patterns: 4 values
-            //result.Add(0x1010101010101010); 
-            //result.Add(0x0101010101010101); 
-            //result.Add(0x1100110011001100); 
-            //result.Add(0x0011001100110011); 
 
             return result;
         }
 
-        public ulong Run(ulong value)
+        public
+            ulong Run(ulong value)
         {
             var state = new ExecContext();
             state.Vars[Program.Id0.Name] = value;
