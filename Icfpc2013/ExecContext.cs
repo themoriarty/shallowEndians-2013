@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    internal class ExecContext
+    public class ExecContext
     {
         #region Fields
 

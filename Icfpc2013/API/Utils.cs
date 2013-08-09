@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Icfpc2013
+﻿namespace Icfpc2013.API
 {
+    using System;
+    using System.Text;
+
     public static class Utils
     {
         public static string ToString(Object obj)

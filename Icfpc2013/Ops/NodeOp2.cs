@@ -1,8 +1,8 @@
-﻿namespace Icfpc2013
+﻿namespace Icfpc2013.Ops
 {
     using System;
 
-    internal class NodeOp2 : Node
+    public class NodeOp2 : Node
     {
         #region Public Properties
 
@@ -21,7 +21,7 @@
 
         public long Size()
         {
-            return 1 + Node0.Size() + Node1.Size();
+            return 1 + this.Node0.Size() + this.Node1.Size();
         }
 
         public virtual long Eval(ExecContext context)

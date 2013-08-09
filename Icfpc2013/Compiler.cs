@@ -5,7 +5,7 @@
 
     using Microsoft.CSharp;
 
-    internal class Compiler
+    public class Compiler
     {
         #region Public Methods and Operators
 

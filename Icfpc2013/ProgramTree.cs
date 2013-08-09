@@ -1,6 +1,8 @@
 ﻿namespace Icfpc2013
 {
-    internal class ProgramTree
+    using Icfpc2013.Ops;
+
+    public class ProgramTree
     {
         #region Public Properties
 
@@ -9,6 +11,11 @@
         #endregion
 
         #region Public Methods and Operators
+
+        public static ProgramTree Parse(string input)
+        {
+            return new ProgramTree { Program = Lambda1.Parse(input) };
+        }
 
         public ProgramTree Clone()
         {

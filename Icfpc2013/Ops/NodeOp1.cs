@@ -1,8 +1,8 @@
-﻿namespace Icfpc2013
+﻿namespace Icfpc2013.Ops
 {
     using System;
 
-    internal class NodeOp1 : Node
+    public class NodeOp1 : Node
     {
         #region Public Properties
 
@@ -19,7 +19,7 @@
 
         public long Size()
         {
-            return 1 + Node0.Size();
+            return 1 + this.Node0.Size();
         }
 
         public virtual string ToString(int indentLevel)

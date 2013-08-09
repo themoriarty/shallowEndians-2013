@@ -1,16 +1,10 @@
-﻿namespace Icfpc2013
+﻿namespace Icfpc2013.Ops
 {
     using System;
 
-    internal class NodeId : Node
+    public class NodeId : Node
     {
         #region Public Properties
-
-
-        public string ToString(int indentLevel)
-        {
-            return Name;
-        }
 
         public string Name { get; set; }
 
@@ -18,22 +12,22 @@
 
         #region Public Methods and Operators
 
-        public Node Clone()
+        public static NodeId Parse(string input)
         {
-            return new NodeId { Name = Name };
+            return new NodeId { Name = input };
         }
 
-        public long Size()
+        public Node Clone()
         {
-            return 1;
+            return new NodeId { Name = this.Name };
         }
 
         public long Eval(ExecContext context)
         {
             long value;
-            if (!context.Vars.TryGetValue(Name, out value))
+            if (!context.Vars.TryGetValue(this.Name, out value))
             {
-                throw new Exception("Var " + Name + " is undefined");
+                throw new Exception("Var " + this.Name + " is undefined");
             }
 
             return value;
@@ -41,7 +35,17 @@
 
         public string Serialize()
         {
-            return Name;
+            return this.Name;
+        }
+
+        public long Size()
+        {
+            return 1;
+        }
+
+        public string ToString(int indentLevel)
+        {
+            return this.Name;
         }
 
         #endregion

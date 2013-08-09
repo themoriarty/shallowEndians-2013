@@ -1,15 +1,11 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Icfpc2013
+﻿namespace Icfpc2013.API
 {
+    using Newtonsoft.Json;
+
+    using System;
+    using System.IO;
+    using System.Net;
+
     public static class API
     {
         public static bool PrintDebug = true;

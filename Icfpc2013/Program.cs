@@ -1,8 +1,11 @@
 ﻿namespace Icfpc2013
 {
     using System;
+    using System.Diagnostics;
 
-    internal class Program
+    using Icfpc2013.Ops;
+
+    public class Program
     {
         #region Methods
 
@@ -114,6 +117,12 @@
 
             Console.WriteLine(program.Program.ToString(0));
             Console.WriteLine("{0}", program.Serialize());
+
+            var input = "(lambda (x_68407) (fold (not (shr4 (or 0 (if0 (xor (and (shr16 (plus (and x_68407 (plus x_68407 x_68407)) x_68407)) x_68407) 1) x_68407 x_68407)))) x_68407 (lambda (x_68408 x_68409) (xor (shr4 x_68409) x_68408))))";
+            var output = ProgramTree.Parse(input).Serialize();
+
+
+            Debug.Assert(string.Equals(input, output));
         }
 
         #endregion

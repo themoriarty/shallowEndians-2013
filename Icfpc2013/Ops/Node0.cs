@@ -1,6 +1,6 @@
-﻿namespace Icfpc2013
+﻿namespace Icfpc2013.Ops
 {
-    internal class Node0 : Node
+    public class Node0 : Node
     {
         #region Public Methods and Operators
 
