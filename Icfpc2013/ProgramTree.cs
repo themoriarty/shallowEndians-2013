@@ -40,7 +40,7 @@ namespace Icfpc2013
         }
 
         // TODO: Remove off-by-one errors, which surely exist, because I was falling asleep when I wrote this. -jmc
-        public List<ulong> GetInputVectorList(ulong maxCount)
+        public static List<ulong> GetInputVectorList(ulong maxCount)
         {
             var result = new List<ulong>();
             ulong prevCount = 0;

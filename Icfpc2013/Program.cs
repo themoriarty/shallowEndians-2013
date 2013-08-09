@@ -19,35 +19,47 @@
         private static void Main(string[] args)
         {
 
-            //const int judgesProgramSize = 4;
+            const int judgesProgramSize = 6;
+            const int programSize = judgesProgramSize - 1;
+            var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, null));
+            var programId = training.id;
+
+            Console.WriteLine("Challenge: {0}", string.Join(", ", training.challenge));
+
+            var operators = training.operators;
+
+            Solve(programId, judgesProgramSize, operators);
+
+            //const int judgesProgramSize = 6;
             //const int programSize = judgesProgramSize - 1;
-            //var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, null));
-            //var programId = training.id;
+            //var programId = "6dLNiZzzCXaI6ssMunzDXX8i";
+            //var operators = new string[] { "plus", "xor" };
 
-            //Console.WriteLine("Challenge: {0}", string.Join(", ", training.challenge));
+            //Solve(programId, judgesProgramSize, operators);
 
-            //var operators = training.operators;
+            //var todo = JArray.Parse(File.ReadAllText(@"..\..\..\..\myproblems.json"));
 
-            //const int judgesProgramSize = 4;
-            //const int programSize = judgesProgramSize - 1;
-            //var programId = "IQiqcWp8Cmr4TuBbHNE4OOBI";
-            //var operators = new string[] { "shr1", "shr4" };
+            //foreach (var task in todo)
+            //{
+            //    //Console.WriteLine("\n");
+            //    var solved = (bool?)task["solved"];
+            //    var id = (string)task["id"];
+            //    var size = (int)task["size"];
+            //    var operators = task["operators"].Select(s => (string)s).ToArray();
+            //    var ops = ProgramTree.GetOpTypes(operators);
 
-            var todo = JArray.Parse(File.ReadAllText(@"..\..\..\todo.json"));
+            //    if (solved.GetValueOrDefault() == false && size == 6 && ((ops & (OpTypes.fold | OpTypes.tfold | OpTypes.if0)) == OpTypes.none))
+            //    {
+                    
+            //        Console.WriteLine("{0} {1} {2}", id, size, ops);
 
-            foreach (var task in todo)
-            {
-                Console.WriteLine("\n");
-                var id = (string)task["id"];
-                var size = (int)task["size"];
-                var operators = task["operators"].Select(s => (string)s).ToArray();
+            //        Solve(id, size, operators);
+            //        Thread.Sleep(20000);
+            //    }
 
-                Solve(id, size, operators);
+            //}
 
-                Thread.Sleep(20000);
-            }
-
-            //Solve("JJwJSyQnSB4DzZ0t17Xw5Aj6", 4, new string[] {"shr1", "shr4"});
+            
         }
 
         private static void Solve(string programId, int judgesProgramSize, string[] operators)
@@ -60,7 +72,7 @@
             var ops = ProgramTree.GetOpTypes(operators);
             var validNodes = ProgramTree.GetAvailableNodes(ops);
 
-            ulong[] inputs = ProgramTree.GetInputVectorList(0).ToArray(); //{0x12, 0x137};
+            ulong[] inputs = ProgramTree.GetInputVectorList(8).ToArray(); //{0x12, 0x137};
             var inputStrings = inputs.Select(s => string.Format("0x{0:X16}", s)).ToArray();
 
             Console.WriteLine("Input: {{{0}}}", string.Join(", ", inputStrings));

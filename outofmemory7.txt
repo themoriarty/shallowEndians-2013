@@ -1,0 +1,12 @@
+HTTP response for URL http://icfpc2013.cloudapp.net/train?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Challenge: (lambda (x_5702) (plus (plus x_5702 (shl1 1)) 1))
+ProgramId: HwtaxjPH1ZAvjgq5RiJYnAh5
+Training: plus, shl1
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xD8E4755D6F460C1A, 0xC8DB19F5D56567AD, 0x0085F8373B347C2B, 0x0DB3935300645EEC, 0x0F6C74CF75
+29404A, 0x4BEB041E4DC2BEF4}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000003, 0x0000000000000002, 0xD8E4755D6F460C1D, 0xC8DB19F5D56567B0, 0x0085F8373B347C2E, 0x0DB3935300645EEF, 0x0F6C74CF7
+529404D, 0x4BEB041E4DC2BEF7}
+
+Unhandled Exception: OutOfMemoryException.
+Press any key to continue . . .

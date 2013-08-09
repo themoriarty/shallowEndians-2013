@@ -2138,7 +2138,24 @@ Gues: win*/
         "operators": [
             "plus",
             "xor"
-        ]
+        ],
+		
+		"solved": true,
+		
+		/*
+		ProgramId: 6dLNiZzzCXaI6ssMunzDXX8i
+Training: plus, xor
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xD8E4755D6F460C1A, 0xC8DB19F5D56567AD, 0x0085F8373B347C2B, 0x0DB3935300645EEC, 0x0F6C74CF75
+29404A, 0x4BEB041E4DC2BEF4}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000001, 0x0000000000000000, 0xD8E4755D6F460C1B, 0xC8DB19F5D56567AE, 0x0085F8373B347C2C, 0x0DB3935300645EED, 0x0F6C74CF7
+529404B, 0x4BEB041E4DC2BEF5}
+Submitting: (lambda (x) (xor 0 (plus x 1)))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+0
+		
+		*/
     },
     {
         "id": "6f6NiLT5F5OeL98ZW83CSLAj",
