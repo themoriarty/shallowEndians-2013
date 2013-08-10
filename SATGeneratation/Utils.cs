@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 namespace SATGeneratation
 {
     using Microsoft.Z3;
-
     class Utils
     {
         public static ArgNode CloneTreeStructure(ArgNode root, Context ctx, string nameSuffix)
@@ -176,7 +175,5 @@ namespace SATGeneratation
 
                 return results[0];
             }
-        }
-
-
+        } 
 }
