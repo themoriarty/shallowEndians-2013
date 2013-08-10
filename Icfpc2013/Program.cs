@@ -130,6 +130,15 @@
 
         static IEnumerable<Node> GenerateCorrectPrograms(List<Node> validNodes, int targetSize)
         {
+
+#if false
+            var builder = new TreeGenerator(validNodes, targetSize);
+            foreach (var root in builder.GenerateAllPrograms())
+            {
+                yield return root;
+            }
+#endif
+
             int bfsSize = targetSize > 5 ? 5 : targetSize;
             var builder = new TreeGenerator(validNodes, bfsSize);
             foreach (var root in builder.GenerateAllPrograms().Where(x => x.Size() >= bfsSize - 1))
@@ -219,12 +228,12 @@
                 var operators = task["operators"].Select(s => (string)s).ToArray();
                 var ops = ProgramTree.GetOpTypes(operators);
 
-                if (solved.HasValue == false && size == 7 && ((ops & (OpTypes.fold | OpTypes.if0)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none && Bits(ops) == 3)
+                if (solved.HasValue == false && size == 9 && ((ops & (OpTypes.fold | OpTypes.if0)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.tfold /* && Bits(ops) == 3*/)
                 {
                     Console.WriteLine("{0} {1} {2}", id, size, ops);
 
-                    Solve(id, size, operators);
-                    Thread.Sleep(20000);
+                    //Solve(id, size, operators);
+                    //Thread.Sleep(20000);
                 }
             }
         }
@@ -232,16 +241,16 @@
         public static void SolveOffline()
         {
             const int judgesProgramSize = 8;
-            var programId = "Y5u1WUm8r67tSg9ynbfvpugI";
-            var operators = new[] { "not", "shl1", "tfold" };
+            var programId = "mrkVrFLMXiwAZifmVWtSBCxn";
+            var operators = new[] { "not","shl1","shr1","shr4","or" };
 
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
 
             var ops = ProgramTree.GetOpTypes(operators);
 
-            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x707708E25622A01C, 0x2ED773588336EF20, 0x4BAE5BB138FCF580, 0xEC3738AD9C394E2C, 0x1DC06F4ED6CBF8D0, 0x4AE3EBE3AF6ECFBE };
-            ulong[] outputs = { 0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFE00, 0xFFFFFFFFFFFFFF1E, 0xFFFFFFFFFFFFFFA2, 0xFFFFFFFFFFFFFF68, 0xFFFFFFFFFFFFFE26, 0xFFFFFFFFFFFFFFC4, 0xFFFFFFFFFFFFFF6A };
+            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x0580A1AB9001056D, 0x17FBEACECACE0709, 0x6E8E0097C68096A7, 0x50475BF54101FEE4, 0x880A7F62D368B805, 0xFDCFD29F7AE5550B };
+            ulong[] outputs = {0x0FFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF, 0x0FFFFFFFFFFFFFFF, 0x1FFFFFFFFFFFFFFF, 0x6FFFFFFFFFFFFFFF, 0x5FFFFFFFFFFFFFFE, 0x8FFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF};
 
             var solution = Solve(judgesProgramSize, ops, inputs, outputs);
             var finalResult = solution != null ? solution.Serialize() : "NO RESULT";
@@ -251,9 +260,9 @@
 
         public static bool SolveTrainingProgram()
         {
-            int judgesProgramSize = 7;
+            int judgesProgramSize = 9;
             var options = new[] { "tfold" };
-            options = null;
+            //options = null;
             var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, options));
             var programId = training.id;
 
