@@ -17,6 +17,32 @@ namespace SATGeneratation
                 permitted[i] = true;
             }
 
+
+            List<ArgNode> nodes = new List<ArgNode>();
+            nodes.Add(new MetaArgNode() { Name = "n1" });
+            nodes.Add(new MetaArgNode() { Name = "ar0n2" });
+
+            {
+                ulong[] inputs = { 0x1, 0x4 };
+                ulong[] outputs = { 0x2, 0x8 };
+                permitted[(int)OpCodes.Shl1] = true;
+                List<ArgNode> res = Utils.SolveNodeArray(inputs, outputs, nodes, permitted);
+                Console.WriteLine("[Node array] Shl1 output {0}, {1}", res[0].ComputedOpcode, res[1].ComputedOpcode);
+                permitted[(int)OpCodes.Shl1] = false;
+            }
+
+            {
+                ulong[] inputs = { 0x11, 0x40 };
+                ulong[] outputs = { 0x1, 0x0 };
+                nodes.Add(new MetaArgNode() { Name = "ar0n3" });
+                permitted[(int)OpCodes.And] = true;
+                List<ArgNode> res = Utils.SolveNodeArray(inputs, outputs, nodes, permitted);
+                Console.WriteLine("[Node array] And output {0}, {1} {2}", res[0].ComputedOpcode, res[1].ComputedOpcode, res[2].ComputedOpcode);
+                permitted[(int)OpCodes.And] = false;
+            }
+
+
+
             OneArg OneArgProto = new OneArg() { Name = "OneArg" };
             OneArgProto.Arg0 = new ZeroArg() { Name = "OneArgC0" };
 
@@ -142,9 +168,9 @@ namespace SATGeneratation
                 BitVecExpr prInput = ctx.MkBV(0x111, 64);
                 BitVecExpr prOutput = ctx.MkBV(1, 64);
                 s.Assert(ctx.MkEq(TopNode.Output, prOutput));
-                TopNode.AddConstraints(ctx, s, prInput, prOutput, permitted);
-                TopNode.Arg0.AddConstraints(ctx, s, prInput, prOutput, permitted);
-                TopNode.Arg1.AddConstraints(ctx, s, prInput, prOutput, permitted);
+                TopNode.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
+                TopNode.Arg0.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
+                TopNode.Arg1.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
 
                 TwoArg TopNode2 = new TwoArg();
                 TopNode2.Arg0 = new ZeroArg();
@@ -156,9 +182,9 @@ namespace SATGeneratation
                 BitVecExpr prInput2 = ctx.MkBV(0x110, 64);
                 BitVecExpr prOutput2 = ctx.MkBV(0, 64);
                 s.Assert(ctx.MkEq(TopNode2.Output, prOutput2));
-                TopNode2.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
-                TopNode2.Arg0.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
-                TopNode2.Arg1.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
+                TopNode2.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
+                TopNode2.Arg0.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
+                TopNode2.Arg1.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
 
                 s.Assert(ctx.MkEq(TopNode2.OpCode, TopNode.OpCode));
                 s.Assert(ctx.MkEq(TopNode2.Arg0.OpCode, TopNode.Arg0.OpCode));
@@ -195,9 +221,9 @@ namespace SATGeneratation
                 BitVecExpr prInput = ctx.MkBV(0x10, 64);
                 BitVecExpr prOutput = ctx.MkBV(0x11, 64);
                 s.Assert(ctx.MkEq(TopNode.Output, prOutput));
-                TopNode.AddConstraints(ctx, s, prInput, prOutput, permitted);
-                TopNode.Arg0.AddConstraints(ctx, s, prInput, prOutput, permitted);
-                TopNode.Arg1.AddConstraints(ctx, s, prInput, prOutput, permitted);
+                TopNode.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
+                TopNode.Arg0.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
+                TopNode.Arg1.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
 
                 TwoArg TopNode2 = new TwoArg();
                 TopNode2.Arg0 = new ZeroArg();
@@ -209,9 +235,9 @@ namespace SATGeneratation
                 BitVecExpr prInput2 = ctx.MkBV(0x101, 64);
                 BitVecExpr prOutput2 = ctx.MkBV(0x102, 64);
                 s.Assert(ctx.MkEq(TopNode2.Output, prOutput2));
-                TopNode2.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
-                TopNode2.Arg0.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
-                TopNode2.Arg1.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
+                TopNode2.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
+                TopNode2.Arg0.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
+                TopNode2.Arg1.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
 
                 s.Assert(ctx.MkEq(TopNode2.OpCode, TopNode.OpCode));
                 s.Assert(ctx.MkEq(TopNode2.Arg0.OpCode, TopNode.Arg0.OpCode));
@@ -248,9 +274,9 @@ namespace SATGeneratation
                 BitVecExpr prInput = ctx.MkBV(0x10, 64);
                 BitVecExpr prOutput = ctx.MkBV(0x0, 64);
                 s.Assert(ctx.MkEq(TopNode.Output, prOutput));
-                TopNode.AddConstraints(ctx, s, prInput, prOutput, permitted);
-                TopNode.Arg0.AddConstraints(ctx, s, prInput, prOutput, permitted);
-                TopNode.Arg1.AddConstraints(ctx, s, prInput, prOutput, permitted);
+                TopNode.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
+                TopNode.Arg0.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
+                TopNode.Arg1.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
 
                 TwoArg TopNode2 = new TwoArg();
                 TopNode2.Arg0 = new ZeroArg();
@@ -262,9 +288,9 @@ namespace SATGeneratation
                 BitVecExpr prInput2 = ctx.MkBV(0x101, 64);
                 BitVecExpr prOutput2 = ctx.MkBV(0x0, 64);
                 s.Assert(ctx.MkEq(TopNode2.Output, prOutput2));
-                TopNode2.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
-                TopNode2.Arg0.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
-                TopNode2.Arg1.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
+                TopNode2.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
+                TopNode2.Arg0.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
+                TopNode2.Arg1.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
 
                 s.Assert(ctx.MkEq(TopNode2.OpCode, TopNode.OpCode));
                 s.Assert(ctx.MkEq(TopNode2.Arg0.OpCode, TopNode.Arg0.OpCode));
@@ -301,9 +327,9 @@ namespace SATGeneratation
                 BitVecExpr prInput = ctx.MkBV(0x11, 64);
                 BitVecExpr prOutput = ctx.MkBV(0x11, 64);
                 s.Assert(ctx.MkEq(TopNode.Output, prOutput));
-                TopNode.AddConstraints(ctx, s, prInput, prOutput, permitted);
-                TopNode.Arg0.AddConstraints(ctx, s, prInput, prOutput, permitted);
-                TopNode.Arg1.AddConstraints(ctx, s, prInput, prOutput, permitted);
+                TopNode.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
+                TopNode.Arg0.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
+                TopNode.Arg1.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
 
                 TwoArg TopNode2 = new TwoArg();
                 TopNode2.Arg0 = new ZeroArg();
@@ -315,9 +341,9 @@ namespace SATGeneratation
                 BitVecExpr prInput2 = ctx.MkBV(0x100, 64);
                 BitVecExpr prOutput2 = ctx.MkBV(0x101, 64);
                 s.Assert(ctx.MkEq(TopNode2.Output, prOutput2));
-                TopNode2.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
-                TopNode2.Arg0.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
-                TopNode2.Arg1.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
+                TopNode2.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
+                TopNode2.Arg0.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
+                TopNode2.Arg1.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
 
                 s.Assert(ctx.MkEq(TopNode2.OpCode, TopNode.OpCode));
                 s.Assert(ctx.MkEq(TopNode2.Arg0.OpCode, TopNode.Arg0.OpCode));
@@ -351,8 +377,8 @@ namespace SATGeneratation
                 BitVecExpr prInput = ctx.MkBV(0x001, 64);
                 BitVecExpr prOutput = ctx.MkBV(0x002, 64);
                 s.Assert(ctx.MkEq(TopNode.Output, prOutput));
-                TopNode.AddConstraints(ctx, s, prInput, prOutput, permitted);
-                TopNode.Arg0.AddConstraints(ctx, s, prInput, prOutput, permitted);
+                TopNode.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
+                TopNode.Arg0.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
 
                 OneArg TopNode2 = new OneArg();
                 TopNode2.Arg0 = new ZeroArg();
@@ -362,8 +388,8 @@ namespace SATGeneratation
                 BitVecExpr prInput2 = ctx.MkBV(0x100, 64);
                 BitVecExpr prOutput2 = ctx.MkBV(0x200, 64);
                 s.Assert(ctx.MkEq(TopNode2.Output, prOutput2));
-                TopNode2.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
-                TopNode2.Arg0.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
+                TopNode2.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
+                TopNode2.Arg0.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
 
                 s.Assert(ctx.MkEq(TopNode2.OpCode, TopNode.OpCode));
                 s.Assert(ctx.MkEq(TopNode2.Arg0.OpCode, TopNode.Arg0.OpCode));
@@ -394,8 +420,8 @@ namespace SATGeneratation
                 BitVecExpr prInput = ctx.MkBV(0x002, 64);
                 BitVecExpr prOutput = ctx.MkBV(0x001, 64);
                 s.Assert(ctx.MkEq(TopNode.Output, prOutput));
-                TopNode.AddConstraints(ctx, s, prInput, prOutput, permitted);
-                TopNode.Arg0.AddConstraints(ctx, s, prInput, prOutput, permitted);
+                TopNode.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
+                TopNode.Arg0.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
 
                 OneArg TopNode2 = new OneArg();
                 TopNode2.Arg0 = new ZeroArg();
@@ -405,8 +431,8 @@ namespace SATGeneratation
                 BitVecExpr prInput2 = ctx.MkBV(0x200, 64);
                 BitVecExpr prOutput2 = ctx.MkBV(0x100, 64);
                 s.Assert(ctx.MkEq(TopNode2.Output, prOutput2));
-                TopNode2.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
-                TopNode2.Arg0.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
+                TopNode2.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
+                TopNode2.Arg0.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
 
                 s.Assert(ctx.MkEq(TopNode2.OpCode, TopNode.OpCode));
                 s.Assert(ctx.MkEq(TopNode2.Arg0.OpCode, TopNode.Arg0.OpCode));
@@ -437,8 +463,8 @@ namespace SATGeneratation
                 BitVecExpr prInput = ctx.MkBV((ulong)0x1000000000000000, 64);
                 BitVecExpr prOutput = ctx.MkBV((ulong)0xEFFFFFFFFFFFFFFF, 64);
                 s.Assert(ctx.MkEq(TopNode.Output, prOutput));
-                TopNode.AddConstraints(ctx, s, prInput, prOutput, permitted);
-                TopNode.Arg0.AddConstraints(ctx, s, prInput, prOutput, permitted);
+                TopNode.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
+                TopNode.Arg0.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
 
                 OneArg TopNode2 = new OneArg();
                 TopNode2.Arg0 = new ZeroArg();
@@ -448,8 +474,8 @@ namespace SATGeneratation
                 BitVecExpr prInput2 = ctx.MkBV((ulong)0x1100000000000000, 64);
                 BitVecExpr prOutput2 = ctx.MkBV((ulong)0xEEFFFFFFFFFFFFFF, 64);
                 s.Assert(ctx.MkEq(TopNode2.Output, prOutput2));
-                TopNode2.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
-                TopNode2.Arg0.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
+                TopNode2.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
+                TopNode2.Arg0.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
 
                 s.Assert(ctx.MkEq(TopNode2.OpCode, TopNode.OpCode));
                 s.Assert(ctx.MkEq(TopNode2.Arg0.OpCode, TopNode.Arg0.OpCode));
@@ -481,8 +507,8 @@ namespace SATGeneratation
                 BitVecExpr prInput = ctx.MkBV((ulong)0x100, 64);
                 BitVecExpr prOutput = ctx.MkBV((ulong)0x10, 64);
                 s.Assert(ctx.MkEq(TopNode.Output, prOutput));
-                TopNode.AddConstraints(ctx, s, prInput, prOutput, permitted);
-                TopNode.Arg0.AddConstraints(ctx, s, prInput, prOutput, permitted);
+                TopNode.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
+                TopNode.Arg0.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
 
                 OneArg TopNode2 = new OneArg();
                 TopNode2.Arg0 = new ZeroArg();
@@ -492,8 +518,8 @@ namespace SATGeneratation
                 BitVecExpr prInput2 = ctx.MkBV((ulong)0x1000, 64);
                 BitVecExpr prOutput2 = ctx.MkBV((ulong)0x100, 64);
                 s.Assert(ctx.MkEq(TopNode2.Output, prOutput2));
-                TopNode2.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
-                TopNode2.Arg0.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
+                TopNode2.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
+                TopNode2.Arg0.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
 
                 s.Assert(ctx.MkEq(TopNode2.OpCode, TopNode.OpCode));
                 s.Assert(ctx.MkEq(TopNode2.Arg0.OpCode, TopNode.Arg0.OpCode));
@@ -524,8 +550,8 @@ namespace SATGeneratation
                 BitVecExpr prInput = ctx.MkBV((ulong)0x100000, 64);
                 BitVecExpr prOutput = ctx.MkBV((ulong)0x10, 64);
                 s.Assert(ctx.MkEq(TopNode.Output, prOutput));
-                TopNode.AddConstraints(ctx, s, prInput, prOutput, permitted);
-                TopNode.Arg0.AddConstraints(ctx, s, prInput, prOutput, permitted);
+                TopNode.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
+                TopNode.Arg0.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
 
                 OneArg TopNode2 = new OneArg();
                 TopNode2.Arg0 = new ZeroArg();
@@ -535,8 +561,8 @@ namespace SATGeneratation
                 BitVecExpr prInput2 = ctx.MkBV((ulong)0x1000000000000000, 64);
                 BitVecExpr prOutput2 = ctx.MkBV((ulong)0x100000000000, 64);
                 s.Assert(ctx.MkEq(TopNode2.Output, prOutput2));
-                TopNode2.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
-                TopNode2.Arg0.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
+                TopNode2.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
+                TopNode2.Arg0.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
 
                 s.Assert(ctx.MkEq(TopNode2.OpCode, TopNode.OpCode));
                 s.Assert(ctx.MkEq(TopNode2.Arg0.OpCode, TopNode.Arg0.OpCode));
@@ -571,10 +597,10 @@ namespace SATGeneratation
                 BitVecExpr prInput = ctx.MkBV(0x1, 64);
                 BitVecExpr prOutput = ctx.MkBV(0, 64);
                 s.Assert(ctx.MkEq(TopNode.Output, prOutput));
-                TopNode.AddConstraints(ctx, s, prInput, prOutput, permitted);
-                TopNode.Arg0.AddConstraints(ctx, s, prInput, prOutput, permitted);
-                TopNode.Arg1.AddConstraints(ctx, s, prInput, prOutput, permitted);
-                TopNode.Arg2.AddConstraints(ctx, s, prInput, prOutput, permitted);
+                TopNode.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
+                TopNode.Arg0.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
+                TopNode.Arg1.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
+                TopNode.Arg2.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
 
                 ThreeArg TopNode2 = new ThreeArg();
                 TopNode2.Arg0 = new ZeroArg();
@@ -588,10 +614,10 @@ namespace SATGeneratation
                 BitVecExpr prInput2 = ctx.MkBV(0x0, 64);
                 BitVecExpr prOutput2 = ctx.MkBV(0x1, 64);
                 s.Assert(ctx.MkEq(TopNode2.Output, prOutput2));
-                TopNode2.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
-                TopNode2.Arg0.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
-                TopNode2.Arg1.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
-                TopNode2.Arg2.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
+                TopNode2.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
+                TopNode2.Arg0.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
+                TopNode2.Arg1.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
+                TopNode2.Arg2.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
 
                 s.Assert(ctx.MkEq(TopNode2.OpCode, TopNode.OpCode));
                 s.Assert(ctx.MkEq(TopNode2.Arg0.OpCode, TopNode.Arg0.OpCode));
@@ -633,10 +659,10 @@ namespace SATGeneratation
                 BitVecExpr prInput = ctx.MkBV(0x0, 64);
                 BitVecExpr prOutput = ctx.MkBV(0, 64);
                 s.Assert(ctx.MkEq(TopNode.Output, prOutput));
-                TopNode.AddConstraints(ctx, s, prInput, prOutput, permitted);
-                TopNode.Arg0.AddConstraints(ctx, s, prInput, prOutput, permitted);
-                TopNode.Arg1.AddConstraints(ctx, s, prInput, prOutput, permitted);
-                TopNode.Arg2.AddConstraints(ctx, s, prInput, prOutput, permitted);
+                TopNode.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
+                TopNode.Arg0.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
+                TopNode.Arg1.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
+                TopNode.Arg2.AddConstraints(ctx, s, prInput, prOutput, permitted, null, -1, null);
 
                 ThreeArg TopNode2 = new ThreeArg();
                 TopNode2.Arg0 = new ZeroArg();
@@ -650,10 +676,10 @@ namespace SATGeneratation
                 BitVecExpr prInput2 = ctx.MkBV(0x1111, 64);
                 BitVecExpr prOutput2 = ctx.MkBV(0x1, 64);
                 s.Assert(ctx.MkEq(TopNode2.Output, prOutput2));
-                TopNode2.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
-                TopNode2.Arg0.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
-                TopNode2.Arg1.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
-                TopNode2.Arg2.AddConstraints(ctx, s, prInput2, prOutput2, permitted);
+                TopNode2.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
+                TopNode2.Arg0.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
+                TopNode2.Arg1.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
+                TopNode2.Arg2.AddConstraints(ctx, s, prInput2, prOutput2, permitted, null, -1, null);
 
                 s.Assert(ctx.MkEq(TopNode2.OpCode, TopNode.OpCode));
                 s.Assert(ctx.MkEq(TopNode2.Arg0.OpCode, TopNode.Arg0.OpCode));

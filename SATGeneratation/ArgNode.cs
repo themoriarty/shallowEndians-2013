@@ -10,7 +10,7 @@ namespace SATGeneratation
 {
     public abstract class ArgNode
     {
-        public abstract void AddConstraints(Context ctx, Solver solver, BitVecExpr prInput, BitVecExpr prOutput, bool[] permitted);
+        public abstract void AddConstraints(Context ctx, Solver solver, BitVecExpr prInput, BitVecExpr prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree);
         public abstract ArgNode[] GetChildren();
 
         public virtual void Initialize(Context ctx, string name)

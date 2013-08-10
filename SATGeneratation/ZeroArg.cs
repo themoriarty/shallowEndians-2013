@@ -9,25 +9,30 @@ namespace SATGeneratation
 {
     class ZeroArg : ArgNode
     {
-        public override void AddConstraints(Context ctx, Solver solver, BitVecExpr prInput, BitVecExpr prOutput, bool[] permitted)
+        public BoolExpr GenerateConstraints(Context ctx, Solver solver, BitVecExpr prInput, BitVecExpr prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
         {
             var oneCond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.One)), ctx.MkEq(Output, ctx.MkBV(1, 64)));
-            var zeroCond = ctx.MkOr(ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Zero)), ctx.MkEq(Output, ctx.MkBV(0, 64))));
+            var zeroCond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Zero)), ctx.MkEq(Output, ctx.MkBV(0, 64)));
             var inputCond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Input)), ctx.MkEq(Output, prInput));
-            List<BoolExpr> expressions = new List<BoolExpr>();;
-            if(permitted[(int)OpCodes.One])
+            List<BoolExpr> expressions = new List<BoolExpr>();
+            if (permitted[(int)OpCodes.One])
             {
                 expressions.Add(oneCond);
             }
-            if(permitted[(int)OpCodes.Zero])
+            if (permitted[(int)OpCodes.Zero])
             {
                 expressions.Add(zeroCond);
             }
-            if(permitted[(int)OpCodes.Input])
+            if (permitted[(int)OpCodes.Input])
             {
                 expressions.Add(inputCond);
             }
-            solver.Assert(ctx.MkOr(ctx.MkNot(ctx.MkEq(Arity, ctx.MkInt(0))), ctx.MkOr(expressions.ToArray())));
+            return ctx.MkOr(expressions.ToArray());
+        }
+
+        public override void AddConstraints(Context ctx, Solver solver, BitVecExpr prInput, BitVecExpr prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
+        {
+            solver.Assert(GenerateConstraints(ctx, solver, prInput, prOutput, permitted, nodes, curNodeIndex, tree));
         }
 
         public override ArgNode[] GetChildren()
