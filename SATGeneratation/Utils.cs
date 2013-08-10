@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace SATGeneratation
 {
+    using Microsoft.Z3;
+
     class Utils
     {
         public static SatExpression GetBit(int bitIndex, int opcode, string nodePrefix)

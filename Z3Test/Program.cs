@@ -204,7 +204,7 @@ namespace Z3Test
         }
 
 
-        static void AddTreeConstrains(Context ctx, int i, int n, ArrayExpr a, ArrayExpr r, Goal g)
+        static BoolExpr GetTreeLevelConstrains(Context ctx, int i, int n, ArrayExpr a, ArrayExpr r)
         {
             var asel = ctx.MkSelect(a, ctx.MkInt(i));
 
@@ -237,15 +237,15 @@ namespace Z3Test
 
                         for (int j = i + 2; j < n - 1; ++j)
                         {
-                            var part1 = ctx.MkEq(ctx.MkSelect(r, ctx.MkInt(j)), ctx.MkInt(i));
-                            var part2 = new List<BoolExpr>();
+                            var fourthLevelPart1 = ctx.MkEq(ctx.MkSelect(r, ctx.MkInt(j)), ctx.MkInt(i));
+                            var fourthLevelPart2 = new List<BoolExpr>();
 
                             for (int k = j + 1; k < n; ++k)
                             {
-                                part2.Add(ctx.MkEq(ctx.MkSelect(r, ctx.MkInt(k)), ctx.MkInt(i)));
+                                fourthLevelPart2.Add(ctx.MkEq(ctx.MkSelect(r, ctx.MkInt(k)), ctx.MkInt(i)));
                             }
 
-                            thirdLevel.Add(ctx.MkAnd(part1, part2.Count > 1 ? ctx.MkOr(part2.ToArray()) : part2.First()));
+                            thirdLevel.Add(ctx.MkAnd(fourthLevelPart1, fourthLevelPart2.Count > 1 ? ctx.MkOr(fourthLevelPart2.ToArray()) : fourthLevelPart2.First()));
                         }
 
                         topLevel.Add(ctx.MkAnd(ctx.MkEq(asel, ctx.MkInt(3)), ctx.MkEq(rsel, ctx.MkInt(i)), thirdLevel.Count > 1 ? ctx.MkOr(thirdLevel.ToArray()) : thirdLevel.First()));
@@ -253,7 +253,7 @@ namespace Z3Test
                 }
             }
 
-            g.Assert(ctx.MkOr(topLevel.ToArray()));
+            return ctx.MkOr(topLevel.ToArray());
         }
 
         static void Test2(Context ctx)
@@ -265,11 +265,15 @@ namespace Z3Test
             ArrayExpr a = (ArrayExpr)ctx.MkConst("a", asort);
             ArrayExpr r = (ArrayExpr)ctx.MkConst("r", asort);
 
+            var treeConstrains = new List<BoolExpr>();
+
             int n = 16;
             for (int i = 0; i < n; ++i)
             {
-                AddTreeConstrains(ctx, i, n, a, r, g);
+                treeConstrains.Add(GetTreeLevelConstrains(ctx, i, n, a, r));
             }
+
+            g.Assert(ctx.MkAnd(treeConstrains.ToArray()));
 
 
             //Expr sel = ctx.MkSelect(aex, ctx.MkInt(0));
