@@ -2,10 +2,12 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Threading;
+    using System.Threading.Tasks;
 
     using Icfpc2013.Ops;
 
@@ -465,7 +467,7 @@
 
         public static bool SolveTrainingProgram(bool useSat)
         {
-            int judgesProgramSize = 12;
+            int judgesProgramSize = 10;
             var options = new[] { "tfold" };
             options = new string[0];
             var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, options));
@@ -515,29 +517,85 @@
             ulong[] outputs = outputsResponse.outputs.Select(s => ulong.Parse(s.Replace("0x", string.Empty), NumberStyles.HexNumber)).ToArray();
 
             Lambda1 solution = null;
-            
-            if (useSat)
+
+            var sw = Stopwatch.StartNew();
+
+            try
             {
-                try
-                {
-                    Console.WriteLine("Using SAT!");
-                    solution = SolveSat(judgesProgramSize, ops, inputs, outputs);
 
+
+                if (useSat)
+                {
+                    try
+                    {
+                        Console.WriteLine("Using SAT!");
+
+                        if ((ops & OpTypes.if0) != OpTypes.none)
+                        {
+                            Console.WriteLine("Using SAT only!");
+                            solution = SolveSat(judgesProgramSize, ops, inputs, outputs);
+                        }
+                        else
+                        {
+
+                            Lambda1 solution1 = null;
+                            Lambda1 solution2 = null;
+
+                            var task1 = Task.Run(() => solution1 = SolveSat(judgesProgramSize, ops, inputs, outputs));
+                            var task2 = Task.Run(
+                                () =>
+                                    {
+                                        try
+                                        {
+                                            solution2 = SolveSat(judgesProgramSize, ops, inputs, outputs);
+                                        }
+                                        catch (Exception exbfs)
+                                        {
+                                            Console.WriteLine("BFS failed: {0}", exbfs);
+                                            throw;
+                                        }
+
+                                    });
+
+                            Task.WaitAny(task1, task2);
+
+                            if (solution1 == null && solution2 == null)
+                            {
+                                Task.WaitAll(task1, task2);
+                            }
+
+                            if (solution1 != null)
+                            {
+                                Console.WriteLine("SAT was faster");
+                                solution = solution1;
+                            }
+
+                            if (solution2 != null)
+                            {
+                                Console.WriteLine("BFS was faster");
+                                solution = solution2;
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("SAT faild: {0}", ex);
+
+                        Console.WriteLine("Using BFS!");
+                        solution = Solve(judgesProgramSize, ops, inputs, outputs);
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    Console.WriteLine("SAT faild: {0}", ex);
-
                     Console.WriteLine("Using BFS!");
-                    solution = Solve(judgesProgramSize, ops, inputs, outputs);    
+                    solution = Solve(judgesProgramSize, ops, inputs, outputs);
                 }
             }
-            else
+            finally
             {
-                Console.WriteLine("Using BFS!");
-                solution = Solve(judgesProgramSize, ops, inputs, outputs);    
+                Console.WriteLine("* computation completed in {0}", sw.ElapsedMilliseconds / 1000);
             }
-            
+
             var finalResult = solution.Serialize();
 
             Console.WriteLine("Submitting: {0}", finalResult);
