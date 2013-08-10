@@ -38,14 +38,6 @@ namespace Icfpc2013
 
             foreach (var node in ValidNodes)
             {
-                /*
-                var subtree = GetNLevelTree(node, MaxDepth);
-                if (subtree != null)
-                {
-                    ret.AddRange(subtree);
-                }
-                */
-
                 foreach (var subtree in GetNLevelTree(node, MaxDepth))
                 {
                     yield return subtree;
