@@ -65,12 +65,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArgNode.cs" />
+    <Compile Include="MetaArgNode.cs" />
     <Compile Include="OneArg.cs" />
     <Compile Include="OpCodes.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SatProblem.cs" />
-    <Compile Include="ThreeNode.cs" />
+    <Compile Include="ThreeArg.cs" />
     <Compile Include="TreeStructure.cs" />
     <Compile Include="TwoArg.cs" />
     <Compile Include="Utils.cs" />
