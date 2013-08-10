@@ -42,16 +42,22 @@ namespace SATGeneratation
                 ret.Arg2 = CloneTreeStructure((root as ThreeArg).Arg2, ctx, nameSuffix);
                 return ret;
             }
+            else if (root is MetaArgNode)
+            {
+                var ret = new MetaArgNode();
+                ret.Initialize(ctx, root.Name + nameSuffix);
+                return ret;
+            }
 
             throw new InvalidProgramException("Unknown type " + root.GetType());
         }
 
-        public static void PopulateConstraints(ArgNode root, Context ctx, Solver solv, BitVecExpr input, BitVecExpr output, bool[] permitted)
+        public static void PopulateConstraints(ArgNode root, Context ctx, Solver solv, BitVecExpr input, BitVecExpr output, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
         {
-            root.AddConstraints(ctx, solv, input, output, permitted);
+            root.AddConstraints(ctx, solv, input, output, permitted, nodes, curNodeIndex, tree);
             foreach (ArgNode child in root.GetChildren())
             {
-                PopulateConstraints(child, ctx, solv, input, output, permitted);
+                PopulateConstraints(child, ctx, solv, input, output, permitted, nodes, curNodeIndex, tree);
             }
         }
 
@@ -60,9 +66,25 @@ namespace SATGeneratation
             Model m = solv.Model;
             var opcodeTop = (IntExpr)m.Evaluate(root.OpCode);
             root.ComputedOpcode = (OpCodes)Int32.Parse(opcodeTop.ToString());
+            Console.WriteLine("Opcode for node " + root.Name + " is " + root.ComputedOpcode);
+            Console.WriteLine("Output for node " + root.Name + " is " + m.Evaluate(root.Output));
+            Console.WriteLine("Arity for node " + root.Name + " is " + m.Evaluate(root.Arity));
             foreach (ArgNode child in root.GetChildren())
             {
                 PopulateSolution(child, solv);
+            }
+        }
+
+        public static void PopulateSolution(List<ArgNode> nodes, Solver solv)
+        {
+            Model m = solv.Model;
+            foreach (ArgNode n in nodes)
+            {
+                var opcodeTop = (IntExpr)m.Evaluate(n.OpCode);
+                n.ComputedOpcode = (OpCodes)Int32.Parse(opcodeTop.ToString());
+                Console.WriteLine("The evaluated arity for {0} is {1}", n.Name, m.Evaluate(n.Arity));
+                Console.WriteLine("The evaluated opcode for {0} is {1}", n.Name, m.Evaluate(n.OpCode));
+                Console.WriteLine("The evaluated opcode for {0} is {1}", n.Name, m.Evaluate((n as MetaArgNode).ZeroArgNode.OpCode));
             }
         }
 
@@ -130,6 +152,92 @@ namespace SATGeneratation
             solv.Assert(ctx.MkOr(expressions.ToArray()));
         }
 
+        public static void MakeSureOpcodeAppearsAtLeastOnce(Context ctx, Solver solv, List<ArgNode> nodes, OpCodes opcode)
+        {
+            List<BoolExpr> expressions = new List<BoolExpr>();
+            foreach (ArgNode n in nodes)
+            {
+                expressions.Add(ctx.MkEq(n.OpCode, ctx.MkInt((int)opcode)));
+            }
+            solv.Assert(ctx.MkOr(expressions.ToArray()));
+        }
+
+        public static List<ArgNode> SolveNodeArray(ulong[] inputs, ulong[] outputs, List<ArgNode> nodes, bool[] permitted)
+        {
+            if (inputs.Length == 0 || inputs.Length != outputs.Length)
+            {
+                throw new ArgumentException("Invalid program inputs/outputs provided");
+            }
+
+            using (Context ctx = new Context(new Dictionary<string, string>() { { "model", "true" } }))
+            {
+                Solver s = ctx.MkSolver();
+                List<ArgNode>[] results = new List<ArgNode>[inputs.Length];
+                TreeStructure tree = new TreeStructure(ctx, "progtree", nodes.Count);
+                s.Assert(tree.GetTreeLevelConstrains(ctx));
+
+
+                for (int i = 0; i < inputs.Length; ++i)
+                {
+                    results[i] = new List<ArgNode>();
+                    foreach(ArgNode n in nodes)
+                    {
+                        results[i].Add(CloneTreeStructure(n, ctx, "_" + inputs[i]));
+                    }
+
+                    for(int j = 0; j < nodes.Count; ++j)
+                    {
+                        PopulateConstraints(results[i][j], ctx, s, ctx.MkBV(inputs[i], 64), ctx.MkBV(outputs[i], 64), permitted, results[i], j, tree);
+                    }
+                    s.Assert(ctx.MkEq(results[i][0].Output, ctx.MkBV(outputs[i], 64)));
+                }
+
+                // Makes multiple inputs work at the same time
+                for (int i = 1; i < inputs.Length; ++i)
+                {
+                    for (int j = 0; j < results[0].Count; ++j)
+                    {
+                        MakeNodeTypesEqual(ctx, s, results[0][j], results[i][j]);
+                    }
+                }
+
+                // Input, 0 and 1 are always permitted
+                for (int i = (int)OpCodes.Input + 1; i < permitted.Length; ++i)
+                {
+                    if (permitted[i])
+                    {
+                        MakeSureOpcodeAppearsAtLeastOnce(ctx, s, results[0], (OpCodes)i);
+                    }
+                }
+
+
+                if (s.Check() == Status.SATISFIABLE)
+                {
+                    Console.WriteLine("Success");
+
+
+                        Console.WriteLine("Success Tree");
+
+                        Console.WriteLine("ArgCount:\n" + s.Model.FuncInterp(tree.ArgumentCount.FuncDecl));
+                        Console.WriteLine("Ref:\n" + s.Model.FuncInterp(tree.ReverseLink.FuncDecl));
+                        //var af = s.Model.FuncInterp(a.FuncDecl); 
+                        //var rf = s.Model.FuncInterp(r.FuncDecl); 
+                        //for (int i = 0; i < n; ++i) 
+                        //{ 
+                        //    Console.WriteLine("-- {0}", af.Entries[i]); 
+                        //}
+                    PopulateSolution(results[0], s);
+                }
+                else
+                {
+                    Console.WriteLine("Failure");
+                }
+
+                return results[0];
+            }
+
+        }
+
         public static ArgNode SolvePrototypeTree(ulong[] inputs, ulong[] outputs, ArgNode prototypeTreeRoot, bool[] permitted)
         {
             if (inputs.Length == 0 || inputs.Length != outputs.Length)
@@ -143,7 +251,7 @@ namespace SATGeneratation
                 for (int i = 0; i < inputs.Length; ++i)
                 {
                     results[i] = CloneTreeStructure(prototypeTreeRoot, ctx, "_" + inputs[i]);
-                    PopulateConstraints(results[i], ctx, s, ctx.MkBV(inputs[i], 64), ctx.MkBV(outputs[i], 64), permitted);
+                    PopulateConstraints(results[i], ctx, s, ctx.MkBV(inputs[i], 64), ctx.MkBV(outputs[i], 64), permitted, null, -1, null);
                     s.Assert(ctx.MkEq(results[i].Output, ctx.MkBV(outputs[i], 64)));
                 }
 
