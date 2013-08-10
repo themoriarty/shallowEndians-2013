@@ -203,14 +203,114 @@ namespace Z3Test
             Console.WriteLine(m.Eval(y)); 
         }
 
+
+        static void AddTreeConstrains(Context ctx, int i, int n, ArrayExpr a, ArrayExpr r, Goal g)
+        {
+            var asel = ctx.MkSelect(a, ctx.MkInt(i));
+
+            var topLevel = new List<BoolExpr>();
+
+            topLevel.Add(ctx.MkEq(asel, ctx.MkInt(0)));
+
+            if (i < n - 1)
+            {
+                var rsel = ctx.MkSelect(r, ctx.MkInt(i + 1));
+
+                topLevel.Add(ctx.MkAnd(ctx.MkEq(asel, ctx.MkInt(1)), ctx.MkEq(rsel, ctx.MkInt(i))));
+
+                if (i < n - 2)
+                {
+
+                    var secondLevel = new List<BoolExpr>();
+
+                    for (int j = i + 2; j < n; ++j)
+                    {
+                        secondLevel.Add(ctx.MkEq(ctx.MkSelect(r, ctx.MkInt(j)), ctx.MkInt(i)));
+                    }
+
+                    topLevel.Add(ctx.MkAnd(ctx.MkEq(asel, ctx.MkInt(2)), ctx.MkEq(rsel, ctx.MkInt(i)), secondLevel.Count > 1 ? ctx.MkOr(secondLevel.ToArray()) : secondLevel.First()));
+
+                    if (i < n - 3)
+                    {
+
+                        var thirdLevel = new List<BoolExpr>();
+
+                        for (int j = i + 2; j < n - 1; ++j)
+                        {
+                            var part1 = ctx.MkEq(ctx.MkSelect(r, ctx.MkInt(j)), ctx.MkInt(i));
+                            var part2 = new List<BoolExpr>();
+
+                            for (int k = j + 1; k < n; ++k)
+                            {
+                                part2.Add(ctx.MkEq(ctx.MkSelect(r, ctx.MkInt(k)), ctx.MkInt(i)));
+                            }
+
+                            thirdLevel.Add(ctx.MkAnd(part1, part2.Count > 1 ? ctx.MkOr(part2.ToArray()) : part2.First()));
+                        }
+
+                        topLevel.Add(ctx.MkAnd(ctx.MkEq(asel, ctx.MkInt(3)), ctx.MkEq(rsel, ctx.MkInt(i)), thirdLevel.Count > 1 ? ctx.MkOr(thirdLevel.ToArray()) : thirdLevel.First()));
+                    }
+                }
+            }
+
+            g.Assert(ctx.MkOr(topLevel.ToArray()));
+        }
+
         static void Test2(Context ctx)
         {
-            Console.WriteLine("BitvectorExample2");
+            Console.WriteLine("ArrayExample1");
 
-            /* construct x ^ y - 103 == x * y */
-            Sort B = ctx.MkBitVecSort(64);
-            //Model m = Check(ctx, ctr, Status.SATISFIABLE);
-            //Console.WriteLine(m);
+            Goal g = ctx.MkGoal(true);
+            ArraySort asort = ctx.MkArraySort(ctx.IntSort, ctx.IntSort);
+            ArrayExpr a = (ArrayExpr)ctx.MkConst("a", asort);
+            ArrayExpr r = (ArrayExpr)ctx.MkConst("r", asort);
+
+            int n = 16;
+            for (int i = 0; i < n; ++i)
+            {
+                AddTreeConstrains(ctx, i, n, a, r, g);
+            }
+
+
+            //Expr sel = ctx.MkSelect(aex, ctx.MkInt(0));
+            //g.Assert(ctx.MkEq(sel, ctx.MkInt(42)));
+            //Symbol xs = ctx.MkSymbol("x");
+            //IntExpr xc = (IntExpr)ctx.MkConst(xs, ctx.IntSort);
+
+            //Symbol fname = ctx.MkSymbol("f");
+            //Sort[] domain = { ctx.IntSort };
+            //FuncDecl fd = ctx.MkFuncDecl(fname, domain, ctx.IntSort);
+            //Expr[] fargs = { ctx.MkConst(xs, ctx.IntSort) };
+            //IntExpr fapp = (IntExpr)ctx.MkApp(fd, fargs);
+
+            //g.Assert(ctx.MkEq(ctx.MkAdd(xc, fapp), ctx.MkInt(123)));
+
+            Solver s = ctx.MkSolver();
+            foreach (BoolExpr asr in g.Formulas)
+                s.Assert(asr);
+            Console.WriteLine("Solver: " + s);
+
+            Status q = s.Check();
+            Console.WriteLine("Status: " + q);
+
+            if (q != Status.SATISFIABLE)
+                throw new Exception();
+
+            Console.WriteLine("Model = " + s.Model);
+
+            Console.WriteLine("ArgCount:\n" + s.Model.FuncInterp(a.FuncDecl));
+            Console.WriteLine("Ref:\n" + s.Model.FuncInterp(r.FuncDecl));
+
+            //var af = s.Model.FuncInterp(a.FuncDecl);
+            //var rf = s.Model.FuncInterp(r.FuncDecl);
+
+            //for (int i = 0; i < n; ++i)
+            //{
+            //    Console.WriteLine("-- {0}", af.Entries[i]);
+            //}
+            //Console.WriteLine("Interpretation of x:\n" + s.Model.ConstInterp(xc));
+            //Console.WriteLine("Interpretation of f:\n" + s.Model.FuncInterp(fd));
+            //Console.WriteLine("Interpretation of MyArray as Term:\n" + s.Model.FuncInterp(a.FuncDecl));  
         } 
 
         static void Main(string[] args)
