@@ -32,8 +32,8 @@ namespace SATGeneratation
             }
 
             {
-                ulong[] inputs = { 0x11, 0x40 };
-                ulong[] outputs = { 0x1, 0x0 };
+                ulong[] inputs = { 0x11, 0x10 };
+                ulong[] outputs = { 0x1, 0x00};
                 nodes.Add(new MetaArgNode() { Name = "ar0n3" });
                 permitted[(int)OpCodes.And] = true;
                 List<ArgNode> res = Utils.SolveNodeArray(inputs, outputs, nodes, permitted);
@@ -41,6 +41,27 @@ namespace SATGeneratation
                 permitted[(int)OpCodes.And] = false;
             }
 
+            {
+                ulong[] inputs = { 0x11, 0x10 };
+                ulong[] outputs = { 0x1, 0x01 };
+                nodes.Add(new MetaArgNode() { Name = "ar0n3" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n4" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n5" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n6" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n7" });
+                permitted[(int)OpCodes.And] = true;
+                List<ArgNode> res = Utils.SolveNodeArray(inputs, outputs, nodes, permitted);
+                Console.WriteLine("[Node array] And output {0}, {1} {2} {3} {4} {5} {6}", 
+                    res[0].ComputedOpcode, 
+                    res[1].ComputedOpcode, 
+                    res[2].ComputedOpcode,
+                    res[3].ComputedOpcode,
+                    res[4].ComputedOpcode,
+                    res[5].ComputedOpcode,
+                    res[6].ComputedOpcode);
+                permitted[(int)OpCodes.And] = false;
+            }
+            return;
 
 
             OneArg OneArgProto = new OneArg() { Name = "OneArg" };

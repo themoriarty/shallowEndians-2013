@@ -14,7 +14,7 @@
             var asort = ctx.MkArraySort(ctx.IntSort, ctx.IntSort);
             ArgumentCount = (ArrayExpr)ctx.MkConst(name + "a", asort);
             ReverseLink = (ArrayExpr)ctx.MkConst(name + "r", asort);
-            ReverseLink = (ArrayExpr)ctx.MkConst(name + "p", asort);
+            PinLink = (ArrayExpr)ctx.MkConst(name + "p", asort);
             this.TreeSize = treeSize;
         }
 

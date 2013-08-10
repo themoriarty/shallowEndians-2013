@@ -173,25 +173,8 @@ namespace SATGeneratation
             {
                 Solver s = ctx.MkSolver();
                 List<ArgNode>[] results = new List<ArgNode>[inputs.Length];
-                TreeStructure tree = new TreeStructure(ctx, "progtree", inputs.Length);
+                TreeStructure tree = new TreeStructure(ctx, "progtree", nodes.Count);
                 s.Assert(tree.GetTreeLevelConstrains(ctx));
-
-                if (s.Check() == Status.SATISFIABLE)
-                {
-                    Console.WriteLine("Success Tree");
-                    Console.WriteLine(s.Model.Evaluate(tree.ReverseLink));
-                    Console.WriteLine(s.Model.Evaluate(tree.ArgumentCount));
-
-                    Console.WriteLine("ArgCount:\n" + s.Model.FuncInterp(tree.ArgumentCount.FuncDecl));
-                    Console.WriteLine("Ref:\n" + s.Model.FuncInterp(tree.ReverseLink.FuncDecl));
-                    //var af = s.Model.FuncInterp(a.FuncDecl); 
-                    //var rf = s.Model.FuncInterp(r.FuncDecl); 
-                    //for (int i = 0; i < n; ++i) 
-                    //{ 
-                    //    Console.WriteLine("-- {0}", af.Entries[i]); 
-                    //}
-
-                }
 
 
                 for (int i = 0; i < inputs.Length; ++i)
@@ -231,6 +214,18 @@ namespace SATGeneratation
                 if (s.Check() == Status.SATISFIABLE)
                 {
                     Console.WriteLine("Success");
+
+
+                        Console.WriteLine("Success Tree");
+
+                        Console.WriteLine("ArgCount:\n" + s.Model.FuncInterp(tree.ArgumentCount.FuncDecl));
+                        Console.WriteLine("Ref:\n" + s.Model.FuncInterp(tree.ReverseLink.FuncDecl));
+                        //var af = s.Model.FuncInterp(a.FuncDecl); 
+                        //var rf = s.Model.FuncInterp(r.FuncDecl); 
+                        //for (int i = 0; i < n; ++i) 
+                        //{ 
+                        //    Console.WriteLine("-- {0}", af.Entries[i]); 
+                        //}
                     PopulateSolution(results[0], s);
                 }
                 else

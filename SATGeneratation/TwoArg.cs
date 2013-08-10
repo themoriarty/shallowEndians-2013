@@ -34,8 +34,10 @@ namespace SATGeneratation
                 for (int i = curNodeIndex + 2; i < nodes.Count; ++i)
                 {
                     var selNode = ctx.MkSelect(tree.ReverseLink, ctx.MkInt(i));
-                    var eqCheck = ctx.MkEq(selNode, ctx.MkInt(i));
-                    orClauses.Add(ctx.MkAnd(eqCheck, ctx.MkEq(arg0Output, nodes[i].Output)));
+                    var eqCheck = ctx.MkEq(selNode, ctx.MkInt(curNodeIndex));
+
+                    orClauses.Add(ctx.MkAnd(eqCheck, ctx.MkEq(arg1Output, nodes[i].Output)));
+                    //orClauses.Add(ctx.MkEq(arg1Output, nodes[2].Output));
                     foundArg = true;
                 }
                 if (!foundArg)

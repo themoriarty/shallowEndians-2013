@@ -28,7 +28,7 @@ namespace SATGeneratation
             if(tree != null)
             {
                 var sel = ctx.MkSelect(tree.ArgumentCount, ctx.MkInt(curNodeIndex));
-                solver.Assert(ctx.MkEq(Arity, ctx.MkInt(curNodeIndex)));
+                solver.Assert(ctx.MkEq(Arity, sel));
             }
             var zeroConst = ctx.MkAnd(ctx.MkEq(Arity, ctx.MkInt(0)), ctx.MkEq(Output, ZeroArgNode.Output), ctx.MkEq(OpCode, ZeroArgNode.OpCode),
                 ZeroArgNode.GenerateConstraints(ctx, solver, prInput, prOutput, permitted, nodes, curNodeIndex, tree));
