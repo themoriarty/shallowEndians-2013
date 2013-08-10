@@ -29,9 +29,9 @@
             return cnt;
         }
 
-        private static void Main(string[] args)
+        private static void Main4(string[] args)
         {
-            const int judgesProgramSize = 9;
+            const int judgesProgramSize = 7;
             const int programSize = judgesProgramSize - 1;
             //var options = new string[] { "tfold" };
             //var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, null));
@@ -41,10 +41,10 @@
 
             //var operators = training.operators;
 
-            Solve("aW7PipK64krdEbU9OxYMoFV1", judgesProgramSize, new string[]{"and",
-        "not",
-        "shl1",
-        "xor"});
+            Solve("aW7PipK64krdEbU9OxYMoFV1", judgesProgramSize, new string[]{"or",
+        "plus",
+        "shl1"/*,
+        "xor"*/});
 
             //const int judgesProgramSize = 8;
             //var programId = "9WqCcqFo4tIoJVnBm1OW9gFX";
@@ -267,7 +267,7 @@
 
         #region Methods
 
-        private static void Main4(string[] args)
+        private static void Main(string[] args)
         {
             //SolveTrainingProgram();
             //SolveMyProblems();
@@ -282,27 +282,27 @@
             var ops = ProgramTree.GetOpTypes(operators);
 
 
-            //ulong[] inputs = ProgramTree.GetInputVectorList(8).ToArray(); //{0x12, 0x137};
-            //var inputStrings = inputs.Select(s => string.Format("0x{0:X16}", s)).ToArray();
+            ulong[] inputs = ProgramTree.GetInputVectorList(8).ToArray(); //{0x12, 0x137};
+            var inputStrings = inputs.Select(s => string.Format("0x{0:X16}", s)).ToArray();
 
-            //Console.WriteLine("Input: {{{0}}}", string.Join(", ", inputStrings));
+            Console.WriteLine("Input: {{{0}}}", string.Join(", ", inputStrings));
 
-            //var outputsResponse = API.Eval(new EvalRequest(programId, null, inputStrings));
+            var outputsResponse = API.Eval(new EvalRequest(programId, null, inputStrings));
 
-            //if (outputsResponse.status != "ok" || outputsResponse.outputs == null)
-            //{
-            //    throw new Exception("eval failed");
-            //}
+            if (outputsResponse.status != "ok" || outputsResponse.outputs == null)
+            {
+                throw new Exception("eval failed");
+            }
 
-            //Console.WriteLine("Output: {{{0}}}", string.Join(", ", outputsResponse.outputs));
+            Console.WriteLine("Output: {{{0}}}", string.Join(", ", outputsResponse.outputs));
 
-            //ulong[] outputs = outputsResponse.outputs.Select(s => ulong.Parse(s.Replace("0x", string.Empty), NumberStyles.HexNumber)).ToArray();
+            ulong[] outputs = outputsResponse.outputs.Select(s => ulong.Parse(s.Replace("0x", string.Empty), NumberStyles.HexNumber)).ToArray();
 
             //ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x4E5B3679C799A739, 0x4EEBF16E2198469F, 0xA986C998F78B9A65, 0xA2C57077E8DDF691, 0x3C6E1A9F8F3F3625, 0xE526A4724D1CFCBD };
             //ulong[] outputs = { 0x0000000000000000, 0x0000000000000007, 0x0000000000000002, 0x0000000000000002, 0x0000000000000005, 0x0000000000000005, 0x0000000000000001, 0x0000000000000007 };
 
-            ulong[] inputs = { 0x0, 0x12, 0x137, 0xBFFC4003BFFC0000, 0x2FFF1000EFFF0000, 0x2FFF3FFFFFFFEFFF};
-            ulong[] outputs = { 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFED, 0xFFFFFFFFFFFFFECA, 0x4003BFFC4003FFFF, 0xD000EFFF1000FFFF, 0xD000C00000001002 };
+            //ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x143365BE8C18E891, 0x8695A9C52208381A, 0xCE45128B104DD1FC, 0x760442CEB4894690, 0xBBE30C4F1CC4FB4E, 0x755333D90B930A73};
+            //ulong[] outputs = { 0x0000000000000002, 0xFFFFFFFFFFFFFFFD, 0x3C9A313BA44AB9B3, 0x93C0FD4F6618A850, 0x6ACF37A130E975F6, 0x620CC86C1D9BD3B2, 0x33A924ED564EF1EC, 0x5FF99B8B22B91F59};
 
             var solution = Solve(judgesProgramSize, ops, inputs, outputs);
             var finalResult = solution.Serialize();
