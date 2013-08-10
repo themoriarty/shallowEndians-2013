@@ -42,6 +42,10 @@ namespace SATGeneratation
                 ret.Arg2 = CloneTreeStructure((root as ThreeArg).Arg2, ctx, nameSuffix);
                 return ret;
             }
+            else if (root is MetaArgNode)
+            {
+                //var ret = new MetaArgNode() { 
+            }
 
             throw new InvalidProgramException("Unknown type " + root.GetType());
         }
@@ -128,6 +132,57 @@ namespace SATGeneratation
                 expressions.Add(ctx.MkEq(root.OpCode, ctx.MkInt((int)opcode)));
             }
             solv.Assert(ctx.MkOr(expressions.ToArray()));
+        }
+
+        public static ArgNode SolveNodeArray(ulong[] inputs, ulong[] outputs, List<ArgNode> nodes, bool[] permitted)
+        {
+            if (inputs.Length == 0 || inputs.Length != outputs.Length)
+            {
+                throw new ArgumentException("Invalid program inputs/outputs provided");
+            }
+
+            using (Context ctx = new Context(new Dictionary<string, string>() { { "model", "true" } }))
+            {
+                /*
+                Solver s = ctx.MkSolver();
+                ArgNode[] results = new ArgNode[inputs.Length];
+                for (int i = 0; i < inputs.Length; ++i)
+                {
+                    results[i] = CloneTreeStructure(prototypeTreeRoot, ctx, "_" + inputs[i]);
+                    PopulateConstraints(results[i], ctx, s, ctx.MkBV(inputs[i], 64), ctx.MkBV(outputs[i], 64), permitted);
+                    s.Assert(ctx.MkEq(results[i].Output, ctx.MkBV(outputs[i], 64)));
+                }
+
+                // Makes multiple inputs work at the same time
+                for (int i = 1; i < inputs.Length; ++i)
+                {
+                    MakeNodeTypesEqual(ctx, s, results[0], results[i]);
+                }
+
+                // Input, 0 and 1 are always permitted
+                for (int i = (int)OpCodes.Input + 1; i < permitted.Length; ++i)
+                {
+                    if (permitted[i])
+                    {
+                        MakeSureOpcodeAppearsAtLeastOnce(ctx, s, results[0], (OpCodes)i);
+                    }
+                }
+
+
+                if (s.Check() == Status.SATISFIABLE)
+                {
+                    Console.WriteLine("Success");
+                    PopulateSolution(results[0], s);
+                }
+                else
+                {
+                    Console.WriteLine("Failure");
+                }
+
+                return results[0];*/
+                throw new NotImplementedException();
+            }
+
         }
 
         public static ArgNode SolvePrototypeTree(ulong[] inputs, ulong[] outputs, ArgNode prototypeTreeRoot, bool[] permitted)

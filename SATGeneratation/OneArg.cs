@@ -13,11 +13,17 @@ namespace SATGeneratation
 
         public override void AddConstraints(Context ctx, Solver solver, BitVecExpr prInput, BitVecExpr prOutput, bool[] permitted)
         {
-            var notCond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Not)), ctx.MkEq(Output, ctx.MkBVNot(Arg0.Output)));
-            var shl1Cond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Shl1)), ctx.MkEq(Output, ctx.MkBVSHL(Arg0.Output, ctx.MkBV(1, 64))));
-            var shr1Cond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Shr1)), ctx.MkEq(Output, ctx.MkBVLSHR(Arg0.Output, ctx.MkBV(1, 64))));
-            var shr4Cond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Shr4)), ctx.MkEq(Output, ctx.MkBVLSHR(Arg0.Output, ctx.MkBV(4, 64))));
-            var shr16Cond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Shr16)), ctx.MkEq(Output, ctx.MkBVLSHR(Arg0.Output, ctx.MkBV(16, 64))));
+            BitVecExpr arg0Output = ctx.MkBVConst(Name + "_bva0_", 64);
+            if (Arg0 != null)
+            {
+                solver.Assert(ctx.MkEq(Arg0.Output, arg0Output));
+            }
+
+            var notCond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Not)), ctx.MkEq(Output, ctx.MkBVNot(arg0Output)));
+            var shl1Cond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Shl1)), ctx.MkEq(Output, ctx.MkBVSHL(arg0Output, ctx.MkBV(1, 64))));
+            var shr1Cond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Shr1)), ctx.MkEq(Output, ctx.MkBVLSHR(arg0Output, ctx.MkBV(1, 64))));
+            var shr4Cond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Shr4)), ctx.MkEq(Output, ctx.MkBVLSHR(arg0Output, ctx.MkBV(4, 64))));
+            var shr16Cond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Shr16)), ctx.MkEq(Output, ctx.MkBVLSHR(arg0Output, ctx.MkBV(16, 64))));
 
             List<BoolExpr> expressions = new List<BoolExpr>();
             if (permitted[(int)OpCodes.Not])
@@ -40,7 +46,7 @@ namespace SATGeneratation
             {
                 expressions.Add(shr16Cond);
             }
-            solver.Assert(ctx.MkOr(expressions.ToArray()));
+            solver.Assert(ctx.MkOr(ctx.MkNot(ctx.MkEq(Arity, ctx.MkInt(1))), ctx.MkOr(expressions.ToArray())));
         }
 
         public override ArgNode[] GetChildren()

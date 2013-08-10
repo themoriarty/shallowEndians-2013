@@ -27,7 +27,7 @@ namespace SATGeneratation
             {
                 expressions.Add(inputCond);
             }
-            solver.Assert(ctx.MkOr(expressions.ToArray()));
+            solver.Assert(ctx.MkOr(ctx.MkNot(ctx.MkEq(Arity, ctx.MkInt(0))), ctx.MkOr(expressions.ToArray())));
         }
 
         public override ArgNode[] GetChildren()

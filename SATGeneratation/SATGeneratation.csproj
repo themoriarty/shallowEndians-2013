@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArgNode.cs" />
+    <Compile Include="MetaArgNode.cs" />
     <Compile Include="OneArg.cs" />
     <Compile Include="OpCodes.cs" />
     <Compile Include="Program.cs" />
