@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SATGeneratation
 {
-    class MetaArgNode : ArgNode
+    public class MetaArgNode : ArgNode
     {
 
         public override void Initialize(Context ctx, string name)

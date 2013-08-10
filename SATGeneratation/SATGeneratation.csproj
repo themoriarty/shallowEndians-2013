@@ -83,12 +83,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Icfpc2013\Icfpc2013.csproj">
-      <Project>{14d34ada-8c23-4c1e-a835-6f38fe4886b5}</Project>
-      <Name>Icfpc2013</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="libz3.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
