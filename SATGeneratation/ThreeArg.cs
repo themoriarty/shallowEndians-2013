@@ -7,8 +7,12 @@ using System.Threading.Tasks;
 
 namespace SATGeneratation
 {
-    class TwoArg : ArgNode
+    class ThreeArg : ArgNode
     {
+        public ArgNode Arg0;
+        public ArgNode Arg1;
+        public ArgNode Arg2;
+
         public BoolExpr GenerateConstraints(Context ctx, Solver solver, BitVecExpr prInput, BitVecExpr prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
         {
             List<BoolExpr> andClauses = new List<BoolExpr>();
@@ -35,10 +39,10 @@ namespace SATGeneratation
                 {
                     var selNode = ctx.MkSelect(tree.ReverseLink, ctx.MkInt(i));
                     var eqCheck = ctx.MkEq(selNode, ctx.MkInt(curNodeIndex));
-                    //var selPin = ctx.MkSelect(tree.PinLink, ctx.MkInt(i));
-                    //var pinCheck = ctx.MkEq(selPin, ctx.MkInt(1));
+                    var selPin = ctx.MkSelect(tree.PinLink, ctx.MkInt(i));
+                    var pinCheck = ctx.MkEq(selPin, ctx.MkInt(1));
 
-                    orClauses.Add(ctx.MkAnd(eqCheck, ctx.MkEq(arg1Output, nodes[i].Output)));
+                    orClauses.Add(ctx.MkAnd(pinCheck, eqCheck, ctx.MkEq(arg1Output, nodes[i].Output)));
                     foundArg = true;
                 }
                 if (!foundArg)
@@ -55,32 +59,54 @@ namespace SATGeneratation
                 andClauses.Add(ctx.MkFalse());
             }
 
-            var andCond = ctx.MkAnd(ctx.MkEq(Arity, ctx.MkInt(2)), ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.And)), ctx.MkEq(Output, ctx.MkBVAND(arg0Output, arg1Output)));
-            var orCond = ctx.MkAnd(ctx.MkEq(Arity, ctx.MkInt(2)), ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Or)), ctx.MkEq(Output, ctx.MkBVOR(arg0Output, arg1Output)));
-            var xorCond = ctx.MkAnd(ctx.MkEq(Arity, ctx.MkInt(2)), ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Xor)), ctx.MkEq(Output, ctx.MkBVXOR(arg0Output, arg1Output)));
-            var plusCond = ctx.MkAnd(ctx.MkEq(Arity, ctx.MkInt(2)), ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Plus)), ctx.MkEq(Output, ctx.MkBVAdd(arg0Output, arg1Output)));
-            List<BoolExpr> expressions = new List<BoolExpr>(); ;
-            if (permitted[(int)OpCodes.And])
+            BitVecExpr arg2Output = ctx.MkBVConst(Name + "_bva2_", 64);
+            if (Arg2 != null)
             {
-                expressions.Add(andCond);
+                andClauses.Add(ctx.MkEq(Arg2.Output, arg2Output));
             }
-            if (permitted[(int)OpCodes.Or])
+            else if (nodes != null && curNodeIndex < nodes.Count - 2 && tree != null)
             {
-                expressions.Add(orCond);
+                bool foundArg = false;
+                List<BoolExpr> orClauses = new List<BoolExpr>();
+                for (int i = curNodeIndex + 3; i < nodes.Count; ++i)
+                {
+                    var selNode = ctx.MkSelect(tree.ReverseLink, ctx.MkInt(i));
+                    var eqCheck = ctx.MkEq(selNode, ctx.MkInt(curNodeIndex));
+                    var selPin = ctx.MkSelect(tree.PinLink, ctx.MkInt(i));
+                    var pinCheck = ctx.MkEq(selPin, ctx.MkInt(2));
+
+                    orClauses.Add(ctx.MkAnd(pinCheck, eqCheck, ctx.MkEq(arg2Output, nodes[i].Output)));
+                    foundArg = true;
+                }
+                if (!foundArg)
+                {
+                    andClauses.Add(ctx.MkFalse());
+                }
+                else
+                {
+                    andClauses.Add(ctx.MkOr(orClauses.ToArray()));
+                }
             }
-            if (permitted[(int)OpCodes.Xor])
-            {
-                expressions.Add(xorCond);
-            }
-            if (permitted[(int)OpCodes.Plus])
-            {
-                expressions.Add(plusCond);
-            }
-            if (expressions.Count == 0)
+            else
             {
                 andClauses.Add(ctx.MkFalse());
             }
-            andClauses.Add(ctx.MkOr(expressions.ToArray()));
+
+
+            if (permitted[(int)OpCodes.If0])
+            {
+                andClauses.Add(
+                        ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.If0)),
+                        ctx.MkOr(
+                            ctx.MkAnd(ctx.MkEq(arg0Output, ctx.MkBV(0, 64)), ctx.MkEq(Output, arg1Output)),
+                            ctx.MkAnd(ctx.MkEq(ctx.MkBVUGT(arg0Output, ctx.MkBV(0, 64)), ctx.MkBool(true)), ctx.MkEq(Output, arg2Output))
+                    )));
+            }
+            if (andClauses.Count == 0)
+            {
+                andClauses.Add(ctx.MkFalse());
+            }
+
             return ctx.MkAnd(andClauses.ToArray());
         }
 
@@ -91,11 +117,7 @@ namespace SATGeneratation
 
         public override ArgNode[] GetChildren()
         {
-            return new ArgNode[] { Arg0, Arg1 };
+            return new ArgNode[] { Arg0, Arg1, Arg2 };
         }
-
-
-        public ArgNode Arg0;
-        public ArgNode Arg1;
     }
 }

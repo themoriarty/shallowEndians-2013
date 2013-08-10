@@ -42,24 +42,96 @@ namespace SATGeneratation
             }
 
             {
-                ulong[] inputs = { 0x11, 0x10 };
-                ulong[] outputs = { 0x1, 0x01 };
+                ulong[] inputs = { 0x10, 0x100, 0x0101 };
+                //ulong[] outputs = { 0x11, 0x101, 0x0101, 0x011111, 0x0111111, 0x01111111 };
+                ulong[] outputs = { 0x09, 0x81, 0x081 };
                 nodes.Add(new MetaArgNode() { Name = "ar0n3" });
                 nodes.Add(new MetaArgNode() { Name = "ar0n4" });
                 nodes.Add(new MetaArgNode() { Name = "ar0n5" });
                 nodes.Add(new MetaArgNode() { Name = "ar0n6" });
                 nodes.Add(new MetaArgNode() { Name = "ar0n7" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n8" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n9" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n10" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n11" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n12" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n13" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n14" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n15" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n16" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n17" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n18" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n19" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n20" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n21" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n22" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n23" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n24" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n25" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n26" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n27" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n28" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n29" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n30" });
                 permitted[(int)OpCodes.And] = true;
+                permitted[(int)OpCodes.Or] = true;
+                permitted[(int)OpCodes.If0] = true;
+                permitted[(int)OpCodes.Shr1] = true;
+                permitted[(int)OpCodes.Shr4] = true;
+                permitted[(int)OpCodes.Shr16] = true;
                 List<ArgNode> res = Utils.SolveNodeArray(inputs, outputs, nodes, permitted);
-                Console.WriteLine("[Node array] And output {0}, {1} {2} {3} {4} {5} {6}", 
-                    res[0].ComputedOpcode, 
-                    res[1].ComputedOpcode, 
-                    res[2].ComputedOpcode,
-                    res[3].ComputedOpcode,
-                    res[4].ComputedOpcode,
-                    res[5].ComputedOpcode,
-                    res[6].ComputedOpcode);
+                Console.Write("[Node array] And example output :::");
+                for (int i = 0; i < res.Count; i++)
+                {
+                    Console.Write(res[i].ComputedOpcode + " ");
+                }
+                Console.Write("\n");
                 permitted[(int)OpCodes.And] = false;
+                permitted[(int)OpCodes.Or] = false;
+            }
+
+            return;
+
+            {
+                ulong[] inputs = { 0x10, 0x100, 0x0101 };
+                ulong[] outputs = { 0x11, 0x101, 0x0101 };
+                nodes.Add(new MetaArgNode() { Name = "ar0n3" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n4" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n5" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n6" });
+                /*nodes.Add(new MetaArgNode() { Name = "ar0n7" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n8" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n9" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n10" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n11" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n12" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n13" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n14" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n15" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n16" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n17" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n18" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n19" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n20" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n21" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n22" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n23" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n24" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n25" });
+                nodes.Add(new MetaArgNode() { Name = "ar0n26" });*/
+                permitted[(int)OpCodes.And] = true;
+                permitted[(int)OpCodes.Or] = true;
+                permitted[(int)OpCodes.Shl1] = true;
+                permitted[(int)OpCodes.Shr1] = true;
+                List<ArgNode> res = Utils.SolveNodeArray(inputs, outputs, nodes, permitted);
+                Console.Write("[Node array] And example output :::");
+                for (int i = 0; i < res.Count; i++)
+                {
+                    Console.Write(res[i].ComputedOpcode + " ");
+                }
+                Console.Write("\n");
+                permitted[(int)OpCodes.And] = false;
+                permitted[(int)OpCodes.Or] = false;
             }
             return;
 
