@@ -1,0 +1,12 @@
+9WqCcqFo4tIoJVnBm1OW9gFX 8 tfold, shr1, shr4
+ProgramId: 9WqCcqFo4tIoJVnBm1OW9gFX
+Training: shr1, shr4, tfold
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x4E5B3679C799A739, 0x4EEBF16E2198469F, 0xA986C998F78B9A65, 0xA2C57077E8DDF691, 0x3C6E1A9F8F3F3625, 0xE526A4724D1CFCBD}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0x0000000000000007, 0x0000000000000002, 0x0000000000000002, 0x0000000000000005, 0x0000000000000005, 0x0000000000000001, 0x0000000000000007}
+
+Unhandled Exception: System.NullReferenceException: Object reference not set to an instance of an object.
+   at Icfpc2013.Program.Solve(String programId, Int32 judgesProgramSize, String[] operators) in c:\src\icfp2013\shallowEndians-2013\Icfpc201
+3\Program.cs:line 148
+   at Icfpc2013.Program.Main(String[] args) in c:\src\icfp2013\shallowEndians-2013\Icfpc2013\Program.cs:line 56
+Press any key to continue . . .

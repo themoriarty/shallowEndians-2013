@@ -1,0 +1,156 @@
+0RtZBj5r7DJlvWoIfJu2ffLW 8 tfold, plus
+ProgramId: 0RtZBj5r7DJlvWoIfJu2ffLW
+Training: plus, tfold
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xD8E4755D6F460C1A, 0xC8DB19F5D56567AD, 0x0085F8373B347C2B, 0x0DB3935300645EEC, 0x0F6C74CF75
+29404A, 0x4BEB041E4DC2BEF4}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0x00000000000001FE, 0x00000000000001B0, 0x0000000000000190, 0x0000000000000000, 0x000000000000001A, 0x000000000
+000001E, 0x0000000000000096}
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (plus x1 (plus x1 0)))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+3xfesvGE1AMZuc1GEtPvdhk9 8 tfold, or
+ProgramId: 3xfesvGE1AMZuc1GEtPvdhk9
+Training: or, tfold
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x216AB546A8FE98B5, 0x1A84E410FE824686, 0xB7F866EFB48B57B4, 0xE7E1383679462410, 0x94C60A94BB
+4B1973, 0x10FF6DF188EE07D6}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0x00000000000000FF, 0x0000000000000021, 0x000000000000001A, 0x00000000000000B7, 0x00000000000000E7, 0x000000000
+0000094, 0x0000000000000010}
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (or x1 (or x1 x1)))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+9WqCcqFo4tIoJVnBm1OW9gFX 8 tfold, shr1, shr4
+ProgramId: 9WqCcqFo4tIoJVnBm1OW9gFX
+Training: shr1, shr4, tfold
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x4E5B3679C799A739, 0x4EEBF16E2198469F, 0xA986C998F78B9A65, 0xA2C57077E8DDF691, 0x3C6E1A9F8F
+3F3625, 0xE526A4724D1CFCBD}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0x0000000000000007, 0x0000000000000002, 0x0000000000000002, 0x0000000000000005, 0x0000000000000005, 0x000000000
+0000001, 0x0000000000000007}
+
+Unhandled Exception: System.NullReferenceException: Object reference not set to an instance of an object.
+   at Icfpc2013.Program.Solve(String programId, Int32 judgesProgramSize, String[] operators) in c:\src\icfp2013\shallowEndians-2013\Icfpc201
+3\Program.cs:line 148
+   at Icfpc2013.Program.Main(String[] args) in c:\src\icfp2013\shallowEndians-2013\Icfpc2013\Program.cs:line 56
+
+   
+   
+C70A3N4WIXC3ihJdd6DKw4Tc 8 tfold, or
+ProgramId: C70A3N4WIXC3ihJdd6DKw4Tc
+Training: or, tfold
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xD8E4755D6F460C1A, 0xC8DB19F5D56567AD, 0x0085F8373B347C2B, 0x0DB3935300645EEC, 0x0F6C74CF75
+29404A, 0x4BEB041E4DC2BEF4}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0x00000000000000FF, 0x00000000000000D8, 0x00000000000000C8, 0x0000000000000000, 0x000000000000000D, 0x000000000
+000000F, 0x000000000000004B}
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (or x1 (or x1 x1)))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+DBIGThQHezoIrp6W4S7DKuFS 8 tfold, xor
+ProgramId: DBIGThQHezoIrp6W4S7DKuFS
+Training: tfold, xor
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x216AB546A8FE98B5, 0x1A84E410FE824686, 0xB7F866EFB48B57B4, 0xE7E1383679462410, 0x94C60A94BB
+4B1973, 0x10FF6DF188EE07D6}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0x0000000000000000, 0x00000000000000C3, 0x00000000000000D6, 0x000000000000001A, 0x0000000000000003, 0x000000000
+0000056, 0x00000000000000C4}
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (xor x1 (xor x2 0)))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+J22wUFai9tTVF0Bsvz3FNDJk 8 tfold, plus
+ProgramId: J22wUFai9tTVF0Bsvz3FNDJk
+Training: plus, tfold
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x4E5B3679C799A739, 0x4EEBF16E2198469F, 0xA986C998F78B9A65, 0xA2C57077E8DDF691, 0x3C6E1A9F8F
+3F3625, 0xE526A4724D1CFCBD}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000001, 0x0000000000000100, 0x000000000000004F, 0x000000000000004F, 0x00000000000000AA, 0x00000000000000A3, 0x000000000
+000003D, 0x00000000000000E6}
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (plus x1 (plus 0 1)))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+LJpblrMYpGB0qG7qAVxuXM5v 8 tfold, or
+ProgramId: LJpblrMYpGB0qG7qAVxuXM5v
+Training: or, tfold
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x707708E25622A01C, 0x2ED773588336EF20, 0x4BAE5BB138FCF580, 0xEC3738AD9C394E2C, 0x1DC06F4ED6
+CBF8D0, 0x4AE3EBE3AF6ECFBE}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0x00000000000000FF, 0x0000000000000070, 0x000000000000002E, 0x000000000000004B, 0x00000000000000EC, 0x000000000
+000001D, 0x000000000000004A}
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (or x1 (or x1 x1)))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+ME1t5KrseBKpIezYm4CWH2Mz 8 tfold, shr1
+ProgramId: ME1t5KrseBKpIezYm4CWH2Mz
+Training: shr1, tfold
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xC033EDA87DCCED24, 0xE8C2DBCE9329D7F2, 0x11E001A860B349B8, 0x4167FEEDE279DF34, 0xE243B96BBF
+77EF6B, 0xE34E2D4576E40AC4}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0x000000000000003F, 0x0000000000000030, 0x000000000000003A, 0x0000000000000004, 0x0000000000000010, 0x000000000
+0000038, 0x0000000000000038}
+
+Unhandled Exception: System.NullReferenceException: Object reference not set to an instance of an object.
+   at Icfpc2013.Program.Solve(String programId, Int32 judgesProgramSize, String[] operators) in c:\src\icfp2013\shallowEndians-2013\Icfpc201
+3\Program.cs:line 164
+   at Icfpc2013.Program.Main(String[] args) in c:\src\icfp2013\shallowEndians-2013\Icfpc2013\Program.cs:line 69
+
+   
+ME1t5KrseBKpIezYm4CWH2Mz
+
+FCxCLHbi7tSntPLPf9BANGDg 8 tfold, not, shl1
+ProgramId: FCxCLHbi7tSntPLPf9BANGDg
+Training: not, shl1, tfold
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xD8E4755D6F460C1A, 0xC8DB19F5D56567AD, 0x0085F8373B347C2B, 0x0DB3935300645EEC, 0x0F6C74CF75
+29404A, 0x4BEB041E4DC2BEF4}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFE00, 0xFFFFFFFFFFFFFE4E, 0xFFFFFFFFFFFFFE6E, 0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFE4, 0xFFFFFFFFF
+FFFFFE0, 0xFFFFFFFFFFFFFF68}
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (not (not (shl1 (not x1)))))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+Osxn7IvkfyjkCqwgp4UfEhHN 8 tfold, not, shr4
+ProgramId: Osxn7IvkfyjkCqwgp4UfEhHN
+Training: not, shr4, tfold
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x216AB546A8FE98B5, 0x1A84E410FE824686, 0xB7F866EFB48B57B4, 0xE7E1383679462410, 0x94C60A94BB
+4B1973, 0x10FF6DF188EE07D6}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFF0, 0xFFFFFFFFFFFFFFFD, 0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFF4, 0xFFFFFFFFFFFFFFF1, 0xFFFFFFFFF
+FFFFFF6, 0xFFFFFFFFFFFFFFFE}
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (not (not (not (shr4 x1)))))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+RgCWZKjbrYdZ322z4raBB65h 8 tfold, not, shr4
+ProgramId: RgCWZKjbrYdZ322z4raBB65h
+Training: not, shr4, tfold
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x4E5B3679C799A739, 0x4EEBF16E2198469F, 0xA986C998F78B9A65, 0xA2C57077E8DDF691, 0x3C6E1A9F8F
+3F3625, 0xE526A4724D1CFCBD}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0FFFFFFFFFFFFFFF, 0x0FFFFFFFFFFFFFF0, 0x0FFFFFFFFFFFFFFB, 0x0FFFFFFFFFFFFFFB, 0x0FFFFFFFFFFFFFF5, 0x0FFFFFFFFFFFFFF5, 0x0FFFFFFFF
+FFFFFFC, 0x0FFFFFFFFFFFFFF1}
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (not (not (shr4 (not x1)))))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+Y5u1WUm8r67tSg9ynbfvpugI 8 tfold, not, shl1
+ProgramId: Y5u1WUm8r67tSg9ynbfvpugI
+Training: not, shl1, tfold
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x707708E25622A01C, 0x2ED773588336EF20, 0x4BAE5BB138FCF580, 0xEC3738AD9C394E2C, 0x1DC06F4ED6
+CBF8D0, 0x4AE3EBE3AF6ECFBE}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFE00, 0xFFFFFFFFFFFFFF1E, 0xFFFFFFFFFFFFFFA2, 0xFFFFFFFFFFFFFF68, 0xFFFFFFFFFFFFFE26, 0xFFFFFFFFF
+FFFFFC4, 0xFFFFFFFFFFFFFF6A}
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (not (not (shl1 (not x1)))))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+bt4z0etmYtVBIOn8FwvW56kI 8 tfold, shr1, shr4
+ProgramId: bt4z0etmYtVBIOn8FwvW56kI
+Training: shr1, shr4, tfold
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xC033EDA87DCCED24, 0xE8C2DBCE9329D7F2, 0x11E001A860B349B8, 0x4167FEEDE279DF34, 0xE243B96BBF
+77EF6B, 0xE34E2D4576E40AC4}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0x0000000000000007, 0x0000000000000006, 0x0000000000000007, 0x0000000000000000, 0x0000000000000002, 0x000000000
+0000007, 0x0000000000000007}
+
+Unhandled Exception: System.NullReferenceException: Object reference not set to an instance of an object.
+   at Icfpc2013.Program.Solve(String programId, Int32 judgesProgramSize, String[] operators) in c:\src\icfp2013\shallowEndians-2013\Icfpc201
+3\Program.cs:line 164
+   at Icfpc2013.Program.Main(String[] args) in c:\src\icfp2013\shallowEndians-2013\Icfpc2013\Program.cs:line 69
