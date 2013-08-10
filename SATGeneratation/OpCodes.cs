@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SATGeneratation
 {
-    enum OpCodes
+    public enum OpCodes
     {
         Zero = 0,
         One = 1,

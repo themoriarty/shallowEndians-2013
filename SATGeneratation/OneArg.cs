@@ -19,7 +19,7 @@ namespace SATGeneratation
             var shr4Cond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Shr4)), ctx.MkEq(Output, ctx.MkBVLSHR(Arg0.Output, ctx.MkBV(4, 64))));
             var shr16Cond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Shr16)), ctx.MkEq(Output, ctx.MkBVLSHR(Arg0.Output, ctx.MkBV(16, 64))));
 
-            List<BoolExpr> expressions = new List<BoolExpr>(); ;
+            List<BoolExpr> expressions = new List<BoolExpr>();
             if (permitted[(int)OpCodes.Not])
             {
                 expressions.Add(notCond);
@@ -41,6 +41,11 @@ namespace SATGeneratation
                 expressions.Add(shr16Cond);
             }
             solver.Assert(ctx.MkOr(expressions.ToArray()));
+        }
+
+        public override ArgNode[] GetChildren()
+        {
+            return new ArgNode[] { Arg0 };
         }
     }
 }

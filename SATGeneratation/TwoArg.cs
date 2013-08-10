@@ -37,6 +37,11 @@ namespace SATGeneratation
             solver.Assert(ctx.MkOr(expressions.ToArray()));
         }
 
+        public override ArgNode[] GetChildren()
+        {
+            return new ArgNode[] { Arg0, Arg1 };
+        }
+
 
         public ArgNode Arg0;
         public ArgNode Arg1;

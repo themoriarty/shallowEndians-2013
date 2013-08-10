@@ -30,34 +30,9 @@ namespace SATGeneratation
             solver.Assert(ctx.MkOr(expressions.ToArray()));
         }
 
-        public SatExpression ConvertToSat()
+        public override ArgNode[] GetChildren()
         {
-            AndExpression OneExp = new AndExpression {
-                Exp1 = Utils.GetBitsForOpCode(Name + "_T", 0),
-                Exp2 = Utils.GetBitsFromNumber(Name + "_V", 1, 0)
-            };
-
-            AndExpression ZeroExp = new AndExpression
-            {
-                Exp1 = Utils.GetBitsForOpCode(Name + "_T", 0),
-                Exp2 = Utils.GetBitsFromNumber(Name + "_V", 0, 0)
-            };
-
-            AndExpression IdExp = new AndExpression
-            {
-                Exp1 = Utils.GetBitsForOpCode(Name + "_T", 0),
-                Exp2 = Utils.GetBitsFromNumber(Name + "_I", 0, 0)
-            };
-
-            return new OrExpression()
-            {
-                Exp1 = OneExp,
-                Exp2 = new OrExpression()
-                {
-                    Exp1 = ZeroExp,
-                    Exp2 = IdExp
-                }
-            };
+            return new ArgNode[] {};
         }
     }
 }

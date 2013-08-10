@@ -26,5 +26,9 @@ namespace SATGeneratation
             }
         }
 
+        public override ArgNode[] GetChildren()
+        {
+            return new ArgNode[] { Arg0, Arg1, Arg2 };
+        }
     }
 }
