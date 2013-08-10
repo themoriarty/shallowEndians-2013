@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Z3;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,35 +11,36 @@ namespace SATGeneratation
     {
         public ArgNode Arg0;
 
-        public override SatExpression ConvertToSat()
+        public override void AddConstraints(Context ctx, Solver solver, BitVecExpr prInput, BitVecExpr prOutput, bool[] permitted)
         {
-            AndExpression OneExp = new AndExpression
-            {
-                Exp1 = Utils.GetBitsForOpCode(Name + "_T", 0),
-                Exp2 = Utils.GetBitsFromNumber(Name + "_V", 1, 0)
-            };
+            var notCond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Not)), ctx.MkEq(Output, ctx.MkBVNot(Arg0.Output)));
+            var shl1Cond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Shl1)), ctx.MkEq(Output, ctx.MkBVSHL(Arg0.Output, ctx.MkBV(1, 64))));
+            var shr1Cond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Shr1)), ctx.MkEq(Output, ctx.MkBVLSHR(Arg0.Output, ctx.MkBV(1, 64))));
+            var shr4Cond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Shr4)), ctx.MkEq(Output, ctx.MkBVLSHR(Arg0.Output, ctx.MkBV(4, 64))));
+            var shr16Cond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Shr16)), ctx.MkEq(Output, ctx.MkBVLSHR(Arg0.Output, ctx.MkBV(16, 64))));
 
-            AndExpression ZeroExp = new AndExpression
+            List<BoolExpr> expressions = new List<BoolExpr>(); ;
+            if (permitted[(int)OpCodes.Not])
             {
-                Exp1 = Utils.GetBitsForOpCode(Name + "_T", 0),
-                Exp2 = Utils.GetBitsFromNumber(Name + "_V", 0, 0)
-            };
-
-            AndExpression IdExp = new AndExpression
+                expressions.Add(notCond);
+            }
+            if (permitted[(int)OpCodes.Shl1])
             {
-                Exp1 = Utils.GetBitsForOpCode(Name + "_T", 0),
-                Exp2 = Utils.GetBitsFromNumber(Name + "_I", 0, 0)
-            };
-
-            return new OrExpression()
+                expressions.Add(shl1Cond);
+            }
+            if (permitted[(int)OpCodes.Shr1])
             {
-                Exp1 = OneExp,
-                Exp2 = new OrExpression()
-                {
-                    Exp1 = ZeroExp,
-                    Exp2 = IdExp
-                }
-            };
+                expressions.Add(shr1Cond);
+            }
+            if (permitted[(int)OpCodes.Shr4])
+            {
+                expressions.Add(shr4Cond);
+            }
+            if (permitted[(int)OpCodes.Shr16])
+            {
+                expressions.Add(shr16Cond);
+            }
+            solver.Assert(ctx.MkOr(expressions.ToArray()));
         }
     }
 }
