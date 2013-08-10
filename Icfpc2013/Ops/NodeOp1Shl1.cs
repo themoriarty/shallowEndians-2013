@@ -16,7 +16,7 @@
 
         public override string Serialize()
         {
-            return string.Format("(shl1 {0})", this.Node0.Serialize());
+            return string.Format("(shl1 {0})", this.Node0 == null ? "NULL" : this.Node0.Serialize());
         }
 
         public override string ToString(int indentLevel)

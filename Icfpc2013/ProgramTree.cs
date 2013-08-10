@@ -160,8 +160,8 @@ namespace Icfpc2013
             {
                 validNodes.Add(new NodeId{Name = "x" });
             }
-            validNodes.Add(new Node0());
-            validNodes.Add(new Node1());
+            validNodes.Add(Node0.Instance);
+            validNodes.Add(Node1.Instance);
 
             if ((ops & OpTypes.not) != OpTypes.none)
             {
