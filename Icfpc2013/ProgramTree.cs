@@ -138,6 +138,11 @@ namespace Icfpc2013
             return Program.Op();
         }
 
+        public long Size()
+        {
+            return Program.Size();
+        }
+
         public static OpTypes GetOpTypes(IEnumerable<string> operators)
         {
             return Parser.ParseOps(operators).Aggregate(OpTypes.none, (seed, value) => seed | value);
@@ -155,8 +160,8 @@ namespace Icfpc2013
             {
                 validNodes.Add(new NodeId{Name = "x" });
             }
-            validNodes.Add(new Node0());
-            validNodes.Add(new Node1());
+            validNodes.Add(Node0.Instance);
+            validNodes.Add(Node1.Instance);
 
             if ((ops & OpTypes.not) != OpTypes.none)
             {

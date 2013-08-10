@@ -4,9 +4,11 @@
     {
         #region Public Methods and Operators
 
+        public static Node1 Instance = new Node1();
+
         public Node Clone()
         {
-            return new Node1();
+            return Instance;
         }
 
         public ulong Eval(ExecContext context)
