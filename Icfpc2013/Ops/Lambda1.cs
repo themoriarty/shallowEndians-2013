@@ -44,6 +44,11 @@
             return string.Format("(lambda ({0}) {1})", this.Id0.Serialize(), this.Node0.Serialize());
         }
 
+        public long Size()
+        {
+            return 1 + Node0.Size();
+        }
+
         public string ToString(int indentLevel)
         {
             string output = "\n";

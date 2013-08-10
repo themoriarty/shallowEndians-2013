@@ -79,6 +79,11 @@
             return output;
         }
 
+        public long Size()
+        {
+            return Node0.Size();
+        }
+
         #endregion
     }
 }
