@@ -280,12 +280,11 @@ namespace SATGeneratation
                         Console.WriteLine("Revlinks:\n" + s.Model.FuncInterp(tree.ReverseLink.FuncDecl));
                         Console.WriteLine("Pins:\n" + s.Model.FuncInterp(tree.PinLink.FuncDecl));
                         Console.WriteLine("FW1:\n" + s.Model.FuncInterp(tree.FwLink1.FuncDecl));
-                        //var af = s.Model.FuncInterp(a.FuncDecl); 
-                        //var rf = s.Model.FuncInterp(r.FuncDecl); 
-                        //for (int i = 0; i < n; ++i) 
-                        //{ 
-                        //    Console.WriteLine("-- {0}", af.Entries[i]); 
-                        //}
+
+                    for (int i = 0; i < nodes.Count; ++i)
+                    {
+                        Console.WriteLine("Node[{0}] = {1} Arity = {2}", i, (OpCodes)Int32.Parse(s.Model.Evaluate(results[0][i].OpCode).ToString()), s.Model.Evaluate(results[0][i].Arity));
+                    }
                     PopulateSolution(results[0], s, tree);
                 }
                 else

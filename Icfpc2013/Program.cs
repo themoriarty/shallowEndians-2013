@@ -46,7 +46,7 @@
             Solve("aW7PipK64krdEbU9OxYMoFV1", judgesProgramSize, new string[]{"or",
         "plus",
         "shl1"/*,
-        "xor"*/});
+        "xor"*/}, false);
 
             //const int judgesProgramSize = 8;
             //var programId = "9WqCcqFo4tIoJVnBm1OW9gFX";
@@ -441,21 +441,15 @@
 
         public static void SolveSatOffline()
         {
-            //const int judgesProgramSize = 7;
+            const int judgesProgramSize = 8;
 
-            //var programId = "gXjjIPXexbWezcIsASu8Cvd4";
-            //var operators = new[] { "shl1", "shr4", "xor" };
+            var programId = "GBUTtMTIADxBecgU35jl63us";
+            var operators = new[] { "plus", "xor" };
 
-            //ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xD8E4755D6F460C1A, 0xC8DB19F5D56567AD, 0x0085F8373B347C2B, 0x0DB3935300645EEC, 0x0F6C74CF7529404A, 0x4BEB041E4DC2BEF4 };
-            //ulong[] outputs = { 0x0000000000000000, 0x3FFFFFFFFFFFFFFC, 0x36391D575BD18304, 0x3236C67D755959E8, 0x00217E0DCECD1F08, 0x036CE4D4C01917B8, 0x03DB1D33DD4A5010, 0x12FAC1079370AFBC };
+            // Solution: (lambda (x) (xor x (xor x (plus x x))))
 
-            const int judgesProgramSize = 7;
-
-            var programId = "gaSlAmNR0I3rmCsT9Ea0dN7C";
-            var operators = new[] { "not", "plus" };
-
-            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x216AB546A8FE98B5, 0x1A84E410FE824686, 0xB7F866EFB48B57B4, 0xE7E1383679462410, 0x94C60A94BB4B1973, 0x10FF6DF188EE07D6 };
-            ulong[] outputs = { 0x0000000000000000, 0x0000000000000002, 0xBD2A9572AE02CE96, 0xCAF637DE02FB72F4, 0x900F322096E95098, 0x303D8F930D73B7E0, 0xD673EAD68969CD1A, 0xDE01241CEE23F054 };
+            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x23A282379AF7850C, 0xF3D35174C949BB0D, 0xFE7C0264DF27E86F, 0x06CC691C9D9CD006, 0xE809CD0767D69590, 0x736D7A70B0B2534C };
+            ulong[] outputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFE, 0x4745046F35EF0A18, 0xE7A6A2E99293761A, 0xFCF804C9BE4FD0DE, 0x0D98D2393B39A00C, 0xD0139A0ECFAD2B20, 0xE6DAF4E16164A698 };
 
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
@@ -469,11 +463,11 @@
             Console.WriteLine(finalResult);
         }
 
-        public static bool SolveTrainingProgram()
+        public static bool SolveTrainingProgram(bool useSat)
         {
-            int judgesProgramSize = 8;
+            int judgesProgramSize = 12;
             var options = new[] { "tfold" };
-            options = null;
+            options = new string[0];
             var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, options));
             var programId = training.id;
 
@@ -481,7 +475,7 @@
 
             var operators = training.operators;
 
-            return Solve(programId, judgesProgramSize, operators);
+            return Solve(programId, judgesProgramSize, operators, useSat);
         }
 
         #endregion
@@ -490,13 +484,13 @@
 
         private static void Main(string[] args)
         {
-            //SolveTrainingProgram();
+            SolveTrainingProgram(true);
             //SolveMyProblems();
             //SolveOffline();
-            SolveSatOffline();
+            //SolveSatOffline();
         }
         
-        private static bool Solve(string programId, int judgesProgramSize, string[] operators)
+        private static bool Solve(string programId, int judgesProgramSize, string[] operators, bool useSat)
         {
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
@@ -520,13 +514,30 @@
 
             ulong[] outputs = outputsResponse.outputs.Select(s => ulong.Parse(s.Replace("0x", string.Empty), NumberStyles.HexNumber)).ToArray();
 
-            //ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x4E5B3679C799A739, 0x4EEBF16E2198469F, 0xA986C998F78B9A65, 0xA2C57077E8DDF691, 0x3C6E1A9F8F3F3625, 0xE526A4724D1CFCBD };
-            //ulong[] outputs = { 0x0000000000000000, 0x0000000000000007, 0x0000000000000002, 0x0000000000000002, 0x0000000000000005, 0x0000000000000005, 0x0000000000000001, 0x0000000000000007 };
+            Lambda1 solution = null;
+            
+            if (useSat)
+            {
+                try
+                {
+                    Console.WriteLine("Using SAT!");
+                    solution = SolveSat(judgesProgramSize, ops, inputs, outputs);
 
-            //ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x143365BE8C18E891, 0x8695A9C52208381A, 0xCE45128B104DD1FC, 0x760442CEB4894690, 0xBBE30C4F1CC4FB4E, 0x755333D90B930A73};
-            //ulong[] outputs = { 0x0000000000000002, 0xFFFFFFFFFFFFFFFD, 0x3C9A313BA44AB9B3, 0x93C0FD4F6618A850, 0x6ACF37A130E975F6, 0x620CC86C1D9BD3B2, 0x33A924ED564EF1EC, 0x5FF99B8B22B91F59};
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("SAT faild: {0}", ex);
 
-            var solution = Solve(judgesProgramSize, ops, inputs, outputs);
+                    Console.WriteLine("Using BFS!");
+                    solution = Solve(judgesProgramSize, ops, inputs, outputs);    
+                }
+            }
+            else
+            {
+                Console.WriteLine("Using BFS!");
+                solution = Solve(judgesProgramSize, ops, inputs, outputs);    
+            }
+            
             var finalResult = solution.Serialize();
 
             Console.WriteLine("Submitting: {0}", finalResult);
