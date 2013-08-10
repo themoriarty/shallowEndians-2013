@@ -1,0 +1,46 @@
+HTTP response for URL http://icfpc2013.cloudapp.net/train?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Challenge: (lambda (x_10392) (if0 (xor (shl1 (not x_10392)) x_10392) 0 (shr16 x_10392)))
+ProgramId: wlYQgzZ2YBeHBcLrDjUtcdAk
+Training: if0, not, shl1, shr16, xor
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xD8E4755D6F460C1A, 0xC8DB19F5D56567AD, 0x0085F8373B347C2B, 0x0DB3935300645EEC, 0x0F6C74CF75
+29404A, 0x4BEB041E4DC2BEF4}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0x0000FFFFFFFFFFFF, 0x0000D8E4755D6F46, 0x0000C8DB19F5D565, 0x00000085F8373B34, 0x00000DB393530064, 0x00000F6C7
+4CF7529, 0x00004BEB041E4DC2}
+Using SAT!
+Using SAT only!
+WARNING: Error setting model, unknown option.
+Success
+Success Tree
+ArgCount:
+[3 -> 1, 5 -> 1, 6 -> 0, 0 -> 2, 8 -> 0, 2 -> 0, 1 -> 3, 7 -> 1, 4 -> 0, else -> 0]
+Revlinks:
+[3 -> 1, 5 -> 1, 4 -> 3, 2 -> 1, 8 -> 7, 1 -> 0, 7 -> 0, 6 -> 5, else -> 1]
+Pins:
+[3 -> 1, 5 -> 2, 4 -> 0, 2 -> 0, 8 -> 0, 1 -> 0, 7 -> 1, 6 -> 0, else -> 0]
+FW1:
+[3 -> 4, 5 -> 6, 1 -> 2, 0 -> 1, 7 -> 8, else -> 4]
+Node[0] = Xor Arity = 2
+Node[1] = If0 Arity = 3
+Node[2] = One Arity = 0
+Node[3] = Not Arity = 1
+Node[4] = Input Arity = 0
+Node[5] = Shl1 Arity = 1
+Node[6] = Zero Arity = 0
+Node[7] = Shr16 Arity = 1
+Node[8] = Input Arity = 0
+[Node array] And example output :::Xor If0 One Not Input Shl1 Zero Shr16 Input
+SAT: (xor (if0 1 (not x) (shl1 0)) (shr16 x))
+[0] 0000000000000000 0000000000000000 0000000000000000
+[1] FFFFFFFFFFFFFFFF 0000FFFFFFFFFFFF 0000FFFFFFFFFFFF
+[2] D8E4755D6F460C1A 0000D8E4755D6F46 0000D8E4755D6F46
+[3] C8DB19F5D56567AD 0000C8DB19F5D565 0000C8DB19F5D565
+[4] 0085F8373B347C2B 00000085F8373B34 00000085F8373B34
+[5] 0DB3935300645EEC 00000DB393530064 00000DB393530064
+[6] 0F6C74CF7529404A 00000F6C74CF7529 00000F6C74CF7529
+[7] 4BEB041E4DC2BEF4 00004BEB041E4DC2 00004BEB041E4DC2
+* computation completed in 2
+Submitting: (lambda (x) (xor (if0 1 (not x) (shl1 0)) (shr16 x)))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: mismatch  0xAAAAAAAAAAAAAAAA, 0x0000000000000000, 0x0000AAAAAAAAAAAA
+Press any key to continue . . .
