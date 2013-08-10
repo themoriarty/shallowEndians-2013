@@ -408,36 +408,25 @@
                 var operators = task["operators"].Select(s => (string)s).ToArray();
                 var ops = ProgramTree.GetOpTypes(operators);
 
-                if (solved.HasValue == false && size < 12 && ((ops & (OpTypes.fold | OpTypes.if0)) == OpTypes.none) /*&& (ops & OpTypes.tfold) == OpTypes.tfold*/ /* && Bits(ops) == 3*/)
+                if (solved.HasValue == false && size <= 8 && ((ops & (OpTypes.fold /*| OpTypes.if0*/)) == OpTypes.none) /*&& (ops & OpTypes.tfold) == OpTypes.tfold*/ /* && Bits(ops) == 3*/)
                 {
                     Console.WriteLine("{0} {1} {2}", id, size, ops);
 
-                    //Solve(id, size, operators);
-                    //Thread.Sleep(20000);
+                    Solve(id, size, operators, true);
+                    Thread.Sleep(20000);
                 }
             }
         }
 
         public static void SolveOffline()
         {
-            const int judgesProgramSize = 11;
+            const int judgesProgramSize = 8;
 
             var programId = "7eegF4nrTKkUz0fkrdnBwPvz";
-            var operators = new[] { "if0",
-        "plus",
-        "shr16",
-        "shr4",
-        "xor"};
-            
-            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x0580A1AB9001056D, 0x17FBEACECACE0709, 0x6E8E0097C68096A7, 0x50475BF54101FEE4, 0x880A7F62D368B805, 0xFDCFD29F7AE5550B };
-            ulong[] outputs = { 0x0000000000000000,
-        0x0000FFFFFFFFFFFF,
-        0x00000580A1AB9001,
-        0x000017FBEACECACE,
-        0x00006E8E0097C680,
-        0x000050475BF54101,
-        0x0000880A7F62D368,
-        0x0000FDCFD29F7AE5 };
+            var operators = new[] { "not","shr4","xor","plus"};
+
+            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xD8E4755D6F460C1A, 0xC8DB19F5D56567AD, 0x0085F8373B347C2B, 0x0DB3935300645EEC, 0x0F6C74CF7529404A, 0x4BEB041E4DC2BEF4 };
+            ulong[] outputs = { 0xFFFFFFFFFFFFFFFF, 0x0FFFFFFFFFFFFFFE, 0x037A4354B5939F3E, 0x0484718B4D3235D5, 0xFFF85082F2AD4041, 0x004AE8ECD00243E9, 0xFFD1C14BF2AD6BFB, 0xFC954FBEA4A429D8 };
 
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
@@ -495,8 +484,8 @@
 
         private static void Main(string[] args)
         {
-            SolveTrainingProgram(true);
-            //SolveMyProblems();
+            //SolveTrainingProgram(true);
+            SolveMyProblems();
             //SolveOffline();
             //SolveSatOffline();
         }
@@ -541,7 +530,7 @@
                     {
                         Console.WriteLine("Using SAT!");
 
-                        if ((ops & OpTypes.if0) != OpTypes.none || judgesProgramSize > 8)
+                        if ((ops & OpTypes.if0) != OpTypes.none || judgesProgramSize > 0)
                         {
                             Console.WriteLine("Using SAT only!");
                             solution = SolveSat(judgesProgramSize, ops, inputs, outputs);
