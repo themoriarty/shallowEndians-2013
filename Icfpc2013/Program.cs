@@ -110,8 +110,8 @@
                 {
                     Console.WriteLine("{0} {1} {2}", id, size, ops);
 
-                    Solve(id, size, operators);
-                    Thread.Sleep(20000);
+                    //Solve(id, size, operators);
+                    //Thread.Sleep(20000);
                 }
             }
         }
@@ -157,8 +157,8 @@
         private static void Main(string[] args)
         {
             //SolveTrainingProgram();
-            SolveMyProblems();
-            //SolveOffline();
+            //SolveMyProblems();
+            SolveOffline();
         }
 
         private static bool Solve(string programId, int judgesProgramSize, string[] operators)
