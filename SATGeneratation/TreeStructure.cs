@@ -130,32 +130,44 @@
 
         private BoolExpr GetTreeLevelConstrains(Context ctx, int i)
         {
+            // look at \sattreeconstr.txt for details
             var asel = ctx.MkSelect(ArgumentCount, ctx.MkInt(i));
 
             var topLevel = new List<BoolExpr>();
 
-
+            // zero-argument node
             topLevel.Add(ctx.MkEq(asel, ctx.MkInt(0)));
 
             if (i < TreeSize - 1)
             {
+                // one-argument node
+                // reverse link of the next argument
                 var rsel = ctx.MkSelect(ReverseLink, ctx.MkInt(i + 1));
+                // pin of the next argument
                 var psel = ctx.MkSelect(PinLink, ctx.MkInt(i + 1));
                 
+                // argsLevel == 1 AND next link is our childer AND next link is our 0th pin
                 topLevel.Add(ctx.MkAnd(ctx.MkEq(asel, ctx.MkInt(1)), ctx.MkEq(rsel, ctx.MkInt(i)), ctx.MkEq(psel, ctx.MkInt(0))));
 
                 if (i < TreeSize - 2)
                 {
+                    // two-arguments node
                     var secondLevel = new List<BoolExpr>();
 
                     for (int j = i + 2; j < TreeSize; ++j)
                     {
-                        secondLevel.Add(ctx.MkAnd(ctx.MkEq(ctx.MkSelect(ReverseLink, ctx.MkInt(j)), ctx.MkInt(i)), ctx.MkEq(ctx.MkSelect(PinLink, ctx.MkInt(j)), ctx.MkInt(1))));
+                        var reverseJth = ctx.MkSelect(ReverseLink, ctx.MkInt(j));
+                        var pinJth = ctx.MkSelect(PinLink, ctx.MkInt(j));
+                        // jth node is our childer AND it's our 1st pin [ 1 ]
+                        secondLevel.Add(ctx.MkAnd(ctx.MkEq(reverseJth, ctx.MkInt(i)), ctx.MkEq(pinJth, ctx.MkInt(1))));
                     }
+                    // this node has 2 arguments AND (i + 1) is our child and (i + 1) is our 0th pin and and of the subsequent node satisfies [1]
                     topLevel.Add(ctx.MkAnd(ctx.MkEq(asel, ctx.MkInt(2)), ctx.MkEq(rsel, ctx.MkInt(i)), ctx.MkEq(psel, ctx.MkInt(0)), secondLevel.Count > 0 ? ctx.MkOr(secondLevel.ToArray()) : ctx.MkFalse()));
 
                     if (i < TreeSize - 3)
                     {
+                        // three-arguments node
+                        // (a[0] == 3 && r[1] == 0 && ((r[2] == 0) && (r[3] == 0 || r[3] == 0 || ... || r[n-1] == 0) || ... || (r[n-2] == 0) && r[n-1] == 0))
                         var thirdLevel = new List<BoolExpr>();
 
                         for (int j = i + 2; j < TreeSize - 1; ++j)
