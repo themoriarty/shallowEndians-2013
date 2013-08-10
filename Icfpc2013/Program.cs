@@ -228,7 +228,7 @@
                 var operators = task["operators"].Select(s => (string)s).ToArray();
                 var ops = ProgramTree.GetOpTypes(operators);
 
-                if (solved.HasValue == false && size == 9 && ((ops & (OpTypes.fold | OpTypes.if0)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.tfold /* && Bits(ops) == 3*/)
+                if (solved.HasValue == false && size < 12 && ((ops & (OpTypes.fold | OpTypes.if0)) == OpTypes.none) /*&& (ops & OpTypes.tfold) == OpTypes.tfold*/ /* && Bits(ops) == 3*/)
                 {
                     Console.WriteLine("{0} {1} {2}", id, size, ops);
 
@@ -260,9 +260,9 @@
 
         public static bool SolveTrainingProgram()
         {
-            int judgesProgramSize = 9;
+            int judgesProgramSize = 8;
             var options = new[] { "tfold" };
-            //options = null;
+            options = null;
             var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, options));
             var programId = training.id;
 
