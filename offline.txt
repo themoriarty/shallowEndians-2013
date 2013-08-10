@@ -1,0 +1,1038 @@
+            const int judgesProgramSize = 7;
+            
+            var programId = "DjPrFr5QBbrqHdvZuwdAsKUC";
+            var operators = new[] { "shr16", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xD8E4755D6F460C1A", "0xC8DB19F5D56567AD", "0x0085F8373B347C2B", "0x0DB3935300645EEC", "0x0F6C74CF7529404A", "0x4BEB041E4DC2BEF4" };
+            ulong[] outputs = { "0x0000000000000000", "0x0000FFFFFFFFFFFF", "0x0000D8E4755D6F46", "0x0000C8DB19F5D565", "0x00000085F8373B34", "0x00000DB393530064", "0x00000F6C74CF7529", "0x00004BEB041E4DC2" };
+      
+      
+
+            const int judgesProgramSize = 7;
+            
+            var programId = "gaSlAmNR0I3rmCsT9Ea0dN7C";
+            var operators = new[] { "not", "plus" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x216AB546A8FE98B5", "0x1A84E410FE824686", "0xB7F866EFB48B57B4", "0xE7E1383679462410", "0x94C60A94BB4B1973", "0x10FF6DF188EE07D6" };
+            ulong[] outputs = { "0x0000000000000000", "0x0000000000000002", "0xBD2A9572AE02CE96", "0xCAF637DE02FB72F4", "0x900F322096E95098", "0x303D8F930D73B7E0", "0xD673EAD68969CD1A", "0xDE01241CEE23F054" };
+      
+      
+
+            const int judgesProgramSize = 7;
+            
+            var programId = "gXjjIPXexbWezcIsASu8Cvd4";
+            var operators = new[] { "shl1", "shr4", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xD8E4755D6F460C1A", "0xC8DB19F5D56567AD", "0x0085F8373B347C2B", "0x0DB3935300645EEC", "0x0F6C74CF7529404A", "0x4BEB041E4DC2BEF4" };
+            ulong[] outputs = { "0x0000000000000000", "0x3FFFFFFFFFFFFFFC", "0x36391D575BD18304", "0x3236C67D755959E8", "0x00217E0DCECD1F08", "0x036CE4D4C01917B8", "0x03DB1D33DD4A5010", "0x12FAC1079370AFBC" };
+      
+      
+
+            const int judgesProgramSize = 7;
+            
+            var programId = "ni13YAjBBNzKLIWUXs2tNGpK";
+            var operators = new[] { "and", "not", "or" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x216AB546A8FE98B5", "0x1A84E410FE824686", "0xB7F866EFB48B57B4", "0xE7E1383679462410", "0x94C60A94BB4B1973", "0x10FF6DF188EE07D6" };
+            ulong[] outputs = { "0x0000000000000000", "0x0000000000000001", "0x0000000000000001", "0x0000000000000000", "0x0000000000000000", "0x0000000000000000", "0x0000000000000001", "0x0000000000000000" };
+      
+      
+
+            const int judgesProgramSize = 7;
+            
+            var programId = "oWtgBu0WLHYCZMibwUVMXJHB";
+            var operators = new[] { "not", "or", "plus" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x4E5B3679C799A739", "0x4EEBF16E2198469F", "0xA986C998F78B9A65", "0xA2C57077E8DDF691", "0x3C6E1A9F8F3F3625", "0xE526A4724D1CFCBD" };
+            ulong[] outputs = { "0xFFFFFFFFFFFFFFFE", "0xFFFFFFFFFFFFFFFE", "0x4E5B3679C799A738", "0x4EEBF16E2198469E", "0xA986C998F78B9A64", "0xA2C57077E8DDF690", "0x3C6E1A9F8F3F3624", "0xE526A4724D1CFCBC" };
+      
+      
+
+            const int judgesProgramSize = 7;
+            
+            var programId = "qSLljZaM1b6VYi8BIykF3Gaq";
+            var operators = new[] { "plus", "shr4", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x707708E25622A01C", "0x2ED773588336EF20", "0x4BAE5BB138FCF580", "0xEC3738AD9C394E2C", "0x1DC06F4ED6CBF8D0", "0x4AE3EBE3AF6ECFBE" };
+            ulong[] outputs = { "0x0000000000000000", "0xF000000000000000", "0x7E79E9FE1CE6F41F", "0x2B0D9D33935032C4", "0x42DB90C71FE36B30", "0xE1B1DFB82FBE67E9", "0x1E7862A70C1287CA", "0x43BF969FDA831649" };
+      
+      
+
+            const int judgesProgramSize = 7;
+            
+            var programId = "sLWn74BvxK48Ldo1fmi1D9x4";
+            var operators = new[] { "or", "shl1", "shr1" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xC033EDA87DCCED24", "0xE8C2DBCE9329D7F2", "0x11E001A860B349B8", "0x4167FEEDE279DF34", "0xE243B96BBF77EF6B", "0xE34E2D4576E40AC4" };
+            ulong[] outputs = { "0x0000000000000001", "0xFFFFFFFFFFFFFFFD", "0x8067DB50FB99DA49", "0xD185B79D2653AFE5", "0x23C00350C1669371", "0x82CFFDDBC4F3BE69", "0xC48772D77EEFDED5", "0xC69C5A8AEDC81589" };
+      
+      
+
+            const int judgesProgramSize = 7;
+            
+            var programId = "uAwGZ8ApxKN9nswrfqfBirMo";
+            var operators = new[] { "plus", "shr16", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x23A282379AF7850C", "0xF3D35174C949BB0D", "0xFE7C0264DF27E86F", "0x06CC691C9D9CD006", "0xE809CD0767D69590", "0x736D7A70B0B2534C" };
+            ulong[] outputs = { "0x0000000000000001", "0x0001000000000000", "0x000023A282379AF8", "0x0000F3D35174C94A", "0x0000FE7C0264DF28", "0x000006CC691C9D9D", "0x0000E809CD0767D7", "0x0000736D7A70B0B3" };
+      
+      
+
+            const int judgesProgramSize = 7;
+            
+            var programId = "zLVmAB5WRMRAe23j1exhrEEu";
+            var operators = new[] { "not", "shl1", "shr16", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x097E6E055D07F036", "0xA30604E66793F909", "0xA2EC6C7ADE3842EF", "0x8B8DCC5011923FDE", "0x22006E622C672963", "0x4801A2390D5DCD16" };
+            ulong[] outputs = { "0xFFFFFFFFFFFFFFFE", "0xFFFE000000000000", "0xFFFFED0323F545F0", "0xFFFEB9F3F63330D8", "0xFFFEBA27270A438E", "0xFFFEE8E4675FDCDA", "0xFFFFBBFF233BA730", "0xFFFF6FFCBB8DE544" };
+      
+      
+
+            const int judgesProgramSize = 8;
+            
+            var programId = "A0npAyvse0lbT2AkuBrmuw8c";
+            var operators = new[] { "and", "plus" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x216AB546A8FE98B5", "0x1A84E410FE824686", "0xB7F866EFB48B57B4", "0xE7E1383679462410", "0x94C60A94BB4B1973", "0x10FF6DF188EE07D6" };
+            ulong[] outputs = { "0x0000000000000001", "0x0000000000000001", "0x216AB546A8FE98B7", "0x1A84E410FE824687", "0xB7F866EFB48B57B5", "0xE7E1383679462411", "0x94C60A94BB4B1975", "0x10FF6DF188EE07D7" };
+      
+      
+
+            const int judgesProgramSize = 8;
+            
+            var programId = "BLH3XPzxlAN7MzEuZvAXQCgV";
+            var operators = new[] { "or", "shr16", "shr4" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x4E5B3679C799A739", "0x4EEBF16E2198469F", "0xA986C998F78B9A65", "0xA2C57077E8DDF691", "0x3C6E1A9F8F3F3625", "0xE526A4724D1CFCBD" };
+            ulong[] outputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x4E5B36FDF7FFBF79", "0x4EEBF5EEBF9EE69F", "0xA986CB98FF9B9F7D", "0xA2C57A7FFFDFFE9D", "0x3C6E1BDFEFBFFEF7", "0xE526AE726F5FFCFD" };
+      
+      
+
+            const int judgesProgramSize = 8;
+            
+            var programId = "BavECnbpU8c19HESAn6huqmA";
+            var operators = new[] { "not", "or", "plus", "shr16" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x707708E25622A01C", "0x2ED773588336EF20", "0x4BAE5BB138FCF580", "0xEC3738AD9C394E2C", "0x1DC06F4ED6CBF8D0", "0x4AE3EBE3AF6ECFBE" };
+            ulong[] outputs = { "0x0000FFFFFFFFFFFF", "0x0000000000000000", "0x7077986B4D4049F9", "0x2ED844810FDE6BE9", "0x4BAF1002DD4BBC83", "0xEC374C76638BB1F3", "0x1DC1518E677D2205", "0x4AE4A0FFC38B204F" };
+      
+      
+
+            const int judgesProgramSize = 8;
+            
+            var programId = "DEIedoOYNZNBRQ94J55jt9An";
+            var operators = new[] { "or", "plus" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xC033EDA87DCCED24", "0xE8C2DBCE9329D7F2", "0x11E001A860B349B8", "0x4167FEEDE279DF34", "0xE243B96BBF77EF6B", "0xE34E2D4576E40AC4" };
+            ulong[] outputs = { "0x0000000000000001", "0x0000000000000000", "0xC033EDA87DCCED25", "0xE8C2DBCE9329D7F3", "0x11E001A860B349B9", "0x4167FEEDE279DF35", "0xE243B96BBF77EF6C", "0xE34E2D4576E40AC5" };
+      
+      
+
+            const int judgesProgramSize = 8;
+            
+            var programId = "GBUTtMTIADxBecgU35jl63us";
+            var operators = new[] { "plus", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x23A282379AF7850C", "0xF3D35174C949BB0D", "0xFE7C0264DF27E86F", "0x06CC691C9D9CD006", "0xE809CD0767D69590", "0x736D7A70B0B2534C" };
+            ulong[] outputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFE", "0x4745046F35EF0A18", "0xE7A6A2E99293761A", "0xFCF804C9BE4FD0DE", "0x0D98D2393B39A00C", "0xD0139A0ECFAD2B20", "0xE6DAF4E16164A698" };
+      
+      
+
+            const int judgesProgramSize = 8;
+            
+            var programId = "KoBkA0RAK9u4lDo0LbJcnfxF";
+            var operators = new[] { "plus", "shl1", "shr1", "shr16", "shr4" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x097E6E055D07F036", "0xA30604E66793F909", "0xA2EC6C7ADE3842EF", "0x8B8DCC5011923FDE", "0x22006E622C672963", "0x4801A2390D5DCD16" };
+            ulong[] outputs = { "0x0000000000000000", "0x10007FFFFFFFFFFE", "0x012FD27FE2A3AC89", "0x0461121FCF65B2EA", "0x045DDF0592047779", "0x0171FF50E85A50C4", "0x04401ECC7CBDFB5F", "0x09005847F2C84050" };
+      
+      
+
+            const int judgesProgramSize = 8;
+            
+            var programId = "LWu3k5jZVazzr6ALypyCNCfW";
+            var operators = new[] { "not", "or", "plus", "shr1" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xC9F88E422EC10F4C", "0x3CB96DDBC67E6503", "0x8041DA9DBD03076B", "0x3C68DE0EADC71541", "0xD4495F0A40C44A3D", "0xA9473AF0FC289D30" };
+            ulong[] outputs = { "0x8000000000000000", "0xFFFFFFFFFFFFFFFF", "0xDBFBBEDEEEDF7F5E", "0x7DBB6DDBDEFEED7F", "0xBFDFDABDBD7F7F6B", "0x7DEBDEFEADDF7561", "0xD5DB5F7ADFDDDAFF", "0xAB5F7AF7FDEBBD78" };
+      
+      
+
+            const int judgesProgramSize = 8;
+            
+            var programId = "PHFYkHqtvHWKxQngESY2szwA";
+            var operators = new[] { "and", "not", "shr16", "shr4" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x72AA449E32A22113", "0x25BB4BC62CEC41CE", "0x0C3278A9908842FD", "0x079044B1008C2FBE", "0xF99D363CED991ECE", "0xE50D1C72C972529F" };
+            ulong[] outputs = { "0x0000000000000000", "0x00000FFFFFFFFFFF", "0x0000072AA449E32A", "0x0000025BB4BC62CE", "0x000000C3278A9908", "0x00000079044B1008", "0x00000F99D363CED9", "0x00000E50D1C72C97" };
+      
+      
+
+            const int judgesProgramSize = 8;
+            
+            var programId = "RQpEpUv1eQUgJJ1Pn1Kc8eIu";
+            var operators = new[] { "plus", "shr1", "shr4" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x9BFFB6B1ADFF03E1", "0x89C0AAB76F7396EE", "0xC7E8CDB1A75EE5B1", "0xA199680556F18FA4", "0x1855E244AE1EA721", "0xF5412EC2A6FEFD1E" };
+            ulong[] outputs = { "0x0000000000000000", "0x07FFFFFFFFFFFFFF", "0x04DFFDB58D6FF81F", "0x044E0555BB7B9CB7", "0x063F466D8D3AF72D", "0x050CCB402AB78C7D", "0x00C2AF122570F539", "0x07AA09761537F7E8" };
+      
+      
+
+            const int judgesProgramSize = 8;
+            
+            var programId = "S8tAtYPySWr9VjeAoSAnMVf4";
+            var operators = new[] { "plus", "shl1", "shr4", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x143365BE8C18E891", "0x8695A9C52208381A", "0xCE45128B104DD1FC", "0x760442CEB4894690", "0xBBE30C4F1CC4FB4E", "0x755333D90B930A73" };
+            ulong[] outputs = { "0x0000000000000001", "0x1FFFFFFFFFFFFFFF", "0x02866CB7D1831D13", "0x10D2B538A4410703", "0x19C8A2516209BA3F", "0x0EC08859D69128D3", "0x177C6189E3989F69", "0x0EAA667B2172614F" };
+      
+      
+
+            const int judgesProgramSize = 8;
+            
+            var programId = "T02ku6TV3H2c1Au9Jm2YBBsi";
+            var operators = new[] { "plus", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x7F6930E0F0AA7867", "0xD8457FDC78FC4AA3", "0xEF3678E4C9D39234", "0x5CF4397E819D91ED", "0x1E951398564C13F2", "0xF4DF6B1005794592" };
+            ulong[] outputs = { "0x0000000000000001", "0xFFFFFFFFFFFFFFFF", "0x000000000000000F", "0x0000000000000007", "0x0000000000000001", "0x0000000000000003", "0x0000000000000001", "0x0000000000000001" };
+      
+      
+
+            const int judgesProgramSize = 8;
+            
+            var programId = "gAAZVq60GeyhhgCyrAVsddE2";
+            var operators = new[] { "plus", "shl1", "shr4" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xEE91895F47D7BBC4", "0x6901E7934E03BA41", "0x2040EF33C9859F55", "0x82DE31FF9E37B5FC", "0x69FDAC62C3BDA9B2", "0xAA8B4610DD155D81" };
+            ulong[] outputs = { "0x0000000000000000", "0x1FFFFFFFFFFFFFFD", "0x0C63BA8B30D2B33C", "0x76222485B7C43189", "0x24490D1A42B6533F", "0x9339F83F91FEACBA", "0x773D61EF1C355EE8", "0xBFDCAED2F8B80931" };
+      
+      
+
+            const int judgesProgramSize = 8;
+            
+            var programId = "lDMyxj8oVzpvAE8PT8kTVJEI";
+            var operators = new[] { "plus", "shl1", "shr16", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xD5C015E670B01043", "0x0FEFF252AA4BB67A", "0xA8063E29EA9B80DC", "0xB50F63D9D6471CA2", "0x9D9C6E81EE5B8C29", "0x8E165261AB48E8E8" };
+            ulong[] outputs = { "0x0000000000000000", "0x0000FFFFFFFFFFFE", "0xD5C0C1669C7CF1A3", "0x0FF012328EF10B11", "0xA8068E3666EF5613", "0xB50FCDF89DFAC930", "0x9D9CA9BACB5F68E0", "0x8E166E8E500C3F79" };
+      
+      
+
+            const int judgesProgramSize = 5;
+            
+            var programId = "3GN9767oCP5eQD8Sxxlamky4";
+            var operators = new[] { "plus", "shr16" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xD8E4755D6F460C1A", "0xC8DB19F5D56567AD", "0x0085F8373B347C2B", "0x0DB3935300645EEC", "0x0F6C74CF7529404A", "0x4BEB041E4DC2BEF4" };
+            ulong[] outputs = { "0x0000000000000000", "0x0000FFFFFFFFFFFE", "0xD8E54E41E4A37B60", "0xC8DBE2D0EF5B3D12", "0x0085F8BD336BB75F", "0x0DB3A10693B75F50", "0x0F6C843BE9F8B573", "0x4BEB500951E10CB6" };
+      
+      
+
+            const int judgesProgramSize = 5;
+            
+            var programId = "3gA6ZKTXCsngp2HXlqAnnyxG";
+            var operators = new[] { "plus", "shr16" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x216AB546A8FE98B5", "0x1A84E410FE824686", "0xB7F866EFB48B57B4", "0xE7E1383679462410", "0x94C60A94BB4B1973", "0x10FF6DF188EE07D6" };
+            ulong[] outputs = { "0x0000000000000000", "0x0000000000000000", "0x0000216AB546A8FE", "0x00001A84E410FE82", "0x0000B7F866EFB48B", "0x0000E7E138367946", "0x000094C60A94BB4B", "0x000010FF6DF188EE" };
+      
+      
+
+            const int judgesProgramSize = 5;
+            
+            var programId = "4dXUju2QSRAVpXnzusKpIARv";
+            var operators = new[] { "plus", "shr16" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x4E5B3679C799A739", "0x4EEBF16E2198469F", "0xA986C998F78B9A65", "0xA2C57077E8DDF691", "0x3C6E1A9F8F3F3625", "0xE526A4724D1CFCBD" };
+            ulong[] outputs = { "0x0000000000000000", "0x0000FFFFFFFFFFFE", "0x4E5B84D4FE136ED2", "0x4EEC405A13066837", "0xA987731FC12491F0", "0xA2C6133D5955DF6E", "0x3C6E570DA9DEC564", "0xE5278998F18F49D9" };
+      
+      
+
+            const int judgesProgramSize = 5;
+            
+            var programId = "6163Ct9Uu4yCUCzeHy5EJeUP";
+            var operators = new[] { "or", "shr16" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x707708E25622A01C", "0x2ED773588336EF20", "0x4BAE5BB138FCF580", "0xEC3738AD9C394E2C", "0x1DC06F4ED6CBF8D0", "0x4AE3EBE3AF6ECFBE" };
+            ulong[] outputs = { "0x0000000000000000", "0x0000FFFFFFFFFFFF", "0x0000707708E25622", "0x00002ED773588336", "0x00004BAE5BB138FC", "0x0000EC3738AD9C39", "0x00001DC06F4ED6CB", "0x00004AE3EBE3AF6E" };
+      
+      
+
+            const int judgesProgramSize = 5;
+            
+            var programId = "6PBMhRDmB2AQfA4yZ70tmfBh";
+            var operators = new[] { "not", "or" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xC033EDA87DCCED24", "0xE8C2DBCE9329D7F2", "0x11E001A860B349B8", "0x4167FEEDE279DF34", "0xE243B96BBF77EF6B", "0xE34E2D4576E40AC4" };
+            ulong[] outputs = { "0xFFFFFFFFFFFFFFFF", "0x0000000000000000", "0x3FCC1257823312DB", "0x173D24316CD6280D", "0xEE1FFE579F4CB647", "0xBE9801121D8620CB", "0x1DBC469440881094", "0x1CB1D2BA891BF53B" };
+      
+      
+
+            const int judgesProgramSize = 5;
+            
+            var programId = "BYkNRgyReCIJ1zYPZaBAz8Xo";
+            var operators = new[] { "not", "plus" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x23A282379AF7850C", "0xF3D35174C949BB0D", "0xFE7C0264DF27E86F", "0x06CC691C9D9CD006", "0xE809CD0767D69590", "0x736D7A70B0B2534C" };
+            ulong[] outputs = { "0xFFFFFFFFFFFFFFFF", "0x0000000000000000", "0xDC5D7DC865087AF3", "0x0C2CAE8B36B644F2", "0x0183FD9B20D81790", "0xF93396E362632FF9", "0x17F632F898296A6F", "0x8C92858F4F4DACB3" };
+      
+      
+
+            const int judgesProgramSize = 5;
+            
+            var programId = "DKgECmikXbAVYmpGN6g2HCVJ";
+            var operators = new[] { "not", "plus" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x097E6E055D07F036", "0xA30604E66793F909", "0xA2EC6C7ADE3842EF", "0x8B8DCC5011923FDE", "0x22006E622C672963", "0x4801A2390D5DCD16" };
+            ulong[] outputs = { "0xFFFFFFFFFFFFFFFF", "0x0000000000000000", "0xF68191FAA2F80FC9", "0x5CF9FB19986C06F6", "0x5D13938521C7BD10", "0x747233AFEE6DC021", "0xDDFF919DD398D69C", "0xB7FE5DC6F2A232E9" };
+      
+      
+
+            const int judgesProgramSize = 5;
+            
+            var programId = "DVHAjI8A8D7diFvXMxf0Rjul";
+            var operators = new[] { "not", "plus" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xC9F88E422EC10F4C", "0x3CB96DDBC67E6503", "0x8041DA9DBD03076B", "0x3C68DE0EADC71541", "0xD4495F0A40C44A3D", "0xA9473AF0FC289D30" };
+            ulong[] outputs = { "0xFFFFFFFFFFFFFFFE", "0xFFFFFFFFFFFFFFFD", "0xC9F88E422EC10F4A", "0x3CB96DDBC67E6501", "0x8041DA9DBD030769", "0x3C68DE0EADC7153F", "0xD4495F0A40C44A3B", "0xA9473AF0FC289D2E" };
+      
+      
+
+            const int judgesProgramSize = 5;
+            
+            var programId = "EsO9wdM7N77C5AlFk3cBolNc";
+            var operators = new[] { "plus", "shr4" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x72AA449E32A22113", "0x25BB4BC62CEC41CE", "0x0C3278A9908842FD", "0x079044B1008C2FBE", "0xF99D363CED991ECE", "0xE50D1C72C972529F" };
+            ulong[] outputs = { "0x0000000000000000", "0x0FFFFFFFFFFFFFFE", "0x79D4E8E815CC4324", "0x281700828FBB05EA", "0x0CF5A0342990C72C", "0x080948FC1094F2B9", "0x093709A0BC72B0BA", "0xF35DEE39F60977C8" };
+      
+      
+
+            const int judgesProgramSize = 5;
+            
+            var programId = "Jz3c9NPP91DZ6vGoaJFPxQQO";
+            var operators = new[] { "or", "shr4" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x9BFFB6B1ADFF03E1", "0x89C0AAB76F7396EE", "0xC7E8CDB1A75EE5B1", "0xA199680556F18FA4", "0x1855E244AE1EA721", "0xF5412EC2A6FEFD1E" };
+            ulong[] outputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x9BFFFFFBBFFFF3FF", "0x89DCAABF7FF7BFEE", "0xCFFECDFBBF7FEFFB", "0xAB99FE8557FF9FFE", "0x19D5FE64EEFFEF73", "0xFF553EEEAEFFFFDF" };
+      
+      
+
+            const int judgesProgramSize = 5;
+            
+            var programId = "Mt2ks4EdUbs7BByAHoV0k4J3";
+            var operators = new[] { "plus", "shr1" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x143365BE8C18E891", "0x8695A9C52208381A", "0xCE45128B104DD1FC", "0x760442CEB4894690", "0xBBE30C4F1CC4FB4E", "0x755333D90B930A73" };
+            ulong[] outputs = { "0x0000000000000000", "0x0000000000000000", "0x0A19B2DF460C7449", "0x434AD4E291041C0D", "0x672289458826E8FE", "0x3B0221675A44A348", "0x5DF186278E627DA7", "0x3AA999EC85C9853A" };
+      
+      
+
+            const int judgesProgramSize = 5;
+            
+            var programId = "NJ4cX4bnnQKu5eHlgRE99zS5";
+            var operators = new[] { "not", "plus" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x7F6930E0F0AA7867", "0xD8457FDC78FC4AA3", "0xEF3678E4C9D39234", "0x5CF4397E819D91ED", "0x1E951398564C13F2", "0xF4DF6B1005794592" };
+            ulong[] outputs = { "0xFFFFFFFFFFFFFFFE", "0xFFFFFFFFFFFFFFFD", "0x7F6930E0F0AA7865", "0xD8457FDC78FC4AA1", "0xEF3678E4C9D39232", "0x5CF4397E819D91EB", "0x1E951398564C13F0", "0xF4DF6B1005794590" };
+      
+      
+
+            const int judgesProgramSize = 5;
+            
+            var programId = "NPXAdxGdhzVdXvJSbIT5AYcm";
+            var operators = new[] { "not", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xEE91895F47D7BBC4", "0x6901E7934E03BA41", "0x2040EF33C9859F55", "0x82DE31FF9E37B5FC", "0x69FDAC62C3BDA9B2", "0xAA8B4610DD155D81" };
+            ulong[] outputs = { "0xFFFFFFFFFFFFFFFF", "0x0000000000000000", "0x116E76A0B828443B", "0x96FE186CB1FC45BE", "0xDFBF10CC367A60AA", "0x7D21CE0061C84A03", "0x9602539D3C42564D", "0x5574B9EF22EAA27E" };
+      
+      
+
+            const int judgesProgramSize = 5;
+            
+            var programId = "X6HSUxbgfeRK1RIKMgGZBi4f";
+            var operators = new[] { "shl1", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xD5C015E670B01043", "0x0FEFF252AA4BB67A", "0xA8063E29EA9B80DC", "0xB50F63D9D6471CA2", "0x9D9C6E81EE5B8C29", "0x8E165261AB48E8E8" };
+            ulong[] outputs = { "0x0000000000000001", "0xFFFFFFFFFFFFFFFF", "0xAB802BCCE1602087", "0x1FDFE4A554976CF5", "0x500C7C53D53701B9", "0x6A1EC7B3AC8E3945", "0x3B38DD03DCB71853", "0x1C2CA4C35691D1D1" };
+      
+      
+
+            const int judgesProgramSize = 5;
+            
+            var programId = "YaAZzwsKNEVkcHsuI7foB1of";
+            var operators = new[] { "plus", "shl1" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x0580A1AB9001056D", "0x17FBEACECACE0709", "0x6E8E0097C68096A7", "0x50475BF54101FEE4", "0x880A7F62D368B805", "0xFDCFD29F7AE5550B" };
+            ulong[] outputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFE", "0x0B01435720020ADA", "0x2FF7D59D959C0E12", "0xDD1C012F8D012D4E", "0xA08EB7EA8203FDC8", "0x1014FEC5A6D1700A", "0xFB9FA53EF5CAAA16" };
+      
+      
+
+            const int judgesProgramSize = 5;
+            
+            var programId = "iD44HhF0zocwzp18tZEYRedB";
+            var operators = new[] { "and", "shr16" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x6CF750D1CA0430EC", "0xAD0F3F9FACAB9277", "0x27B5288215C47DBF", "0x12CE141B41BAF78C", "0xB47E7D57C455042F", "0xCCE95DD4CF5CFBC1" };
+            ulong[] outputs = { "0x0000000000000000", "0x0000000000000001", "0x0000000000000000", "0x0000000000000001", "0x0000000000000000", "0x0000000000000000", "0x0000000000000001", "0x0000000000000000" };
+      
+      
+
+            const int judgesProgramSize = 5;
+            
+            var programId = "jhT1BvcbSG01RpANNhf7bD2b";
+            var operators = new[] { "shr1", "shr4" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xC47BB90D21BA3746", "0x6351B696D93EDD7B", "0x42564AE99A7D99C4", "0x2E52E6CB865410FF", "0x7504AC59E3FBEE0E", "0x0B1EA53E79499089" };
+            ulong[] outputs = { "0x0000000000000000", "0x007FFFFFFFFFFFFF", "0x00623DDC8690DD1B", "0x0031A8DB4B6C9F6E", "0x00212B2574CD3ECC", "0x0017297365C32A08", "0x003A82562CF1FDF7", "0x00058F529F3CA4C8" };
+      
+      
+
+            const int judgesProgramSize = 5;
+            
+            var programId = "kAhYAIe6AA0S9kllpHnaAdGf";
+            var operators = new[] { "plus", "shr1" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xFBE24FE03A0AF8AA", "0x95F8F465FD2278E0", "0x18096DBAA8CB0F8A", "0x5A03DC0159110794", "0xBF4D18DBD2DC49F1", "0x94100789E102FF0B" };
+            ulong[] outputs = { "0x0000000000000000", "0x7FFFFFFFFFFFFFFE", "0x79D377D0571074FF", "0xE0F56E98FBB3B550", "0x240E2497FD30974F", "0x8705CA0205998B5E", "0x1EF3A549BC4A6EE9", "0xDE180B4ED1847E90" };
+      
+      
+
+            const int judgesProgramSize = 5;
+            
+            var programId = "obFlsaxgQfTVZZTvlcCiZ63Z";
+            var operators = new[] { "and", "shr16" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x3C5076D92EEFB498", "0x03FA893DD9A6F2EF", "0x72B925181C0BC875", "0x8C8E286BBB9C0CC2", "0x7B80D4ED4DC17DF7", "0x82817471E9E39FF9" };
+            ulong[] outputs = { "0x0000000000000000", "0x0000FFFFFFFFFFFF", "0x0000345026C92488", "0x000001388924D0A6", "0x0000201804080801", "0x0000080A28080880", "0x0000508044C14DC1", "0x00000001606189E1" };
+      
+      
+
+            const int judgesProgramSize = 5;
+            
+            var programId = "qqU58UJEG3gmwBFBDm0cqwDB";
+            var operators = new[] { "shr4" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x727BF3FCC16BFE05", "0xC6D194DACD6C7DFA", "0xA016ACC8C0E21964", "0x4D00D04279239048", "0x038FCCBC6CB51A8B", "0x64A1B36770534E01" };
+            ulong[] outputs = { "0x0000000000000000", "0x000FFFFFFFFFFFFF", "0x000727BF3FCC16BF", "0x000C6D194DACD6C7", "0x000A016ACC8C0E21", "0x0004D00D04279239", "0x000038FCCBC6CB51", "0x00064A1B36770534" };
+      
+      
+
+            const int judgesProgramSize = 6;
+            
+            var programId = "87YicOEK9fCzqTcVDV5BKTXK";
+            var operators = new[] { "plus", "shr1", "shr4" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x216AB546A8FE98B5", "0x1A84E410FE824686", "0xB7F866EFB48B57B4", "0xE7E1383679462410", "0x94C60A94BB4B1973", "0x10FF6DF188EE07D6" };
+            ulong[] outputs = { "0x0000000000000001", "0x0800000000000000", "0x010B55AA3547F4C6", "0x00D4272087F41235", "0x05BFC3377DA45ABE", "0x073F09C1B3CA3121", "0x04A63054A5DA58CC", "0x0087FB6F8C47703F" };
+      
+      
+
+            const int judgesProgramSize = 6;
+            
+            var programId = "A8ECa0gvVbnFE2Dt5k2Ypcqb";
+            var operators = new[] { "plus", "shl1", "shr16" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x4E5B3679C799A739", "0x4EEBF16E2198469F", "0xA986C998F78B9A65", "0xA2C57077E8DDF691", "0x3C6E1A9F8F3F3625", "0xE526A4724D1CFCBD" };
+            ulong[] outputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFE", "0x9CB66CF38F334E72", "0x9DD7E2DC43308D3E", "0x530D9331EF1734CA", "0x458AE0EFD1BBED22", "0x78DC353F1E7E6C4A", "0xCA4D48E49A39F97A" };
+      
+      
+
+            const int judgesProgramSize = 6;
+            
+            var programId = "DjSLwGE7J2ujkG4hDKpdxQzu";
+            var operators = new[] { "or", "shl1", "shr4" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x707708E25622A01C", "0x2ED773588336EF20", "0x4BAE5BB138FCF580", "0xEC3738AD9C394E2C", "0x1DC06F4ED6CBF8D0", "0x4AE3EBE3AF6ECFBE" };
+            ulong[] outputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x7E7FE9FE5EE6F41F", "0x2FDFFF7B9376FFE4", "0x4BFFDBF73FFFFFB0", "0xEDB7FFBDBFBF6FED", "0x1FF86FEFDEDBFFDA", "0x4BFFFFFFFFEFDFFF" };
+      
+      
+
+            const int judgesProgramSize = 6;
+            
+            var programId = "OqfQYKu2HJ0SJX3DZQIi7Apu";
+            var operators = new[] { "plus", "shr16", "shr4" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xC033EDA87DCCED24", "0xE8C2DBCE9329D7F2", "0x11E001A860B349B8", "0x4167FEEDE279DF34", "0xE243B96BBF77EF6B", "0xE34E2D4576E40AC4" };
+            ulong[] outputs = { "0x0000000000000000", "0x00000FFFFFFFFFFE", "0xC033F9ABBCA77500", "0xE8C2EA5AC0E6C124", "0x11E002C660CDCFC3", "0x416803046268BD5B", "0xE243C78FFB0EAB62", "0xE34E3B7A59B86232" };
+      
+      
+
+            const int judgesProgramSize = 6;
+            
+            var programId = "PDdKyPJMnWzvrm0evqFQh5b0";
+            var operators = new[] { "or", "shr1", "shr4" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x23A282379AF7850C", "0xF3D35174C949BB0D", "0xFE7C0264DF27E86F", "0x06CC691C9D9CD006", "0xE809CD0767D69590", "0x736D7A70B0B2534C" };
+            ulong[] outputs = { "0x0000000000000000", "0x0FFFFFFFFFFFFFFF", "0x033F3C33FDFFFC78", "0x0FBFBF9FEEDEDFF8", "0x0FF7E0376FFB7FC7", "0x007EE7D9EDFDEF80", "0x0FC0DEF87F7FFDFD", "0x07BFFFF78F8FB7BE" };
+      
+      
+
+            const int judgesProgramSize = 6;
+            
+            var programId = "WZcl2vB9sIJRAm5bLh0nNPHf";
+            var operators = new[] { "not", "plus", "shr1" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x097E6E055D07F036", "0xA30604E66793F909", "0xA2EC6C7ADE3842EF", "0x8B8DCC5011923FDE", "0x22006E622C672963", "0x4801A2390D5DCD16" };
+            ulong[] outputs = { "0xFFFFFFFFFFFFFFFF", "0xFFFFFFFFFFFFFFFF", "0xFB40C8FD517C07E4", "0xAE7CFD8CCC36037A", "0xAE89C9C290E3DE87", "0xBA3919D7F736E010", "0xEEFFC8CEE9CC6B4D", "0xDBFF2EE379511974" };
+      
+      
+
+            const int judgesProgramSize = 6;
+            
+            var programId = "YZ9YmcYYUhcyeeDHnw4Oe5Jz";
+            var operators = new[] { "plus", "shl1", "shr1" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xC9F88E422EC10F4C", "0x3CB96DDBC67E6503", "0x8041DA9DBD03076B", "0x3C68DE0EADC71541", "0xD4495F0A40C44A3D", "0xA9473AF0FC289D30" };
+            ulong[] outputs = { "0x0000000000000000", "0x7FFFFFFFFFFFFFFD", "0xF8ED63A574E2A63E", "0x97CF92A5703BFC87", "0x40A4A28A5887928B", "0x97062B24B271B522", "0x12B76D99A1EAB998", "0xA732135A766588F8" };
+      
+      
+
+            const int judgesProgramSize = 6;
+            
+            var programId = "ZjSQOwfTvllnh4sjnYMz8zc0";
+            var operators = new[] { "not", "shr16", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x72AA449E32A22113", "0x25BB4BC62CEC41CE", "0x0C3278A9908842FD", "0x079044B1008C2FBE", "0xF99D363CED991ECE", "0xE50D1C72C972529F" };
+            ulong[] outputs = { "0x0000FFFFFFFFFFFF", "0x0000000000000000", "0x00008D55BB61CD5D", "0x0000DA44B439D313", "0x0000F3CD87566F77", "0x0000F86FBB4EFF73", "0x00000662C9C31266", "0x00001AF2E38D368D" };
+      
+      
+
+            const int judgesProgramSize = 6;
+            
+            var programId = "apLECsZ0IHdwhfJXBG03tvoq";
+            var operators = new[] { "or", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x9BFFB6B1ADFF03E1", "0x89C0AAB76F7396EE", "0xC7E8CDB1A75EE5B1", "0xA199680556F18FA4", "0x1855E244AE1EA721", "0xF5412EC2A6FEFD1E" };
+            ulong[] outputs = { "0x0000000000000001", "0xFFFFFFFFFFFFFFFE", "0x9BFFB6B1ADFF03E0", "0x89C0AAB76F7396EF", "0xC7E8CDB1A75EE5B0", "0xA199680556F18FA5", "0x1855E244AE1EA720", "0xF5412EC2A6FEFD1F" };
+      
+      
+
+            const int judgesProgramSize = 6;
+            
+            var programId = "dFmjKwROLxxuVzzDsfiratpr";
+            var operators = new[] { "plus", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x143365BE8C18E891", "0x8695A9C52208381A", "0xCE45128B104DD1FC", "0x760442CEB4894690", "0xBBE30C4F1CC4FB4E", "0x755333D90B930A73" };
+            ulong[] outputs = { "0x0000000000000001", "0xFFFFFFFFFFFFFFFE", "0x143365BE8C18E890", "0x8695A9C52208381B", "0xCE45128B104DD1FD", "0x760442CEB4894691", "0xBBE30C4F1CC4FB4F", "0x755333D90B930A72" };
+      
+      
+
+            const int judgesProgramSize = 6;
+            
+            var programId = "jOWQAB2MCBffzoH1ljKsbeDQ";
+            var operators = new[] { "shl1", "shr4", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x7F6930E0F0AA7867", "0xD8457FDC78FC4AA3", "0xEF3678E4C9D39234", "0x5CF4397E819D91ED", "0x1E951398564C13F2", "0xF4DF6B1005794592" };
+            ulong[] outputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFE", "0xFED261C1E154F0CE", "0xB08AFFB8F1F89546", "0xDE6CF1C993A72468", "0xB9E872FD033B23DA", "0x3D2A2730AC9827E4", "0xE9BED6200AF28B24" };
+      
+      
+
+            const int judgesProgramSize = 6;
+            
+            var programId = "mSxNlxlHX4DKoX6q3AKRLQmf";
+            var operators = new[] { "or", "shl1", "shr1" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xEE91895F47D7BBC4", "0x6901E7934E03BA41", "0x2040EF33C9859F55", "0x82DE31FF9E37B5FC", "0x69FDAC62C3BDA9B2", "0xAA8B4610DD155D81" };
+            ulong[] outputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xFF6BD6BFAFEFFFEA", "0xF683FFEFBF07FDA2", "0x50A1FFFFF7CBFFAA", "0x45FF7BFFFF7FFBFE", "0xF7FFDEF5E7FFD7FD", "0x5557AF29FEAABFC2" };
+      
+      
+
+            const int judgesProgramSize = 6;
+            
+            var programId = "mmehqBcnlmhsC5g0ATZ6oaAW";
+            var operators = new[] { "plus", "shr4" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xD5C015E670B01043", "0x0FEFF252AA4BB67A", "0xA8063E29EA9B80DC", "0xB50F63D9D6471CA2", "0x9D9C6E81EE5B8C29", "0x8E165261AB48E8E8" };
+            ulong[] outputs = { "0x0000000000000000", "0x0100000000000000", "0x00D5C015E670B010", "0x000FEFF252AA4BB6", "0x00A8063E29EA9B80", "0x00B50F63D9D6471C", "0x009D9C6E81EE5B8C", "0x008E165261AB48E8" };
+      
+      
+
+            const int judgesProgramSize = 6;
+            
+            var programId = "oZxBNCpBloCCUkASNGJzncKb";
+            var operators = new[] { "shl1", "shr1", "shr16", "shr4" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x0580A1AB9001056D", "0x17FBEACECACE0709", "0x6E8E0097C68096A7", "0x50475BF54101FEE4", "0x880A7F62D368B805", "0xFDCFD29F7AE5550B" };
+            ulong[] outputs = { "0x0000000000000000", "0x00000FFFFFFFFFFE", "0x000000580A1AB900", "0x0000017FBEACECAC", "0x000006E8E0097C68", "0x0000050475BF5410", "0x00000880A7F62D36", "0x00000FDCFD29F7AE" };
+      
+      
+
+            const int judgesProgramSize = 6;
+            
+            var programId = "rMvi8OFTdEp3fcUVltwv7ntd";
+            var operators = new[] { "plus", "shl1", "shr1" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x6CF750D1CA0430EC", "0xAD0F3F9FACAB9277", "0x27B5288215C47DBF", "0x12CE141B41BAF78C", "0xB47E7D57C455042F", "0xCCE95DD4CF5CFBC1" };
+            ulong[] outputs = { "0x0000000000000000", "0x7FFFFFFFFFFFFFFE", "0xD9EEA1A3940861D8", "0xDA1E7F3F595724EE", "0x4F6A51042B88FB7E", "0x259C28368375EF18", "0xE8FCFAAF88AA085E", "0x19D2BBA99EB9F782" };
+      
+      
+
+            const int judgesProgramSize = 6;
+            
+            var programId = "rv3B3cTA7tgGAMrHOfdtmYXw";
+            var operators = new[] { "shr1", "shr4", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xC47BB90D21BA3746", "0x6351B696D93EDD7B", "0x42564AE99A7D99C4", "0x2E52E6CB865410FF", "0x7504AC59E3FBEE0E", "0x0B1EA53E79499089" };
+            ulong[] outputs = { "0x0000000000000000", "0x7FFFFFFFFFFFFFFF", "0x623DDC8690DD1BA3", "0x31A8DB4B6C9F6EBD", "0x212B2574CD3ECCE2", "0x17297365C32A087F", "0x3A82562CF1FDF707", "0x058F529F3CA4C844" };
+      
+      
+
+            const int judgesProgramSize = 6;
+            
+            var programId = "shNGgFhDlHnumZOHAYIZq9UA";
+            var operators = new[] { "and", "not", "shr4" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xFBE24FE03A0AF8AA", "0x95F8F465FD2278E0", "0x18096DBAA8CB0F8A", "0x5A03DC0159110794", "0xBF4D18DBD2DC49F1", "0x94100789E102FF0B" };
+            ulong[] outputs = { "0x0FFFFFFFFFFFFFFF", "0x0000000000000000", "0x0041DB01FC5F5075", "0x06A070B9A02DD871", "0x0E7F692455734F07", "0x0A5FC23FEA6EEF86", "0x040B2E7242D23B60", "0x06BEFF8761EFD00F" };
+      
+      
+
+            const int judgesProgramSize = 6;
+            
+            var programId = "syFKBt680k1zdEo0xWPATReM";
+            var operators = new[] { "not", "or", "shl1" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x3C5076D92EEFB498", "0x03FA893DD9A6F2EF", "0x72B925181C0BC875", "0x8C8E286BBB9C0CC2", "0x7B80D4ED4DC17DF7", "0x82817471E9E39FF9" };
+            ulong[] outputs = { "0xFFFFFFFFFFFFFFFE", "0xFFFFFFFFFFFFFFFF", "0xFFFFFFFFFFFFFFFE", "0xFFFFFFFFFFFFFFFF", "0xFFFFFFFFFFFFFFFF", "0xFFFFFFFFFFFFFFFE", "0xFFFFFFFFFFFFFFFF", "0xFFFFFFFFFFFFFFFF" };
+      
+      
+
+            const int judgesProgramSize = 9;
+            
+            var programId = "494xHSAODqrRO9ZPU6KFn2V8";
+            var operators = new[] { "or", "shr1", "tfold" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x216AB546A8FE98B5", "0x1A84E410FE824686", "0xB7F866EFB48B57B4", "0xE7E1383679462410", "0x94C60A94BB4B1973", "0x10FF6DF188EE07D6" };
+            ulong[] outputs = { "0x0000000000000000", "0x000000000000007F", "0x0000000000000010", "0x000000000000000D", "0x000000000000005B", "0x0000000000000073", "0x000000000000004A", "0x0000000000000008" };
+      
+      
+
+            const int judgesProgramSize = 9;
+            
+            var programId = "A7kaB1DR3NNeCTRlrahgIwFA";
+            var operators = new[] { "not", "or", "tfold" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x4E5B3679C799A739", "0x4EEBF16E2198469F", "0xA986C998F78B9A65", "0xA2C57077E8DDF691", "0x3C6E1A9F8F3F3625", "0xE526A4724D1CFCBD" };
+            ulong[] outputs = { "0xFFFFFFFFFFFFFFFF", "0xFFFFFFFFFFFFFF01", "0xFFFFFFFFFFFFFFB1", "0xFFFFFFFFFFFFFFB1", "0xFFFFFFFFFFFFFF57", "0xFFFFFFFFFFFFFF5D", "0xFFFFFFFFFFFFFFC3", "0xFFFFFFFFFFFFFF1B" };
+      
+      
+
+            const int judgesProgramSize = 9;
+            
+            var programId = "AWB5hD7piiViQPB8xX8aGmAF";
+            var operators = new[] { "shl1", "tfold", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x707708E25622A01C", "0x2ED773588336EF20", "0x4BAE5BB138FCF580", "0xEC3738AD9C394E2C", "0x1DC06F4ED6CBF8D0", "0x4AE3EBE3AF6ECFBE" };
+            ulong[] outputs = { "0x0000000000000000", "0x0000000000005555", "0x000000000000208E", "0x00000000000027BC", "0x00000000000064B3", "0x0000000000000E6A", "0x0000000000004051", "0x0000000000006EC8" };
+      
+      
+
+            const int judgesProgramSize = 9;
+            
+            var programId = "CX1H2buJHKKR877TD5ORhPB6";
+            var operators = new[] { "not", "shr1", "tfold" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xC033EDA87DCCED24", "0xE8C2DBCE9329D7F2", "0x11E001A860B349B8", "0x4167FEEDE279DF34", "0xE243B96BBF77EF6B", "0xE34E2D4576E40AC4" };
+            ulong[] outputs = { "0x0000000000000000", "0x000000000000007F", "0x0000000000000060", "0x0000000000000074", "0x0000000000000008", "0x0000000000000020", "0x0000000000000071", "0x0000000000000071" };
+      
+      
+
+            const int judgesProgramSize = 9;
+            
+            var programId = "EZB9NrBofxZzPnnHsAAdMEPc";
+            var operators = new[] { "not", "tfold", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x23A282379AF7850C", "0xF3D35174C949BB0D", "0xFE7C0264DF27E86F", "0x06CC691C9D9CD006", "0xE809CD0767D69590", "0x736D7A70B0B2534C" };
+            ulong[] outputs = { "0x0000000000000000", "0x0000000000000000", "0x00000000000000D0", "0x0000000000000033", "0x000000000000009B", "0x0000000000000068", "0x000000000000009F", "0x0000000000000009" };
+      
+      
+
+            const int judgesProgramSize = 9;
+            
+            var programId = "QjrvMJIWLiWACVnXIo5VXemE";
+            var operators = new[] { "shr1", "tfold", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x097E6E055D07F036", "0xA30604E66793F909", "0xA2EC6C7ADE3842EF", "0x8B8DCC5011923FDE", "0x22006E622C672963", "0x4801A2390D5DCD16" };
+            ulong[] outputs = { "0x0000000000000000", "0x00000000000000FF", "0x0000000000000009", "0x00000000000000A3", "0x00000000000000A2", "0x000000000000008B", "0x0000000000000022", "0x0000000000000048" };
+      
+      
+
+            const int judgesProgramSize = 9;
+            
+            var programId = "Rt46QZteBYEF5S2lmlmefYpK";
+            var operators = new[] { "plus", "shr1", "tfold" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xC9F88E422EC10F4C", "0x3CB96DDBC67E6503", "0x8041DA9DBD03076B", "0x3C68DE0EADC71541", "0xD4495F0A40C44A3D", "0xA9473AF0FC289D30" };
+            ulong[] outputs = { "0x0000000000000000", "0x000000000000007F", "0x0000000000000064", "0x000000000000001E", "0x0000000000000040", "0x000000000000001E", "0x000000000000006A", "0x0000000000000054" };
+      
+      
+
+            const int judgesProgramSize = 9;
+            
+            var programId = "Z8KHwnA1vNlcVZgU5gsGkVUR";
+            var operators = new[] { "shl1", "tfold", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x72AA449E32A22113", "0x25BB4BC62CEC41CE", "0x0C3278A9908842FD", "0x079044B1008C2FBE", "0xF99D363CED991ECE", "0xE50D1C72C972529F" };
+            ulong[] outputs = { "0x0000000000000002", "0x00000000000000FD", "0x0000000000000070", "0x0000000000000027", "0x000000000000000E", "0x0000000000000005", "0x00000000000000FB", "0x00000000000000E7" };
+      
+      
+
+            const int judgesProgramSize = 9;
+            
+            var programId = "aK4Bd4BpV3ENYOBFnGuBrLte";
+            var operators = new[] { "or", "shl1", "tfold" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x9BFFB6B1ADFF03E1", "0x89C0AAB76F7396EE", "0xC7E8CDB1A75EE5B1", "0xA199680556F18FA4", "0x1855E244AE1EA721", "0xF5412EC2A6FEFD1E" };
+            ulong[] outputs = { "0x0000000000000001", "0x00000000000001FF", "0x0000000000000137", "0x0000000000000113", "0x000000000000018F", "0x0000000000000143", "0x0000000000000031", "0x00000000000001EB" };
+      
+      
+
+            const int judgesProgramSize = 9;
+            
+            var programId = "alh88Dt3rCTkYeyIvxiAaTUC";
+            var operators = new[] { "shr16", "tfold", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x143365BE8C18E891", "0x8695A9C52208381A", "0xCE45128B104DD1FC", "0x760442CEB4894690", "0xBBE30C4F1CC4FB4E", "0x755333D90B930A73" };
+            ulong[] outputs = { "0x0000000000000000", "0x00000000000000FF", "0x0000000000000014", "0x0000000000000086", "0x00000000000000CE", "0x0000000000000076", "0x00000000000000BB", "0x0000000000000075" };
+      
+      
+
+            const int judgesProgramSize = 9;
+            
+            var programId = "cFwaVlrAlSYcsSL5Xco9smpT";
+            var operators = new[] { "shr16", "tfold", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x7F6930E0F0AA7867", "0xD8457FDC78FC4AA3", "0xEF3678E4C9D39234", "0x5CF4397E819D91ED", "0x1E951398564C13F2", "0xF4DF6B1005794592" };
+            ulong[] outputs = { "0x0000000000000000", "0x00000000000000FF", "0x000000000000007F", "0x00000000000000D8", "0x00000000000000EF", "0x000000000000005C", "0x000000000000001E", "0x00000000000000F4" };
+      
+      
+
+            const int judgesProgramSize = 9;
+            
+            var programId = "gRt4Y3S2vXJ3BCnjek9Uft2c";
+            var operators = new[] { "shr4", "tfold", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xEE91895F47D7BBC4", "0x6901E7934E03BA41", "0x2040EF33C9859F55", "0x82DE31FF9E37B5FC", "0x69FDAC62C3BDA9B2", "0xAA8B4610DD155D81" };
+            ulong[] outputs = { "0x0000000000000000", "0x00000000000000F0", "0x00000000000000E7", "0x0000000000000069", "0x0000000000000024", "0x000000000000008F", "0x0000000000000066", "0x00000000000000A2" };
+      
+      
+
+            const int judgesProgramSize = 9;
+            
+            var programId = "iBcoW0B1TPxJJQ5FgxT4aGFA";
+            var operators = new[] { "plus", "shl1", "tfold" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xD5C015E670B01043", "0x0FEFF252AA4BB67A", "0xA8063E29EA9B80DC", "0xB50F63D9D6471CA2", "0x9D9C6E81EE5B8C29", "0x8E165261AB48E8E8" };
+            ulong[] outputs = { "0x0000000000000000", "0x000000000001FC02", "0x00000000000098B2", "0x0000000000010D8A", "0x00000000000165E8", "0x000000000000EECE", "0x000000000000B2AA", "0x0000000000018D74" };
+      
+      
+
+            const int judgesProgramSize = 9;
+            
+            var programId = "jPIIMPBGfIKBZJficUzjR76F";
+            var operators = new[] { "plus", "shr16", "tfold" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x0580A1AB9001056D", "0x17FBEACECACE0709", "0x6E8E0097C68096A7", "0x50475BF54101FEE4", "0x880A7F62D368B805", "0xFDCFD29F7AE5550B" };
+            ulong[] outputs = { "0x0000000000000000", "0x00000000000000FF", "0x0000000000000005", "0x0000000000000017", "0x000000000000006E", "0x0000000000000050", "0x0000000000000088", "0x00000000000000FD" };
+      
+      
+
+            const int judgesProgramSize = 9;
+            
+            var programId = "tBhffLioAionDOZoztuGUfkB";
+            var operators = new[] { "and", "shr1", "tfold" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x6CF750D1CA0430EC", "0xAD0F3F9FACAB9277", "0x27B5288215C47DBF", "0x12CE141B41BAF78C", "0xB47E7D57C455042F", "0xCCE95DD4CF5CFBC1" };
+            ulong[] outputs = { "0x0000000000000000", "0x000000000000007F", "0x0000000000000036", "0x0000000000000056", "0x0000000000000013", "0x0000000000000009", "0x000000000000005A", "0x0000000000000066" };
+      
+      
+
+            const int judgesProgramSize = 9;
+            
+            var programId = "v1H5raqEwATwaKaBKQjYoqyB";
+            var operators = new[] { "plus", "shr4", "tfold" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xC47BB90D21BA3746", "0x6351B696D93EDD7B", "0x42564AE99A7D99C4", "0x2E52E6CB865410FF", "0x7504AC59E3FBEE0E", "0x0B1EA53E79499089" };
+            ulong[] outputs = { "0x0000000000000000", "0x000000000000010E", "0x00000000000000D0", "0x0000000000000069", "0x0000000000000046", "0x0000000000000030", "0x000000000000007C", "0x000000000000000B" };
+      
+      
+
+            const int judgesProgramSize = 9;
+            
+            var programId = "xTin7O7ArDIH7ZeBpAYmauIJ";
+            var operators = new[] { "not", "shr1", "tfold" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xFBE24FE03A0AF8AA", "0x95F8F465FD2278E0", "0x18096DBAA8CB0F8A", "0x5A03DC0159110794", "0xBF4D18DBD2DC49F1", "0x94100789E102FF0B" };
+            ulong[] outputs = { "0x0000000000000000", "0x000000000000007F", "0x000000000000007D", "0x000000000000004A", "0x000000000000000C", "0x000000000000002D", "0x000000000000005F", "0x000000000000004A" };
+      
+      
+
+            const int judgesProgramSize = 9;
+            
+            var programId = "zPBHOdtSUKIp93ArByIpGrNU";
+            var operators = new[] { "shl1", "tfold", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x3C5076D92EEFB498", "0x03FA893DD9A6F2EF", "0x72B925181C0BC875", "0x8C8E286BBB9C0CC2", "0x7B80D4ED4DC17DF7", "0x82817471E9E39FF9" };
+            ulong[] outputs = { "0x0000000000000002", "0x00000000000000FD", "0x000000000000003E", "0x0000000000000001", "0x0000000000000070", "0x000000000000008E", "0x0000000000000079", "0x0000000000000080" };
+      
+      
+
+            const int judgesProgramSize = 8;
+            
+            var programId = "3xfesvGE1AMZuc1GEtPvdhk9";
+            var operators = new[] { "or", "tfold" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x216AB546A8FE98B5", "0x1A84E410FE824686", "0xB7F866EFB48B57B4", "0xE7E1383679462410", "0x94C60A94BB4B1973", "0x10FF6DF188EE07D6" };
+            ulong[] outputs = { "0x0000000000000000", "0x00000000000000FF", "0x0000000000000021", "0x000000000000001A", "0x00000000000000B7", "0x00000000000000E7", "0x0000000000000094", "0x0000000000000010" };
+      
+      
+
+            const int judgesProgramSize = 8;
+            
+            var programId = "C70A3N4WIXC3ihJdd6DKw4Tc";
+            var operators = new[] { "or", "tfold" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xD8E4755D6F460C1A", "0xC8DB19F5D56567AD", "0x0085F8373B347C2B", "0x0DB3935300645EEC", "0x0F6C74CF7529404A", "0x4BEB041E4DC2BEF4" };
+            ulong[] outputs = { "0x0000000000000000", "0x00000000000000FF", "0x00000000000000D8", "0x00000000000000C8", "0x0000000000000000", "0x000000000000000D", "0x000000000000000F", "0x000000000000004B" };
+      
+      
+
+            const int judgesProgramSize = 8;
+            
+            var programId = "DBIGThQHezoIrp6W4S7DKuFS";
+            var operators = new[] { "tfold", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x216AB546A8FE98B5", "0x1A84E410FE824686", "0xB7F866EFB48B57B4", "0xE7E1383679462410", "0x94C60A94BB4B1973", "0x10FF6DF188EE07D6" };
+            ulong[] outputs = { "0x0000000000000000", "0x0000000000000000", "0x00000000000000C3", "0x00000000000000D6", "0x000000000000001A", "0x0000000000000003", "0x0000000000000056", "0x00000000000000C4" };
+      
+      
+
+            const int judgesProgramSize = 8;
+            
+            var programId = "J22wUFai9tTVF0Bsvz3FNDJk";
+            var operators = new[] { "plus", "tfold" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x4E5B3679C799A739", "0x4EEBF16E2198469F", "0xA986C998F78B9A65", "0xA2C57077E8DDF691", "0x3C6E1A9F8F3F3625", "0xE526A4724D1CFCBD" };
+            ulong[] outputs = { "0x0000000000000001", "0x0000000000000100", "0x000000000000004F", "0x000000000000004F", "0x00000000000000AA", "0x00000000000000A3", "0x000000000000003D", "0x00000000000000E6" };
+      
+      
+
+            const int judgesProgramSize = 8;
+            
+            var programId = "LJpblrMYpGB0qG7qAVxuXM5v";
+            var operators = new[] { "or", "tfold" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x707708E25622A01C", "0x2ED773588336EF20", "0x4BAE5BB138FCF580", "0xEC3738AD9C394E2C", "0x1DC06F4ED6CBF8D0", "0x4AE3EBE3AF6ECFBE" };
+            ulong[] outputs = { "0x0000000000000000", "0x00000000000000FF", "0x0000000000000070", "0x000000000000002E", "0x000000000000004B", "0x00000000000000EC", "0x000000000000001D", "0x000000000000004A" };
+      
+      
+
+            const int judgesProgramSize = 8;
+            
+            var programId = "FCxCLHbi7tSntPLPf9BANGDg";
+            var operators = new[] { "not", "shl1", "tfold" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xD8E4755D6F460C1A", "0xC8DB19F5D56567AD", "0x0085F8373B347C2B", "0x0DB3935300645EEC", "0x0F6C74CF7529404A", "0x4BEB041E4DC2BEF4" };
+            ulong[] outputs = { "0xFFFFFFFFFFFFFFFE", "0xFFFFFFFFFFFFFE00", "0xFFFFFFFFFFFFFE4E", "0xFFFFFFFFFFFFFE6E", "0xFFFFFFFFFFFFFFFE", "0xFFFFFFFFFFFFFFE4", "0xFFFFFFFFFFFFFFE0", "0xFFFFFFFFFFFFFF68" };
+      
+      
+
+            const int judgesProgramSize = 8;
+            
+            var programId = "Osxn7IvkfyjkCqwgp4UfEhHN";
+            var operators = new[] { "not", "shr4", "tfold" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x216AB546A8FE98B5", "0x1A84E410FE824686", "0xB7F866EFB48B57B4", "0xE7E1383679462410", "0x94C60A94BB4B1973", "0x10FF6DF188EE07D6" };
+            ulong[] outputs = { "0xFFFFFFFFFFFFFFFF", "0xFFFFFFFFFFFFFFF0", "0xFFFFFFFFFFFFFFFD", "0xFFFFFFFFFFFFFFFE", "0xFFFFFFFFFFFFFFF4", "0xFFFFFFFFFFFFFFF1", "0xFFFFFFFFFFFFFFF6", "0xFFFFFFFFFFFFFFFE" };
+      
+      
+
+            const int judgesProgramSize = 8;
+            
+            var programId = "RgCWZKjbrYdZ322z4raBB65h";
+            var operators = new[] { "not", "shr4", "tfold" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x4E5B3679C799A739", "0x4EEBF16E2198469F", "0xA986C998F78B9A65", "0xA2C57077E8DDF691", "0x3C6E1A9F8F3F3625", "0xE526A4724D1CFCBD" };
+            ulong[] outputs = { "0x0FFFFFFFFFFFFFFF", "0x0FFFFFFFFFFFFFF0", "0x0FFFFFFFFFFFFFFB", "0x0FFFFFFFFFFFFFFB", "0x0FFFFFFFFFFFFFF5", "0x0FFFFFFFFFFFFFF5", "0x0FFFFFFFFFFFFFFC", "0x0FFFFFFFFFFFFFF1" };
+      
+      
+
+            const int judgesProgramSize = 8;
+            
+            var programId = "Y5u1WUm8r67tSg9ynbfvpugI";
+            var operators = new[] { "not", "shl1", "tfold" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x707708E25622A01C", "0x2ED773588336EF20", "0x4BAE5BB138FCF580", "0xEC3738AD9C394E2C", "0x1DC06F4ED6CBF8D0", "0x4AE3EBE3AF6ECFBE" };
+            ulong[] outputs = { "0xFFFFFFFFFFFFFFFE", "0xFFFFFFFFFFFFFE00", "0xFFFFFFFFFFFFFF1E", "0xFFFFFFFFFFFFFFA2", "0xFFFFFFFFFFFFFF68", "0xFFFFFFFFFFFFFE26", "0xFFFFFFFFFFFFFFC4", "0xFFFFFFFFFFFFFF6A" };
+      
+      
+
+            const int judgesProgramSize = 10;
+            
+            var programId = "2osRHdVHxTcxA8Z9o6iYjH0u";
+            var operators = new[] { "shr4", "tfold", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xD8E4755D6F460C1A", "0xC8DB19F5D56567AD", "0x0085F8373B347C2B", "0x0DB3935300645EEC", "0x0F6C74CF7529404A", "0x4BEB041E4DC2BEF4" };
+            ulong[] outputs = { "0x0000000000000000", "0x000000000000000F", "0x000000000000000D", "0x000000000000000C", "0x0000000000000000", "0x0000000000000000", "0x0000000000000000", "0x0000000000000004" };
+      
+      
+
+            const int judgesProgramSize = 10;
+            
+            var programId = "3J0Rn1UCXlgFVnFObNXBWxxC";
+            var operators = new[] { "plus", "shr1", "shr4", "tfold" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x216AB546A8FE98B5", "0x1A84E410FE824686", "0xB7F866EFB48B57B4", "0xE7E1383679462410", "0x94C60A94BB4B1973", "0x10FF6DF188EE07D6" };
+            ulong[] outputs = { "0x0000000000000000", "0x0000000000000007", "0x0000000000000001", "0x0000000000000000", "0x0000000000000005", "0x0000000000000007", "0x0000000000000004", "0x0000000000000000" };
+      
+      
+
+            const int judgesProgramSize = 10;
+            
+            var programId = "5e6OXo3aLWabAn7ZUVBhfLSM";
+            var operators = new[] { "shr1", "shr4", "tfold", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x4E5B3679C799A739", "0x4EEBF16E2198469F", "0xA986C998F78B9A65", "0xA2C57077E8DDF691", "0x3C6E1A9F8F3F3625", "0xE526A4724D1CFCBD" };
+            ulong[] outputs = { "0x0000000000000000", "0x000000000000007F", "0x0000000000000027", "0x0000000000000027", "0x0000000000000054", "0x0000000000000051", "0x000000000000001E", "0x0000000000000072" };
+      
+      
+
+            const int judgesProgramSize = 10;
+            
+            var programId = "8FGRbJxWEvze6jFPY7VVEfvG";
+            var operators = new[] { "not", "or", "shr4", "tfold" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x707708E25622A01C", "0x2ED773588336EF20", "0x4BAE5BB138FCF580", "0xEC3738AD9C394E2C", "0x1DC06F4ED6CBF8D0", "0x4AE3EBE3AF6ECFBE" };
+            ulong[] outputs = { "0xF0F0F0F000000000", "0xF0F0F0F0000000FF", "0xF0F0F0F000000070", "0xF0F0F0F00000002E", "0xF0F0F0F00000004B", "0xF0F0F0F0000000EC", "0xF0F0F0F00000001D", "0xF0F0F0F00000004A" };
+      
+      
+
+            const int judgesProgramSize = 10;
+            
+            var programId = "9PXo3cjomOAu3Kp4zjPMe91E";
+            var operators = new[] { "or", "plus", "tfold" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xC033EDA87DCCED24", "0xE8C2DBCE9329D7F2", "0x11E001A860B349B8", "0x4167FEEDE279DF34", "0xE243B96BBF77EF6B", "0xE34E2D4576E40AC4" };
+            ulong[] outputs = { "0x0000000000000000", "0x0000000000007FF8", "0x0000000000005FA8", "0x0000000000007F54", "0x0000000000006E95", "0x0000000000005F6E", "0x0000000000005F9C", "0x0000000000007BB3" };
+      
+      
+
+            const int judgesProgramSize = 10;
+            
+            var programId = "NjMFwiXqqw6rY9fc9BfQLUjz";
+            var operators = new[] { "plus", "shr1", "shr4", "tfold" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x23A282379AF7850C", "0xF3D35174C949BB0D", "0xFE7C0264DF27E86F", "0x06CC691C9D9CD006", "0xE809CD0767D69590", "0x736D7A70B0B2534C" };
+            ulong[] outputs = { "0x0000000000000000", "0x0000000000000008", "0x0000000000000001", "0x0000000000000007", "0x0000000000000008", "0x0000000000000000", "0x0000000000000007", "0x0000000000000003" };
+      
+      
+
+            const int judgesProgramSize = 10;
+            
+            var programId = "SvH2Rm2HfUbjxZtx1Oe9wVJi";
+            var operators = new[] { "not", "plus", "shr16", "tfold" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x097E6E055D07F036", "0xA30604E66793F909", "0xA2EC6C7ADE3842EF", "0x8B8DCC5011923FDE", "0x22006E622C672963", "0x4801A2390D5DCD16" };
+            ulong[] outputs = { "0xFFFFFFFFFFFFFFFF", "0xFFFFFFFFFFFFFF00", "0xFFFFFFFFFFFFFFF6", "0xFFFFFFFFFFFFFF5C", "0xFFFFFFFFFFFFFF5D", "0xFFFFFFFFFFFFFF74", "0xFFFFFFFFFFFFFFDD", "0xFFFFFFFFFFFFFFB7" };
+      
+      
+
+            const int judgesProgramSize = 10;
+            
+            var programId = "XBTNyTdcXSt9EQywsKkVjaJl";
+            var operators = new[] { "plus", "tfold", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xC9F88E422EC10F4C", "0x3CB96DDBC67E6503", "0x8041DA9DBD03076B", "0x3C68DE0EADC71541", "0xD4495F0A40C44A3D", "0xA9473AF0FC289D30" };
+            ulong[] outputs = { "0x0000000000000000", "0x0000000000007F01", "0x00000000000000F9", "0x00000000000003C4", "0x0000000000000F80", "0x000000000000004C", "0x000000000000016C", "0x000000000000075F" };
+      
+      
+
+            const int judgesProgramSize = 10;
+            
+            var programId = "aqok2eFmv4AMil8WBLCG6p4g";
+            var operators = new[] { "and", "plus", "tfold" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x72AA449E32A22113", "0x25BB4BC62CEC41CE", "0x0C3278A9908842FD", "0x079044B1008C2FBE", "0xF99D363CED991ECE", "0xE50D1C72C972529F" };
+            ulong[] outputs = { "0x0000000000000000", "0x0000000000000000", "0x0000000000000000", "0x0000000000000000", "0x0000000000000000", "0x0000000000000001", "0x0000000000000000", "0x0000000000000000" };
+      
+      
+
+            const int judgesProgramSize = 10;
+            
+            var programId = "bkwu4drUf0xv5JWrhPmvHaTp";
+            var operators = new[] { "shr1", "shr4", "tfold", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x9BFFB6B1ADFF03E1", "0x89C0AAB76F7396EE", "0xC7E8CDB1A75EE5B1", "0xA199680556F18FA4", "0x1855E244AE1EA721", "0xF5412EC2A6FEFD1E" };
+            ulong[] outputs = { "0x0000000000000000", "0x0000000000000007", "0x0000000000000004", "0x0000000000000004", "0x0000000000000006", "0x0000000000000005", "0x0000000000000000", "0x0000000000000007" };
+      
+      
+
+            const int judgesProgramSize = 10;
+            
+            var programId = "fDVYtf49xFWjreVTzx6qp11n";
+            var operators = new[] { "not", "shr1", "tfold", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x143365BE8C18E891", "0x8695A9C52208381A", "0xCE45128B104DD1FC", "0x760442CEB4894690", "0xBBE30C4F1CC4FB4E", "0x755333D90B930A73" };
+            ulong[] outputs = { "0xAA00000000000000", "0xAA000000000000AA", "0xAA00000000000009", "0xAA000000000000FC", "0xAA000000000000F8", "0xAA00000000000072", "0xAA000000000000C4", "0xAA0000000000004F" };
+      
+      
+
+            const int judgesProgramSize = 10;
+            
+            var programId = "leL3QnDAzaIqzT53sBvB6jUE";
+            var operators = new[] { "or", "shl1", "shr4", "tfold" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x7F6930E0F0AA7867", "0xD8457FDC78FC4AA3", "0xEF3678E4C9D39234", "0x5CF4397E819D91ED", "0x1E951398564C13F2", "0xF4DF6B1005794592" };
+            ulong[] outputs = { "0x0000000000000000", "0x000000000000001F", "0x000000000000000F", "0x000000000000001B", "0x000000000000001D", "0x000000000000000B", "0x0000000000000003", "0x000000000000001E" };
+      
+      
+
+            const int judgesProgramSize = 10;
+            
+            var programId = "nLC3U0Brmht2eU8Oi0lAxGOB";
+            var operators = new[] { "shl1", "shr4", "tfold", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xEE91895F47D7BBC4", "0x6901E7934E03BA41", "0x2040EF33C9859F55", "0x82DE31FF9E37B5FC", "0x69FDAC62C3BDA9B2", "0xAA8B4610DD155D81" };
+            ulong[] outputs = { "0x0000000000000000", "0x00000000000000FF", "0x00000000000000EE", "0x0000000000000069", "0x0000000000000020", "0x0000000000000082", "0x0000000000000069", "0x00000000000000AA" };
+      
+      
+
+            const int judgesProgramSize = 10;
+            
+            var programId = "oRRd9ycoAyAAn7PV3t0YHEe2";
+            var operators = new[] { "shl1", "shr16", "tfold", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xD5C015E670B01043", "0x0FEFF252AA4BB67A", "0xA8063E29EA9B80DC", "0xB50F63D9D6471CA2", "0x9D9C6E81EE5B8C29", "0x8E165261AB48E8E8" };
+            ulong[] outputs = { "0x0000000000000000", "0x00000000000001FE", "0x00000000000001AA", "0x000000000000001E", "0x0000000000000150", "0x000000000000016A", "0x000000000000013A", "0x000000000000011C" };
+      
+      
+
+            const int judgesProgramSize = 10;
+            
+            var programId = "vItF1FAA0Pe6Hk1gE07FKxAC";
+            var operators = new[] { "shr1", "tfold", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x0580A1AB9001056D", "0x17FBEACECACE0709", "0x6E8E0097C68096A7", "0x50475BF54101FEE4", "0x880A7F62D368B805", "0xFDCFD29F7AE5550B" };
+            ulong[] outputs = { "0x0000000000000000", "0x000000000000007F", "0x0000000000000002", "0x000000000000000B", "0x0000000000000037", "0x0000000000000028", "0x0000000000000044", "0x000000000000007E" };
+      
+      
+
+            const int judgesProgramSize = 10;
+            
+            var programId = "wlFqgF3d5y5CRsOvzja7ok6v";
+            var operators = new[] { "plus", "tfold", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0x6CF750D1CA0430EC", "0xAD0F3F9FACAB9277", "0x27B5288215C47DBF", "0x12CE141B41BAF78C", "0xB47E7D57C455042F", "0xCCE95DD4CF5CFBC1" };
+            ulong[] outputs = { "0x0000000000000000", "0x00000000000000FF", "0x000000000000006C", "0x00000000000000AD", "0x0000000000000027", "0x0000000000000012", "0x00000000000000B4", "0x00000000000000CC" };
+      
+      
+
+            const int judgesProgramSize = 10;
+            
+            var programId = "xQ5OMXuCJOWTQDCFNPZZxXas";
+            var operators = new[] { "plus", "tfold", "xor" };
+            
+            ulong[] inputs = { "0x0000000000000000", "0xFFFFFFFFFFFFFFFF", "0xC47BB90D21BA3746", "0x6351B696D93EDD7B", "0x42564AE99A7D99C4", "0x2E52E6CB865410FF", "0x7504AC59E3FBEE0E", "0x0B1EA53E79499089" };
+            ulong[] outputs = { "0x0000000000000000", "0x0000000000007F01", "0x00000000000003CC", "0x00000000000007A5", "0x00000000000001C6", "0x00000000000001D2", "0x000000000000018D", "0x0000000000000017" };
+      

@@ -242,17 +242,19 @@
         public static void SolveOffline()
         {
             const int judgesProgramSize = 8;
+            
             var programId = "mrkVrFLMXiwAZifmVWtSBCxn";
             var operators = new[] { "not","shl1","shr1","shr4","or" };
+            
+            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x0580A1AB9001056D, 0x17FBEACECACE0709, 0x6E8E0097C68096A7, 0x50475BF54101FEE4, 0x880A7F62D368B805, 0xFDCFD29F7AE5550B };
+            ulong[] outputs = { 0x0FFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF, 0x0FFFFFFFFFFFFFFF, 0x1FFFFFFFFFFFFFFF, 0x6FFFFFFFFFFFFFFF, 0x5FFFFFFFFFFFFFFE, 0x8FFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF };
 
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
 
             var ops = ProgramTree.GetOpTypes(operators);
 
-            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x0580A1AB9001056D, 0x17FBEACECACE0709, 0x6E8E0097C68096A7, 0x50475BF54101FEE4, 0x880A7F62D368B805, 0xFDCFD29F7AE5550B };
-            ulong[] outputs = {0x0FFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF, 0x0FFFFFFFFFFFFFFF, 0x1FFFFFFFFFFFFFFF, 0x6FFFFFFFFFFFFFFF, 0x5FFFFFFFFFFFFFFE, 0x8FFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF};
-
+            
             var solution = Solve(judgesProgramSize, ops, inputs, outputs);
             var finalResult = solution != null ? solution.Serialize() : "NO RESULT";
 
