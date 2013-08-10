@@ -131,13 +131,13 @@
         static IEnumerable<Node> GenerateCorrectPrograms(List<Node> validNodes, int targetSize)
         {
 
-#if false
-            var builder = new TreeGenerator(validNodes, targetSize);
+#if true
+            var builder = new FTreeGenerator(validNodes, targetSize);
             foreach (var root in builder.GenerateAllPrograms())
             {
                 yield return root;
             }
-#endif
+#else
 
             int bfsSize = targetSize > 5 ? 5 : targetSize;
             var builder = new TreeGenerator(validNodes, bfsSize);
