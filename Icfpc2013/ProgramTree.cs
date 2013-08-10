@@ -138,6 +138,11 @@ namespace Icfpc2013
             return Program.Op();
         }
 
+        public long Size()
+        {
+            return Program.Size();
+        }
+
         public static OpTypes GetOpTypes(IEnumerable<string> operators)
         {
             return Parser.ParseOps(operators).Aggregate(OpTypes.none, (seed, value) => seed | value);

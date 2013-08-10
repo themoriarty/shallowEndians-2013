@@ -4,6 +4,7 @@
     using System.Globalization;
     using System.IO;
     using System.Linq;
+    using System.Threading;
 
     using Icfpc2013.Ops;
 
@@ -35,7 +36,7 @@
             if ((validOps & OpTypes.tfold) != OpTypes.none)
             {
                 tfoldMode = true;
-                programSize -= 2;
+                programSize -= 4;
             }
 
             var builder = new TreeGenerator(ProgramTree.GetAvailableNodes(validOps, tfoldMode), programSize);
@@ -51,7 +52,6 @@
                         solution = new NodeFold { Node0 = new NodeId { Name = "x" }, Node1 = new Node0(), Node2 = new Lambda2 { Id0 = new NodeId { Name = "x1" }, Id1 = new NodeId { Name = "x2" }, Node0 = root } };
                     }
 
-                    // Console.WriteLine(root.Serialize());
                     bool valid = true;
                     for (int i = 0; i < inputs.Length; ++i)
                     {
@@ -61,15 +61,20 @@
                         if (output != outputs[i])
                         {
                             valid = false;
+                            break;
                         }
 
-                        // Console.WriteLine("{0} ({1}) = {2:X} ({3})", root.Serialize(), inputs[i], output, valid);
+                        //Console.WriteLine("{0} ({1}) = {2:X} ({3})", root.Serialize(), inputs[i], output, valid);
                     }
+
+                    //Console.WriteLine("{0}", root.Serialize());
 
                     if (valid)
                     {
                         var currentOps = OpTypes.none;
                         solution.Op(ref currentOps);
+
+                        //Console.WriteLine("currentOps={0}", currentOps);
 
                         if (tfoldMode)
                         {
@@ -113,17 +118,17 @@
 
         public static void SolveOffline()
         {
-            const int judgesProgramSize = 7;
-            var programId = "HwtaxjPH1ZAvjgq5RiJYnAh5";
-            var operators = new[] { "plus", "shl1" };
+            const int judgesProgramSize = 8;
+            var programId = "Y5u1WUm8r67tSg9ynbfvpugI";
+            var operators = new[] { "not", "shl1", "tfold" };
 
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
 
             var ops = ProgramTree.GetOpTypes(operators);
 
-            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xD8E4755D6F460C1A, 0xC8DB19F5D56567AD, 0x0085F8373B347C2B, 0x0DB3935300645EEC, 0x0F6C74CF7529404A, 0x4BEB041E4DC2BEF4 };
-            ulong[] outputs = { 0x0000000000000003, 0x0000000000000002, 0xD8E4755D6F460C1D, 0xC8DB19F5D56567B0, 0x0085F8373B347C2E, 0x0DB3935300645EEF, 0x0F6C74CF7529404D, 0x4BEB041E4DC2BEF7 };
+            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x707708E25622A01C, 0x2ED773588336EF20, 0x4BAE5BB138FCF580, 0xEC3738AD9C394E2C, 0x1DC06F4ED6CBF8D0, 0x4AE3EBE3AF6ECFBE };
+            ulong[] outputs = { 0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFE00, 0xFFFFFFFFFFFFFF1E, 0xFFFFFFFFFFFFFFA2, 0xFFFFFFFFFFFFFF68, 0xFFFFFFFFFFFFFE26, 0xFFFFFFFFFFFFFFC4, 0xFFFFFFFFFFFFFF6A };
 
             var solution = Solve(judgesProgramSize, ops, inputs, outputs);
             var finalResult = solution != null ? solution.Serialize() : "NO RESULT";
@@ -131,18 +136,18 @@
             Console.WriteLine(finalResult);
         }
 
-        public static void SolveTrainingProgram()
+        public static bool SolveTrainingProgram()
         {
-            int judgesProgramSize = 6;
+            int judgesProgramSize = 8;
             var options = new[] { "tfold" };
-            var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, null));
+            var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, options));
             var programId = training.id;
 
             Console.WriteLine("Challenge: {0}", string.Join(", ", training.challenge));
 
             var operators = training.operators;
 
-            Solve(programId, judgesProgramSize, operators);
+            return Solve(programId, judgesProgramSize, operators);
         }
 
         #endregion
@@ -151,12 +156,12 @@
 
         private static void Main(string[] args)
         {
-            // SolveTrainingProgram();
-            // SolveMyProblems();
-            SolveOffline();
+            SolveTrainingProgram();
+            //SolveMyProblems();
+            //SolveOffline();
         }
 
-        private static void Solve(string programId, int judgesProgramSize, string[] operators)
+        private static bool Solve(string programId, int judgesProgramSize, string[] operators)
         {
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
@@ -179,14 +184,14 @@
 
             var outputs = outputsResponse.outputs.Select(s => ulong.Parse(s.Replace("0x", string.Empty), NumberStyles.HexNumber)).ToArray();
 
-            // ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x4E5B3679C799A739, 0x4EEBF16E2198469F, 0xA986C998F78B9A65, 0xA2C57077E8DDF691, 0x3C6E1A9F8F3F3625, 0xE526A4724D1CFCBD };
-            // ulong[] outputs = { 0x0000000000000000, 0x0000000000000007, 0x0000000000000002, 0x0000000000000002, 0x0000000000000005, 0x0000000000000005, 0x0000000000000001, 0x0000000000000007 };
             var solution = Solve(judgesProgramSize, ops, inputs, outputs);
             var finalResult = solution.Serialize();
 
             Console.WriteLine("Submitting: {0}", finalResult);
             var response = API.Guess(new Guess(programId, finalResult));
             Console.WriteLine("Gues: {0} {1} {2}", response.status, response.message, string.Join(", ", response.values ?? new string[] { }));
+
+            return response.status == "win";
         }
 
         #endregion
