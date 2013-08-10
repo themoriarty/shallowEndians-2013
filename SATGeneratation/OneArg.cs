@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SATGeneratation
 {
-    class OneArg : ArgNode
+    public class OneArg : ArgNode
     {
         public ArgNode Arg0;
 

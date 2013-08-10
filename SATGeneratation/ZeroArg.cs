@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SATGeneratation
 {
-    class ZeroArg : ArgNode
+    public class ZeroArg : ArgNode
     {
         public BoolExpr GenerateConstraints(Context ctx, Solver solver, BitVecExpr prInput, BitVecExpr prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
         {

@@ -11,6 +11,8 @@
 
     using Newtonsoft.Json.Linq;
 
+    using SATGeneratation;
+
     public class Program
     {
         #region Public Methods and Operators
@@ -43,7 +45,7 @@
             Solve("aW7PipK64krdEbU9OxYMoFV1", judgesProgramSize, new string[]{"or",
         "plus",
         "shl1"/*,
-        "xor"*/});
+        "xor"*/}, false);
 
             //const int judgesProgramSize = 8;
             //var programId = "9WqCcqFo4tIoJVnBm1OW9gFX";
@@ -150,6 +152,182 @@
                 //yield break;
             }
 #endif
+        }
+
+        public static Lambda1 SolveSat(int judgesProgramSize, OpTypes validOps, ulong[] inputs, ulong[] outputs)
+        {
+            int programSize = judgesProgramSize - 1;
+
+            List<ArgNode> nodes = new List<ArgNode>();
+
+            for (int i = 0; i < programSize; ++i)
+            {
+                nodes.Add(new MetaArgNode { Name = string.Format("n{0}",i) });
+            }
+
+            bool[] permitted = new bool[Enum.GetValues(typeof(OpCodes)).Length];
+            for (int i = 0; i < (int)OpCodes.Input + 1; ++i)
+            {
+                permitted[i] = false;
+            }
+
+            permitted[(int)OpCodes.One] = true;
+            permitted[(int)OpCodes.Zero] = true;
+            permitted[(int)OpCodes.Input] = true;
+
+            if ((validOps & OpTypes.not) != OpTypes.none)
+            {
+                permitted[(int)OpCodes.Not] = true;
+            }
+
+            if ((validOps & OpTypes.and) != OpTypes.none)
+            {
+                permitted[(int)OpCodes.And] = true;
+            }
+
+            if ((validOps & OpTypes.or) != OpTypes.none)
+            {
+                permitted[(int)OpCodes.Or] = true;
+            }
+
+            if ((validOps & OpTypes.xor) != OpTypes.none)
+            {
+                permitted[(int)OpCodes.Xor] = true;
+            }
+
+            if ((validOps & OpTypes.plus) != OpTypes.none)
+            {
+                permitted[(int)OpCodes.Plus] = true;
+            }
+
+            if ((validOps & OpTypes.shl1) != OpTypes.none)
+            {
+                permitted[(int)OpCodes.Shl1] = true;
+            }
+
+            if ((validOps & OpTypes.shr1) != OpTypes.none)
+            {
+                permitted[(int)OpCodes.Shr1] = true;
+            }
+
+            if ((validOps & OpTypes.shr4) != OpTypes.none)
+            {
+                permitted[(int)OpCodes.Shr4] = true;
+            }
+
+            if ((validOps & OpTypes.shr16) != OpTypes.none)
+            {
+                permitted[(int)OpCodes.Shr16] = true;
+            }
+
+            if ((validOps & OpTypes.if0) != OpTypes.none)
+            {
+                permitted[(int)OpCodes.If0] = true;
+            }
+
+            List<ArgNode> res = SATGeneratation.Utils.SolveNodeArray(inputs, outputs, nodes, permitted);
+            Console.Write("[Node array] And example output :::");
+            for (int i = 0; i < res.Count; i++)
+            {
+                Console.Write(res[i].ComputedOpcode + " ");
+            }
+            Console.Write("\n");
+
+            int pos = 0;
+            var rootNode = BuildFromSat(res, ref pos);
+
+            if (pos != res.Count)
+            {
+                throw new Exception("pos != end");
+            }
+
+            var result = new ProgramTree { Program = new Lambda1 { Node0 = rootNode, Id0 = new NodeId { Name = "x" } } };
+
+            Console.WriteLine("SAT: {0}", rootNode.Serialize());
+
+            for (int i = 0; i < inputs.Length; ++i)
+            {
+                var input = inputs[i];
+                var output = outputs[i];
+
+                var computed = result.Run(input);
+
+                Console.WriteLine("[{0}] {1:X16} {2:X16} {3:X16}", i, input, output, computed);
+
+                if (output != computed)
+                {
+                    throw new Exception("mismatch");
+                }
+            }
+
+                return result.Program;
+        }
+
+        public static Node BuildFromSat(List<ArgNode> solution, ref int index)
+        {
+            var arg = solution[index++];
+            Node node1;
+            Node node2;
+            Node node3;
+            switch (arg.ComputedOpcode)
+            {
+                case OpCodes.Zero:
+                    return new Node0();
+                    break;
+                case OpCodes.One:
+                    return new Node1();
+                    break;
+                case OpCodes.Input:
+                    return new NodeId() {Name = "x"};
+                    break;
+                case OpCodes.And:
+                    node1 = BuildFromSat(solution, ref index);
+                    node2 = BuildFromSat(solution, ref index);
+                    return new NodeOp2And{Node0 = node1, Node1 = node2};
+                    break;
+                case OpCodes.Or:
+                    node1 = BuildFromSat(solution, ref index);
+                    node2 = BuildFromSat(solution, ref index);
+                    return new NodeOp2Or{Node0 = node1, Node1 = node2};
+                    break;
+                case OpCodes.Xor:
+                    node1 = BuildFromSat(solution, ref index);
+                    node2 = BuildFromSat(solution, ref index);
+                    return new NodeOp2Xor{Node0 = node1, Node1 = node2};
+                    break;
+                case OpCodes.Plus:
+                    node1 = BuildFromSat(solution, ref index);
+                    node2 = BuildFromSat(solution, ref index);
+                    return new NodeOp2Plus{Node0 = node1, Node1 = node2};
+                    break;
+                case OpCodes.Not:
+                    node1 = BuildFromSat(solution, ref index);
+                    return new NodeOp1Not { Node0 = node1 };
+                    break;
+                case OpCodes.Shl1:
+                    node1 = BuildFromSat(solution, ref index);
+                    return new NodeOp1Shl1 { Node0 = node1 };
+                    break;
+                case OpCodes.Shr1:
+                    node1 = BuildFromSat(solution, ref index);
+                    return new NodeOp1Shr1 { Node0 = node1 };
+                case OpCodes.Shr4:
+                    node1 = BuildFromSat(solution, ref index);
+                    return new NodeOp1Shr4 { Node0 = node1 };
+                case OpCodes.Shr16:
+                    node1 = BuildFromSat(solution, ref index);
+                    return new NodeOp1Shr16 { Node0 = node1 };
+                case OpCodes.If0:
+                    node1 = BuildFromSat(solution, ref index);
+                    node2 = BuildFromSat(solution, ref index);
+                    node3 = BuildFromSat(solution, ref index);
+                    return new NodeIf0() { Node0 = node1, Node1 = node2, Node2 = node3 };
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            return null;
         }
 
         public static Lambda1 Solve(int judgesProgramSize, OpTypes validOps, ulong[] inputs, ulong[] outputs)
@@ -271,11 +449,35 @@
             Console.WriteLine(finalResult);
         }
 
-        public static bool SolveTrainingProgram()
+        public static void SolveSatOffline()
         {
-            int judgesProgramSize = 8;
+            const int judgesProgramSize = 8;
+
+            var programId = "GBUTtMTIADxBecgU35jl63us";
+            var operators = new[] { "plus", "xor" };
+
+            // Solution: (lambda (x) (xor x (xor x (plus x x))))
+
+            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x23A282379AF7850C, 0xF3D35174C949BB0D, 0xFE7C0264DF27E86F, 0x06CC691C9D9CD006, 0xE809CD0767D69590, 0x736D7A70B0B2534C };
+            ulong[] outputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFE, 0x4745046F35EF0A18, 0xE7A6A2E99293761A, 0xFCF804C9BE4FD0DE, 0x0D98D2393B39A00C, 0xD0139A0ECFAD2B20, 0xE6DAF4E16164A698 };
+
+            Console.WriteLine("ProgramId: {0}", programId);
+            Console.WriteLine("Training: {0}", string.Join(", ", operators));
+
+            var ops = ProgramTree.GetOpTypes(operators);
+
+
+            var solution = SolveSat(judgesProgramSize, ops, inputs, outputs);
+            var finalResult = solution != null ? solution.Serialize() : "NO RESULT";
+
+            Console.WriteLine(finalResult);
+        }
+
+        public static bool SolveTrainingProgram(bool useSat)
+        {
+            int judgesProgramSize = 12;
             var options = new[] { "tfold" };
-            options = null;
+            options = new string[0];
             var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, options));
             var programId = training.id;
 
@@ -283,7 +485,7 @@
 
             var operators = training.operators;
 
-            return Solve(programId, judgesProgramSize, operators);
+            return Solve(programId, judgesProgramSize, operators, useSat);
         }
 
         #endregion
@@ -292,12 +494,13 @@
 
         private static void Main(string[] args)
         {
-            //SolveTrainingProgram();
+            SolveTrainingProgram(true);
             //SolveMyProblems();
-            SolveOffline();
+            //SolveOffline();
+            //SolveSatOffline();
         }
         
-        private static bool Solve(string programId, int judgesProgramSize, string[] operators)
+        private static bool Solve(string programId, int judgesProgramSize, string[] operators, bool useSat)
         {
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
@@ -321,13 +524,30 @@
 
             ulong[] outputs = outputsResponse.outputs.Select(s => ulong.Parse(s.Replace("0x", string.Empty), NumberStyles.HexNumber)).ToArray();
 
-            //ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x4E5B3679C799A739, 0x4EEBF16E2198469F, 0xA986C998F78B9A65, 0xA2C57077E8DDF691, 0x3C6E1A9F8F3F3625, 0xE526A4724D1CFCBD };
-            //ulong[] outputs = { 0x0000000000000000, 0x0000000000000007, 0x0000000000000002, 0x0000000000000002, 0x0000000000000005, 0x0000000000000005, 0x0000000000000001, 0x0000000000000007 };
+            Lambda1 solution = null;
+            
+            if (useSat)
+            {
+                try
+                {
+                    Console.WriteLine("Using SAT!");
+                    solution = SolveSat(judgesProgramSize, ops, inputs, outputs);
 
-            //ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x143365BE8C18E891, 0x8695A9C52208381A, 0xCE45128B104DD1FC, 0x760442CEB4894690, 0xBBE30C4F1CC4FB4E, 0x755333D90B930A73};
-            //ulong[] outputs = { 0x0000000000000002, 0xFFFFFFFFFFFFFFFD, 0x3C9A313BA44AB9B3, 0x93C0FD4F6618A850, 0x6ACF37A130E975F6, 0x620CC86C1D9BD3B2, 0x33A924ED564EF1EC, 0x5FF99B8B22B91F59};
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("SAT faild: {0}", ex);
 
-            var solution = Solve(judgesProgramSize, ops, inputs, outputs);
+                    Console.WriteLine("Using BFS!");
+                    solution = Solve(judgesProgramSize, ops, inputs, outputs);    
+                }
+            }
+            else
+            {
+                Console.WriteLine("Using BFS!");
+                solution = Solve(judgesProgramSize, ops, inputs, outputs);    
+            }
+            
             var finalResult = solution.Serialize();
 
             Console.WriteLine("Submitting: {0}", finalResult);

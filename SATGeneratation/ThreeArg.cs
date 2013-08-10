@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SATGeneratation
 {
-    class ThreeArg : ArgNode
+    public class ThreeArg : ArgNode
     {
         public ArgNode Arg0;
         public ArgNode Arg1;
@@ -102,7 +102,7 @@ namespace SATGeneratation
                             ctx.MkAnd(ctx.MkEq(ctx.MkBVUGT(arg0Output, ctx.MkBV(0, 64)), ctx.MkBool(true)), ctx.MkEq(Output, arg2Output))
                     )));
             }
-            if (andClauses.Count == 0)
+            else
             {
                 andClauses.Add(ctx.MkFalse());
             }
