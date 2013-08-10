@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Icfpc2013;
 
 using Newtonsoft.Json.Linq;
 
@@ -11,6 +12,7 @@ namespace SolverTests
     [TestClass]
     public class UnitTest1
     {
+        private ulong[] inputs = { 0, 12, 137, 1337, 0xFFFFFFFFFFFFFFFF, 0x143365BE8C18E891, 0x8695A9C52208381A, 0xCE45128B104DD1FC, 0x760442CEB4894690, 0xBBE30C4F1CC4FB4E, 0x755333D90B930A73 };
         [TestMethod]
         public void TestAlreadySubmittedSolutions()
         {
@@ -26,7 +28,16 @@ namespace SolverTests
 
                 //Solve(int judgesProgramSize, OpTypes validOps, ulong[] inputs, ulong[] outputs)
                 var solution = Icfpc2013.Program.Solve(judgesProgramSize, validOps, inputs, outputs);
-                Assert.AreEqual((string)problem["program"], solution.Serialize(), "id="+(string)problem["id"]);
+                var idealSolution = Icfpc2013.ProgramTree.Parse((string)problem["program"]);
+
+                foreach (var input in inputs)
+                {
+                    var ctx = new Icfpc2013.ExecContext();
+                    ctx.Vars["x"] = input;
+                    var solutionOutput = solution.Node0.Eval(ctx);
+                    var idealOutput = idealSolution.Run(input);
+                    Assert.AreEqual(idealOutput, solutionOutput);
+                }
             }
             Console.WriteLine("Total problems that claim to be solved: {0}", solvedProblems);
         }
