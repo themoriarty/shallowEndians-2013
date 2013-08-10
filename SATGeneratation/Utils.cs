@@ -49,7 +49,7 @@ namespace SATGeneratation
         public static void PopulateConstraints(ArgNode root, Context ctx, Solver solv, BitVecExpr input, BitVecExpr output, bool[] permitted)
         {
             root.AddConstraints(ctx, solv, input, output, permitted);
-            foreach(ArgNode child in root.GetChildren())
+            foreach (ArgNode child in root.GetChildren())
             {
                 PopulateConstraints(child, ctx, solv, input, output, permitted);
             }
@@ -58,7 +58,7 @@ namespace SATGeneratation
         public static void PopulateSolution(ArgNode root, Solver solv)
         {
             Model m = solv.Model;
-            var opcodeTop = (IntExpr) m.Evaluate(root.OpCode);
+            var opcodeTop = (IntExpr)m.Evaluate(root.OpCode);
             root.ComputedOpcode = (OpCodes)Int32.Parse(opcodeTop.ToString());
             foreach (ArgNode child in root.GetChildren())
             {
@@ -115,7 +115,7 @@ namespace SATGeneratation
             {
                 GetAllNodesThatCanServeOpcode(child, opcode, accumulator);
             }
-            
+
         }
 
         public static void MakeSureOpcodeAppearsAtLeastOnce(Context ctx, Solver solv, ArgNode root, OpCodes opcode)
@@ -123,7 +123,7 @@ namespace SATGeneratation
             List<ArgNode> nodes = new List<ArgNode>();
             GetAllNodesThatCanServeOpcode(root, opcode, nodes);
             List<BoolExpr> expressions = new List<BoolExpr>();
-            foreach(ArgNode n in nodes)
+            foreach (ArgNode n in nodes)
             {
                 expressions.Add(ctx.MkEq(root.OpCode, ctx.MkInt((int)opcode)));
             }
@@ -132,7 +132,7 @@ namespace SATGeneratation
 
         public static ArgNode SolvePrototypeTree(ulong[] inputs, ulong[] outputs, ArgNode prototypeTreeRoot, bool[] permitted)
         {
-            if(inputs.Length == 0 || inputs.Length != outputs.Length)
+            if (inputs.Length == 0 || inputs.Length != outputs.Length)
             {
                 throw new ArgumentException("Invalid program inputs/outputs provided");
             }
@@ -175,5 +175,6 @@ namespace SATGeneratation
 
                 return results[0];
             }
-        } 
+        }
+    }
 }
