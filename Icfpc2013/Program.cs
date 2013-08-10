@@ -150,6 +150,7 @@
                 }
                 //yield break;
             }
+#endif
         }
 
         public static Lambda1 Solve(int judgesProgramSize, OpTypes validOps, ulong[] inputs, ulong[] outputs)
