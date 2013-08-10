@@ -208,6 +208,10 @@ namespace Icfpc2013
                 validNodes.Add(new NodeOp2Plus());
             }
 
+            if ((ops & OpTypes.if0) != OpTypes.none)
+            {
+                validNodes.Add(new NodeIf0());
+            }
             return validNodes;
         }
 

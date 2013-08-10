@@ -240,13 +240,24 @@
 
         public static void SolveOffline()
         {
-            const int judgesProgramSize = 8;
+            const int judgesProgramSize = 11;
 
-            var programId = "jcguu92bgAqFWom2IUeOkltx";
-            var operators = new[] { "plus", "shl1", "shr1" };
+            var programId = "7eegF4nrTKkUz0fkrdnBwPvz";
+            var operators = new[] { "if0",
+        "plus",
+        "shr16",
+        "shr4",
+        "xor"};
             
             ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x0580A1AB9001056D, 0x17FBEACECACE0709, 0x6E8E0097C68096A7, 0x50475BF54101FEE4, 0x880A7F62D368B805, 0xFDCFD29F7AE5550B };
-            ulong[] outputs = { 0x0000000000000002, 0x0000000000000001, 0x0580A1AB9001056F, 0x17FBEACECACE070B, 0x6E8E0097C68096A9, 0x50475BF54101FEE6, 0x880A7F62D368B807, 0xFDCFD29F7AE5550D };
+            ulong[] outputs = { 0x0000000000000000,
+        0x0000FFFFFFFFFFFF,
+        0x00000580A1AB9001,
+        0x000017FBEACECACE,
+        0x00006E8E0097C680,
+        0x000050475BF54101,
+        0x0000880A7F62D368,
+        0x0000FDCFD29F7AE5 };
 
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
