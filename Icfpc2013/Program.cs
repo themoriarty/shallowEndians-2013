@@ -16,11 +16,25 @@
     {
         #region Methods
 
+        static int Bits(OpTypes ops)
+        {
+            int cnt = 0;
+            for (int i = 0; i < 32; ++i)
+            {
+                if ((ops & (OpTypes)(1 << i)) != 0)
+                {
+                    cnt++;
+                }
+            }
+
+            return cnt;
+        }
+
         private static void Main(string[] args)
         {
-
             const int judgesProgramSize = 6;
             const int programSize = judgesProgramSize - 1;
+            var options = new string[] { "tfold" };
             var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, null));
             var programId = training.id;
 
@@ -30,10 +44,9 @@
 
             Solve(programId, judgesProgramSize, operators);
 
-            //const int judgesProgramSize = 6;
-            //const int programSize = judgesProgramSize - 1;
-            //var programId = "6dLNiZzzCXaI6ssMunzDXX8i";
-            //var operators = new string[] { "plus", "xor" };
+            //const int judgesProgramSize = 8;
+            //var programId = "9WqCcqFo4tIoJVnBm1OW9gFX";
+            //var operators = new string[] { "shr1", "shr4", "tfold" };
 
             //Solve(programId, judgesProgramSize, operators);
 
@@ -48,13 +61,13 @@
             //    var operators = task["operators"].Select(s => (string)s).ToArray();
             //    var ops = ProgramTree.GetOpTypes(operators);
 
-            //    if (solved.GetValueOrDefault() == false && size == 6 && ((ops & (OpTypes.fold | OpTypes.tfold | OpTypes.if0)) == OpTypes.none))
+            //    if (solved.HasValue == false && size == 8 && ((ops & (OpTypes.fold | OpTypes.if0)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.tfold)
             //    {
-                    
+
             //        Console.WriteLine("{0} {1} {2}", id, size, ops);
 
-            //        Solve(id, size, operators);
-            //        Thread.Sleep(20000);
+            //        //Solve(id, size, operators);
+            //        //Thread.Sleep(20000);
             //    }
 
             //}
@@ -65,21 +78,35 @@
         public static Lambda1 Solve(int judgesProgramSize, OpTypes validOps, ulong[] inputs, ulong[] outputs)
         {
             int programSize = judgesProgramSize - 1;
-            var inputStrings = inputs.Select(s => string.Format("0x{0:X16}", s)).ToArray();
 
-            var builder = new TreeGenerator(ProgramTree.GetAvailableNodes(validOps), programSize);
+
+            bool tfoldMode = false;
+            if ((validOps & OpTypes.tfold) != OpTypes.none)
+            {
+                tfoldMode = true;
+                programSize -= 2;
+            }
+
+            var builder = new TreeGenerator(ProgramTree.GetAvailableNodes(validOps, tfoldMode), programSize);
             foreach (var root in builder.GenerateAllPrograms())
             {
                 //Console.WriteLine(root.Serialize());
                 if (root.Size() == programSize)
                 {
+                    var solution = root;
+
+                    if (tfoldMode)
+                    {
+                        solution = new NodeFold { Node0 = new NodeId { Name = "x" }, Node1 = new Node0(), Node2 = new Lambda2 { Id0 = new NodeId { Name = "x1" }, Id1 = new NodeId { Name = "x2" }, Node0 = root } };
+                    }
+
                     //Console.WriteLine(root.Serialize());
                     bool valid = true;
                     for (int i = 0; i < inputs.Length; ++i)
                     {
                         ExecContext ctx = new ExecContext();
                         ctx.Vars["x"] = inputs[i];
-                        var output = root.Eval(ctx);
+                        var output = solution.Eval(ctx);
                         if (output != outputs[i])
                         {
                             valid = false;
@@ -89,11 +116,17 @@
                     if (valid)
                     {
                         var currentOps = OpTypes.none;
-                        root.Op(ref currentOps);
+                        solution.Op(ref currentOps);
+
+                        if (tfoldMode)
+                        {
+                            currentOps &= ~OpTypes.fold;
+                            currentOps |= OpTypes.tfold;
+                        }
 
                         if (currentOps == validOps)
                         {
-                            var finalResult = new Lambda1 { Id0 = new NodeId { Name = "x" }, Node0 = root };
+                            var finalResult = new Lambda1 { Id0 = new NodeId { Name = "x" }, Node0 = solution };
                             return finalResult;
                         }
                     }
@@ -101,14 +134,14 @@
             }
             return null;
         }
+        
         private static void Solve(string programId, int judgesProgramSize, string[] operators)
         {
-            int programSize = judgesProgramSize - 1;
-
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
 
             var ops = ProgramTree.GetOpTypes(operators);
+
             ulong[] inputs = ProgramTree.GetInputVectorList(8).ToArray(); //{0x12, 0x137};
             var inputStrings = inputs.Select(s => string.Format("0x{0:X16}", s)).ToArray();
 
@@ -125,6 +158,9 @@
 
             ulong[] outputs = outputsResponse.outputs.Select(s => ulong.Parse(s.Replace("0x", string.Empty), NumberStyles.HexNumber)).ToArray();
 
+            //ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x4E5B3679C799A739, 0x4EEBF16E2198469F, 0xA986C998F78B9A65, 0xA2C57077E8DDF691, 0x3C6E1A9F8F3F3625, 0xE526A4724D1CFCBD };
+            //ulong[] outputs = { 0x0000000000000000, 0x0000000000000007, 0x0000000000000002, 0x0000000000000002, 0x0000000000000005, 0x0000000000000005, 0x0000000000000001, 0x0000000000000007 };
+
             var solution = Solve(judgesProgramSize, ops, inputs, outputs);
             var finalResult = solution.Serialize();
 
@@ -133,116 +169,7 @@
             Console.WriteLine("Gues: {0} {1} {2}", response.status, response.message, string.Join(", ", response.values ?? new string[] { }));
         }
 
-        private static void Main2(string[] args)
-        {
-            // API.Test();
-            var p = new Lambda2
-                        {
-                            Node0 =
-                                new NodeFold
-                                    {
-                                        Node0 = new NodeId { Name = "X" }, 
-                                        Node1 = new Node0(), 
-                                        Node2 =
-                                            new Lambda2
-                                                {
-                                                    Id0 = new NodeId { Name = "X" }, 
-                                                    Id1 = new NodeId { Name = "Y" }, 
-                                                    Node0 =
-                                                        new NodeIf0
-                                                            {
-                                                                Node0 = new Node1(), 
-                                                                Node1 = new NodeOp1Not { Node0 = new NodeId { Name = "Y" } }, 
-                                                                Node2 = new NodeOp2And { Node0 = new Node1(), Node1 = new Node1() }
-                                                            }
-                                                }
-                                    }, 
-                            Id0 = new NodeId { Name = "X" }, 
-                            Id1 = new NodeId { Name = "Y" }
-                        };
-            Console.WriteLine(p.ToString(0));
-
-            /*
-             (lambda (x_18991) 
-                (
-                    shl1 (
-                        shr16 (
-                            shr4 (
-                                if0 (and (xor (xor (not 1) 1) x_18991) x_18991) x_18991 x_18991
-                            )
-                        )
-                    )
-                )
-            ) 
-             */
-            var program = new ProgramTree
-                              {
-                                  Program =
-                                      new Lambda1
-                                          {
-                                              Id0 = new NodeId { Name = "x_18991" }, 
-                                              Node0 =
-                                                  new NodeOp1Shl1
-                                                      {
-                                                          Node0 =
-                                                              new NodeOp1Shr16
-                                                                  {
-                                                                      Node0 =
-                                                                          new NodeOp1Shr4
-                                                                              {
-                                                                                  Node0 =
-                                                                                      new NodeIf0
-                                                                                          {
-                                                                                              Node0 =
-                                                                                                  new NodeOp2And
-                                                                                                      {
-                                                                                                          Node0 =
-                                                                                                              new NodeOp2Xor
-                                                                                                                  {
-                                                                                                                      Node0 =
-                                                                                                                          new NodeOp2Xor
-                                                                                                                              {
-                                                                                                                                  Node0 =
-                                                                                                                                      new NodeOp1Not
-                                                                                                                                          {
-                                                                                                                                              Node0
-                                                                                                                                                  =
-                                                                                                                                                  new Node1
-                                                                                                                                                  (
-                                                                                                                                                  )
-                                                                                                                                          }, 
-                                                                                                                                  Node1 =
-                                                                                                                                      new Node1(
-                                                                                                                                      )
-                                                                                                                              }, 
-                                                                                                                      Node1 =
-                                                                                                                          new NodeId { Name = "x_18991" }
-                                                                                                                  }, 
-                                                                                                          Node1 = new NodeId { Name = "x_18991" }
-                                                                                                      }, 
-                                                                                              Node1 = new NodeId { Name = "x_18991" }, 
-                                                                                              Node2 = new NodeId { Name = "x_18991" }
-                                                                                          }
-                                                                              }
-                                                                  }
-                                                      }
-                                          }
-                              };
-
-            Console.WriteLine("{0:X16}", program.Run(0x0011223344556677));
-            Console.WriteLine("{0:X16}", program.Clone().Run(0x0011223344556677));
-
-            Console.WriteLine(new Compiler().Run());
-
-            Console.WriteLine(program.Program.ToString(0));
-            Console.WriteLine("{0}", program.Serialize());
-
-            var input = "(lambda (x_68407) (fold (not (shr4 (or 0 (if0 (xor (and (shr16 (plus (and x_68407 (plus x_68407 x_68407)) x_68407)) x_68407) 1) x_68407 x_68407)))) x_68407 (lambda (x_68408 x_68409) (xor (shr4 x_68409) x_68408))))";
-            var output = ProgramTree.Parse(input).Serialize();
-
-            Debug.Assert(string.Equals(input, output));
-        }
-
+        
         #endregion
     }
 }

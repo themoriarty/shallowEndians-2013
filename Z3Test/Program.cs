@@ -201,6 +201,16 @@ namespace Z3Test
             Model m = Check(ctx, ctr, Status.SATISFIABLE);
             Console.WriteLine(m);
             Console.WriteLine(m.Eval(y)); 
+        }
+
+        static void Test2(Context ctx)
+        {
+            Console.WriteLine("BitvectorExample2");
+
+            /* construct x ^ y - 103 == x * y */
+            Sort B = ctx.MkBitVecSort(64);
+            //Model m = Check(ctx, ctr, Status.SATISFIABLE);
+            //Console.WriteLine(m);
         } 
 
         static void Main(string[] args)
@@ -208,7 +218,7 @@ namespace Z3Test
                             // These examples need model generation turned on.
             using (Context ctx = new Context(new Dictionary<string, string>() { { "model", "true" } }))
             {
-                Test1(ctx);
+                Test2(ctx);
             }
         }
     }

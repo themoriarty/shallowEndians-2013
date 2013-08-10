@@ -143,12 +143,18 @@ namespace Icfpc2013
             return Parser.ParseOps(operators).Aggregate(OpTypes.none, (seed, value) => seed | value);
         }
 
-        public static List<Node> GetAvailableNodes(OpTypes ops)
+        public static List<Node> GetAvailableNodes(OpTypes ops, bool tfoldMode)
         {
             var validNodes = new List<Node>();
-            var inputArg = new NodeId();
-            inputArg.Name = "x";
-            validNodes.Add(inputArg);
+            if (tfoldMode)
+            {
+                validNodes.Add(new NodeId { Name = "x1" });
+                validNodes.Add(new NodeId { Name = "x2" });
+            }
+            else
+            {
+                validNodes.Add(new NodeId{Name = "x" });
+            }
             validNodes.Add(new Node0());
             validNodes.Add(new Node1());
 
