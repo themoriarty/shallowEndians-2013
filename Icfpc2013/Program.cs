@@ -106,12 +106,12 @@
                 var operators = task["operators"].Select(s => (string)s).ToArray();
                 var ops = ProgramTree.GetOpTypes(operators);
 
-                if (solved.HasValue == false && size == 8 && ((ops & (OpTypes.fold | OpTypes.if0)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.tfold)
+                if (solved.HasValue == false && size == 10 && ((ops & (OpTypes.fold | OpTypes.if0)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.tfold)
                 {
                     Console.WriteLine("{0} {1} {2}", id, size, ops);
 
-                    // Solve(id, size, operators);
-                    // Thread.Sleep(20000);
+                    Solve(id, size, operators);
+                    Thread.Sleep(20000);
                 }
             }
         }
@@ -138,7 +138,7 @@
 
         public static bool SolveTrainingProgram()
         {
-            int judgesProgramSize = 8;
+            int judgesProgramSize = 10;
             var options = new[] { "tfold" };
             var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, options));
             var programId = training.id;
@@ -157,8 +157,8 @@
         private static void Main(string[] args)
         {
             //SolveTrainingProgram();
-            //SolveMyProblems();
-            SolveOffline();
+            SolveMyProblems();
+            //SolveOffline();
         }
 
         private static bool Solve(string programId, int judgesProgramSize, string[] operators)
