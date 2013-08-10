@@ -12,6 +12,118 @@ namespace SATGeneratation
         static void Main(string[] args)
         {
             bool[] permitted = new bool[Enum.GetValues(typeof(OpCodes)).Length];
+            for (int i = 0; i < (int)OpCodes.Input + 1; ++i)
+            {
+                permitted[i] = true;
+            }
+
+            OneArg OneArgProto = new OneArg() { Name = "OneArg" };
+            OneArgProto.Arg0 = new ZeroArg() { Name = "OneArgC0" };
+
+            TwoArg TwoArgProto = new TwoArg() { Name = "TwoArg" };
+            TwoArgProto.Arg0 = new ZeroArg() { Name = "TwoArgC0" };
+            TwoArgProto.Arg1 = new ZeroArg() { Name = "TwoArgC1" };
+
+            ThreeArg ThreeArgProto = new ThreeArg() { Name = "ThreeArg" };
+            ThreeArgProto.Arg0 = new ZeroArg() { Name = "ThreeArg0" };
+            ThreeArgProto.Arg1 = new ZeroArg() { Name = "ThreeArg1" };
+            ThreeArgProto.Arg2 = new ZeroArg() { Name = "ThreeArg2" };
+            
+            {
+                ulong[] inputs = { 0x1, 0x2 };
+                ulong[] outputs = { 0x2, 0x4 };
+                permitted[(int)OpCodes.Shl1] = true;
+                OneArg sol = (OneArg) Utils.SolvePrototypeTree(inputs, outputs, OneArgProto, permitted);
+                Console.WriteLine("Shl1 output {0}, {1}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode);
+                permitted[(int)OpCodes.Shl1] = false;
+            }
+
+            {
+                ulong[] inputs = { 0x2, 0x4 };
+                ulong[] outputs = { 0x1, 0x2 };
+                permitted[(int)OpCodes.Shr1] = true;
+                OneArg sol = (OneArg)Utils.SolvePrototypeTree(inputs, outputs, OneArgProto, permitted);
+                Console.WriteLine("Shr1 output {0}, {1}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode);
+                permitted[(int)OpCodes.Shr1] = false;
+            }
+
+            {
+                ulong[] inputs = { 0x10, 0x100 };
+                ulong[] outputs = { 0x1, 0x10 };
+                permitted[(int)OpCodes.Shr4] = true;
+                OneArg sol = (OneArg)Utils.SolvePrototypeTree(inputs, outputs, OneArgProto, permitted);
+                Console.WriteLine("Shr4 output {0}, {1}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode);
+                permitted[(int)OpCodes.Shr4] = false;
+            }
+
+            {
+                ulong[] inputs = { 0x10000, 0x100000 };
+                ulong[] outputs = { 0x1, 0x10 };
+                permitted[(int)OpCodes.Shr16] = true;
+                OneArg sol = (OneArg)Utils.SolvePrototypeTree(inputs, outputs, OneArgProto, permitted);
+                Console.WriteLine("Shr16 output {0}, {1}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode);
+                permitted[(int)OpCodes.Shr16] = false;
+            }
+
+            {
+                ulong[] inputs = { 0x1000000000000000, 0x1100000000000000 };
+                ulong[] outputs = { 0xEFFFFFFFFFFFFFFF, 0xEEFFFFFFFFFFFFFF };
+                permitted[(int)OpCodes.Not] = true;
+                OneArg sol = (OneArg)Utils.SolvePrototypeTree(inputs, outputs, OneArgProto, permitted);
+                Console.WriteLine("Not output {0}, {1}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode);
+                permitted[(int)OpCodes.Not] = false;
+            }
+
+            {
+                ulong[] inputs = { 0x1, 0x11111, 0x111110 };
+                ulong[] outputs = { 0x1, 0x1, 0x0 };
+                permitted[(int)OpCodes.And] = true;
+                TwoArg sol = (TwoArg)Utils.SolvePrototypeTree(inputs, outputs, TwoArgProto, permitted);
+                Console.WriteLine("And output {0}, {1}, {2}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode, sol.Arg1.ComputedOpcode);
+                permitted[(int)OpCodes.And] = false;
+            }
+
+            {
+                ulong[] inputs = { 0x1, 0x11110, 0x111110 };
+                ulong[] outputs = { 0x1, 0x11111, 0x111111 };
+                permitted[(int)OpCodes.Or] = true;
+                TwoArg sol = (TwoArg)Utils.SolvePrototypeTree(inputs, outputs, TwoArgProto, permitted);
+                Console.WriteLine("Or output {0}, {1}, {2}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode, sol.Arg1.ComputedOpcode);
+                permitted[(int)OpCodes.Or] = false;
+            }
+
+            {
+                ulong[] inputs = { 0x1, 7, 10, 23 };
+                ulong[] outputs = { 0x2, 8, 11, 24 };
+                permitted[(int)OpCodes.Plus] = true;
+                TwoArg sol = (TwoArg)Utils.SolvePrototypeTree(inputs, outputs, TwoArgProto, permitted);
+                Console.WriteLine("Plus output {0}, {1}, {2}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode, sol.Arg1.ComputedOpcode);
+                permitted[(int)OpCodes.Plus] = false;
+            }
+
+            {
+                ulong[] inputs = { 0x1, 0x11110, 0x111110 };
+                ulong[] outputs = { 0x0, 0x11111, 0x111111 };
+                permitted[(int)OpCodes.Xor] = true;
+                TwoArg sol = (TwoArg)Utils.SolvePrototypeTree(inputs, outputs, TwoArgProto, permitted);
+                Console.WriteLine("Xor output {0}, {1}, {2}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode, sol.Arg1.ComputedOpcode);
+                permitted[(int)OpCodes.Xor] = false;
+            }
+
+            {
+                ulong[] inputs = { 0x0, 0x1111, 0x1 };
+                ulong[] outputs = { 0x1, 0x0, 0x0 };
+                permitted[(int)OpCodes.If0] = true;
+                ThreeArg sol = (ThreeArg)Utils.SolvePrototypeTree(inputs, outputs, ThreeArgProto, permitted);
+                Console.WriteLine("If0 output {0}, {1}, {2}, {3}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode, sol.Arg1.ComputedOpcode, sol.Arg2.ComputedOpcode);
+                permitted[(int)OpCodes.If0] = false;
+            }
+
+        }
+
+        static void Main2(string[] args)
+        {
+            bool[] permitted = new bool[Enum.GetValues(typeof(OpCodes)).Length];
             for (int i = 0; i < permitted.Length; ++i)
             {
                 permitted[i] = true;
