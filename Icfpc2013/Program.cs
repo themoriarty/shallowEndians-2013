@@ -156,9 +156,9 @@
 
         private static void Main(string[] args)
         {
-            SolveTrainingProgram();
+            //SolveTrainingProgram();
             //SolveMyProblems();
-            //SolveOffline();
+            SolveOffline();
         }
 
         private static bool Solve(string programId, int judgesProgramSize, string[] operators)
