@@ -32,7 +32,6 @@
         private static void Main4(string[] args)
         {
             const int judgesProgramSize = 7;
-            const int programSize = judgesProgramSize - 1;
             //var options = new string[] { "tfold" };
             //var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, null));
             //var programId = training.id;
@@ -242,12 +241,12 @@
         public static void SolveOffline()
         {
             const int judgesProgramSize = 8;
-            
-            var programId = "mrkVrFLMXiwAZifmVWtSBCxn";
-            var operators = new[] { "not","shl1","shr1","shr4","or" };
+
+            var programId = "jcguu92bgAqFWom2IUeOkltx";
+            var operators = new[] { "plus", "shl1", "shr1" };
             
             ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x0580A1AB9001056D, 0x17FBEACECACE0709, 0x6E8E0097C68096A7, 0x50475BF54101FEE4, 0x880A7F62D368B805, 0xFDCFD29F7AE5550B };
-            ulong[] outputs = { 0x0FFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF, 0x0FFFFFFFFFFFFFFF, 0x1FFFFFFFFFFFFFFF, 0x6FFFFFFFFFFFFFFF, 0x5FFFFFFFFFFFFFFE, 0x8FFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF };
+            ulong[] outputs = { 0x0000000000000002, 0x0000000000000001, 0x0580A1AB9001056F, 0x17FBEACECACE070B, 0x6E8E0097C68096A9, 0x50475BF54101FEE6, 0x880A7F62D368B807, 0xFDCFD29F7AE5550D };
 
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
