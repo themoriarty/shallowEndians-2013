@@ -79,6 +79,7 @@
     <Compile Include="API\TrainRequest.cs" />
     <Compile Include="API\Utils.cs" />
     <Compile Include="Compiler.cs" />
+    <Compile Include="DynamicTree.cs" />
     <Compile Include="ExecContext.cs" />
     <Compile Include="Ops\Lambda2.cs" />
     <Compile Include="Ops\Lambda1.cs" />
