@@ -26,7 +26,7 @@ namespace SolverTests
 
                 //Solve(int judgesProgramSize, OpTypes validOps, ulong[] inputs, ulong[] outputs)
                 var solution = Icfpc2013.Program.Solve(judgesProgramSize, validOps, inputs, outputs);
-                Assert.AreEqual((string)problem["program"], solution.Serialize());
+                Assert.AreEqual((string)problem["program"], solution.Serialize(), "id="+(string)problem["id"]);
             }
             Console.WriteLine("Total problems that claim to be solved: {0}", solvedProblems);
         }
