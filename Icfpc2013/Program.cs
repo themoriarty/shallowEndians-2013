@@ -482,7 +482,6 @@
             options = new string[0];
             var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, options));
             var programId = training.id;
-
             Console.WriteLine("Challenge: {0}", string.Join(", ", training.challenge));
 
             var operators = training.operators;
@@ -509,7 +508,6 @@
 
             var ops = ProgramTree.GetOpTypes(operators);
 
-
             ulong[] inputs = ProgramTree.GetInputVectorList(8).ToArray(); //{0x12, 0x137};
             var inputStrings = inputs.Select(s => string.Format("0x{0:X16}", s)).ToArray();
 
@@ -526,6 +524,9 @@
 
             ulong[] outputs = outputsResponse.outputs.Select(s => ulong.Parse(s.Replace("0x", string.Empty), NumberStyles.HexNumber)).ToArray();
 
+            //var inputs = new ulong[] { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xD8E4755D6F460C1A, 0xC8DB19F5D56567AD, 0x0085F8373B347C2B, 0x0DB3935300645EEC, 0x0F6C74CF7529404A, 0x4BEB041E4DC2BEF4 };
+            //var outputs = new ulong[] { 0x0000000000000000, 0x0000FFFFFFFFFFFF, 0x0000D8E4755D6F46, 0x0000C8DB19F5D565, 0x00000085F8373B34, 0x00000DB393530064, 0x00000F6C74CF7529, 0x00004BEB041E4DC2 };
+                
             Lambda1 solution = null;
 
             var sw = Stopwatch.StartNew();
@@ -540,7 +541,7 @@
                     {
                         Console.WriteLine("Using SAT!");
 
-                        if ((ops & OpTypes.if0) != OpTypes.none)
+                        if ((ops & OpTypes.if0) != OpTypes.none || judgesProgramSize > 8)
                         {
                             Console.WriteLine("Using SAT only!");
                             solution = SolveSat(judgesProgramSize, ops, inputs, outputs);
@@ -611,6 +612,34 @@
             Console.WriteLine("Submitting: {0}", finalResult);
             var response = API.Guess(new Guess(programId, finalResult));
             Console.WriteLine("Gues: {0} {1} {2}", response.status, response.message, string.Join(", ", response.values ?? new string[] { }));
+
+            if (response.status == "mismatch" && useSat)
+            {
+                while (response.status == "mismatch")
+                {
+                    Console.WriteLine("SAT MISMATCH!!!");
+                    var newInput = ulong.Parse(response.values[0].Replace("0x", string.Empty), NumberStyles.HexNumber);
+                    var newOutput = ulong.Parse(response.values[1].Replace("0x", string.Empty), NumberStyles.HexNumber);
+
+                    var newInputs = new List<ulong>(inputs);
+                    newInputs.Add(newInput);
+                    inputs = newInputs.ToArray();
+
+                    var newOutputs = new List<ulong>(outputs);
+                    newOutputs.Add(newOutput);
+                    outputs = newOutputs.ToArray();
+                    
+                    Console.WriteLine("New Input: {{{0}}}", string.Join(", ", inputs.Select(s => string.Format("0x{0:X16}", s)).ToArray()));
+                    Console.WriteLine("New Output: {{{0}}}", string.Join(", ", outputs.Select(s => string.Format("0x{0:X16}", s)).ToArray()));
+
+                    solution = SolveSat(judgesProgramSize, ops, inputs, outputs);
+                    finalResult = solution.Serialize();
+
+                    Console.WriteLine("Submitting: {0}", finalResult);
+                    response = API.Guess(new Guess(programId, finalResult));
+                    Console.WriteLine("Gues: {0} {1} {2}", response.status, response.message, string.Join(", ", response.values ?? new string[] { }));
+                }
+            }
 
             return response.status == "win";
         }
