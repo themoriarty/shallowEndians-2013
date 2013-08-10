@@ -204,7 +204,7 @@ namespace Z3Test
         }
 
 
-        static BoolExpr GetTreeLevelConstrains(Context ctx, int i, int n, ArrayExpr a, ArrayExpr r)
+        static BoolExpr GetTreeLevelConstrains(Context ctx, int i, int treeSize, ArrayExpr a, ArrayExpr r, ArrayExpr p)
         {
             var asel = ctx.MkSelect(a, ctx.MkInt(i));
 
@@ -212,43 +212,45 @@ namespace Z3Test
 
             topLevel.Add(ctx.MkEq(asel, ctx.MkInt(0)));
 
-            if (i < n - 1)
+            if (i < treeSize - 1)
             {
                 var rsel = ctx.MkSelect(r, ctx.MkInt(i + 1));
+                var psel = ctx.MkSelect(p, ctx.MkInt(i + 1));
 
-                topLevel.Add(ctx.MkAnd(ctx.MkEq(asel, ctx.MkInt(1)), ctx.MkEq(rsel, ctx.MkInt(i))));
+                topLevel.Add(ctx.MkAnd(ctx.MkEq(asel, ctx.MkInt(1)), ctx.MkEq(rsel, ctx.MkInt(i)), ctx.MkEq(psel, ctx.MkInt(0))));
 
-                if (i < n - 2)
+                if (i < treeSize - 2)
                 {
 
                     var secondLevel = new List<BoolExpr>();
 
-                    for (int j = i + 2; j < n; ++j)
+                    for (int j = i + 2; j < treeSize; ++j)
                     {
-                        secondLevel.Add(ctx.MkEq(ctx.MkSelect(r, ctx.MkInt(j)), ctx.MkInt(i)));
+                        secondLevel.Add(ctx.MkAnd(ctx.MkEq(ctx.MkSelect(r, ctx.MkInt(j)), ctx.MkInt(i)), ctx.MkEq(ctx.MkSelect(p, ctx.MkInt(j)), ctx.MkInt(1))));
                     }
 
-                    topLevel.Add(ctx.MkAnd(ctx.MkEq(asel, ctx.MkInt(2)), ctx.MkEq(rsel, ctx.MkInt(i)), secondLevel.Count > 1 ? ctx.MkOr(secondLevel.ToArray()) : secondLevel.First()));
+                    topLevel.Add(ctx.MkAnd(ctx.MkEq(asel, ctx.MkInt(2)), ctx.MkEq(rsel, ctx.MkInt(i)), ctx.MkEq(psel, ctx.MkInt(0)), secondLevel.Count > 1 ? ctx.MkOr(secondLevel.ToArray()) : secondLevel.First()));
 
-                    if (i < n - 3)
+                    if (i < treeSize - 3)
                     {
 
                         var thirdLevel = new List<BoolExpr>();
 
-                        for (int j = i + 2; j < n - 1; ++j)
+                        for (int j = i + 2; j < treeSize - 1; ++j)
                         {
                             var fourthLevelPart1 = ctx.MkEq(ctx.MkSelect(r, ctx.MkInt(j)), ctx.MkInt(i));
-                            var fourthLevelPart2 = new List<BoolExpr>();
+                            var fourthLevelPart2 = ctx.MkEq(ctx.MkSelect(p, ctx.MkInt(j)), ctx.MkInt(1));
+                            var fourthLevelPart3 = new List<BoolExpr>();
 
-                            for (int k = j + 1; k < n; ++k)
+                            for (int k = j + 1; k < treeSize; ++k)
                             {
-                                fourthLevelPart2.Add(ctx.MkEq(ctx.MkSelect(r, ctx.MkInt(k)), ctx.MkInt(i)));
+                                fourthLevelPart3.Add(ctx.MkAnd(ctx.MkEq(ctx.MkSelect(r, ctx.MkInt(k)), ctx.MkInt(i)), ctx.MkEq(ctx.MkSelect(p, ctx.MkInt(k)), ctx.MkInt(2))));
                             }
 
-                            thirdLevel.Add(ctx.MkAnd(fourthLevelPart1, fourthLevelPart2.Count > 1 ? ctx.MkOr(fourthLevelPart2.ToArray()) : fourthLevelPart2.First()));
+                            thirdLevel.Add(ctx.MkAnd(fourthLevelPart1, fourthLevelPart2, fourthLevelPart3.Count > 1 ? ctx.MkOr(fourthLevelPart3.ToArray()) : fourthLevelPart3.First()));
                         }
 
-                        topLevel.Add(ctx.MkAnd(ctx.MkEq(asel, ctx.MkInt(3)), ctx.MkEq(rsel, ctx.MkInt(i)), thirdLevel.Count > 1 ? ctx.MkOr(thirdLevel.ToArray()) : thirdLevel.First()));
+                        topLevel.Add(ctx.MkAnd(ctx.MkEq(asel, ctx.MkInt(3)), ctx.MkEq(rsel, ctx.MkInt(i)), ctx.MkEq(psel, ctx.MkInt(0)), thirdLevel.Count > 1 ? ctx.MkOr(thirdLevel.ToArray()) : thirdLevel.First()));
                     }
                 }
             }
@@ -264,14 +266,23 @@ namespace Z3Test
             ArraySort asort = ctx.MkArraySort(ctx.IntSort, ctx.IntSort);
             ArrayExpr a = (ArrayExpr)ctx.MkConst("a", asort);
             ArrayExpr r = (ArrayExpr)ctx.MkConst("r", asort);
+            ArrayExpr p = (ArrayExpr)ctx.MkConst("p", asort);
 
             var treeConstrains = new List<BoolExpr>();
 
-            int n = 16;
+            int n = 5;
             for (int i = 0; i < n; ++i)
             {
-                treeConstrains.Add(GetTreeLevelConstrains(ctx, i, n, a, r));
+                treeConstrains.Add(GetTreeLevelConstrains(ctx, i, n, a, r, p));
             }
+            
+            treeConstrains.Add(
+                ctx.MkOr(
+                    ctx.MkAnd(ctx.MkEq(ctx.MkInt(n), ctx.MkInt(1)), ctx.MkEq(ctx.MkSelect(a, ctx.MkInt(0)), ctx.MkInt(0))),
+                    ctx.MkAnd(ctx.MkNot(ctx.MkEq(ctx.MkInt(n), ctx.MkInt(1))), ctx.MkNot(ctx.MkEq(ctx.MkSelect(a, ctx.MkInt(0)), ctx.MkInt(0))))
+                    ));
+
+
 
             g.Assert(ctx.MkAnd(treeConstrains.ToArray()));
 
@@ -304,6 +315,7 @@ namespace Z3Test
 
             Console.WriteLine("ArgCount:\n" + s.Model.FuncInterp(a.FuncDecl));
             Console.WriteLine("Ref:\n" + s.Model.FuncInterp(r.FuncDecl));
+            Console.WriteLine("Pin:\n" + s.Model.FuncInterp(p.FuncDecl));
 
             //var af = s.Model.FuncInterp(a.FuncDecl);
             //var rf = s.Model.FuncInterp(r.FuncDecl);
