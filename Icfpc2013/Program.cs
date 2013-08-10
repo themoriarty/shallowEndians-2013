@@ -239,7 +239,7 @@
 
             if (pos != res.Count)
             {
-                //throw new Exception("pos != end");
+                throw new Exception("pos != end");
             }
 
             var result = new ProgramTree { Program = new Lambda1 { Node0 = rootNode, Id0 = new NodeId { Name = "x" } } };
@@ -441,13 +441,21 @@
 
         public static void SolveSatOffline()
         {
+            //const int judgesProgramSize = 7;
+
+            //var programId = "gXjjIPXexbWezcIsASu8Cvd4";
+            //var operators = new[] { "shl1", "shr4", "xor" };
+
+            //ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xD8E4755D6F460C1A, 0xC8DB19F5D56567AD, 0x0085F8373B347C2B, 0x0DB3935300645EEC, 0x0F6C74CF7529404A, 0x4BEB041E4DC2BEF4 };
+            //ulong[] outputs = { 0x0000000000000000, 0x3FFFFFFFFFFFFFFC, 0x36391D575BD18304, 0x3236C67D755959E8, 0x00217E0DCECD1F08, 0x036CE4D4C01917B8, 0x03DB1D33DD4A5010, 0x12FAC1079370AFBC };
+
             const int judgesProgramSize = 7;
 
-            var programId = "gXjjIPXexbWezcIsASu8Cvd4";
-            var operators = new[] { "shl1", "shr4", "xor" };
+            var programId = "gaSlAmNR0I3rmCsT9Ea0dN7C";
+            var operators = new[] { "not", "plus" };
 
-            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xD8E4755D6F460C1A, 0xC8DB19F5D56567AD, 0x0085F8373B347C2B, 0x0DB3935300645EEC, 0x0F6C74CF7529404A, 0x4BEB041E4DC2BEF4 };
-            ulong[] outputs = { 0x0000000000000000, 0x3FFFFFFFFFFFFFFC, 0x36391D575BD18304, 0x3236C67D755959E8, 0x00217E0DCECD1F08, 0x036CE4D4C01917B8, 0x03DB1D33DD4A5010, 0x12FAC1079370AFBC };
+            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x216AB546A8FE98B5, 0x1A84E410FE824686, 0xB7F866EFB48B57B4, 0xE7E1383679462410, 0x94C60A94BB4B1973, 0x10FF6DF188EE07D6 };
+            ulong[] outputs = { 0x0000000000000000, 0x0000000000000002, 0xBD2A9572AE02CE96, 0xCAF637DE02FB72F4, 0x900F322096E95098, 0x303D8F930D73B7E0, 0xD673EAD68969CD1A, 0xDE01241CEE23F054 };
 
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
