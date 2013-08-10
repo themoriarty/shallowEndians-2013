@@ -34,18 +34,8 @@ namespace Icfpc2013
 
         public IEnumerable<Node> GenerateAllPrograms()
         {
-            var ret = new List<Node>();
-
             foreach (var node in ValidNodes)
             {
-                /*
-                var subtree = GetNLevelTree(node, MaxDepth);
-                if (subtree != null)
-                {
-                    ret.AddRange(subtree);
-                }
-                */
-
                 foreach (var subtree in GetNLevelTree(node, MaxDepth))
                 {
                     yield return subtree;
@@ -61,8 +51,6 @@ namespace Icfpc2013
         {
             if (root is Node0 || root is Node1 || root is NodeId)
             {
-                var ret = new List<Node>();
-                ret.Add(root);
                 yield return root;
                 yield break;
             }
@@ -86,12 +74,10 @@ namespace Icfpc2013
                         }
                     }
 
-                    var ret = new List<Node>();
                     foreach (var subtree in subtrees)
                     {
                         var newRoot = root.Clone();
                         (newRoot as NodeOp1).Node0 = subtree;
-                        ret.Add(newRoot);
                         yield return newRoot;
                     }
                 }
