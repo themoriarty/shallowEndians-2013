@@ -138,16 +138,56 @@ namespace Icfpc2013
 
                     foreach (var node1 in ValidNodes)
                     {
-                        foreach (var subtree1 in GetNLevelTree(node1, depth - 1))
+                        foreach (var subtree1 in GetNLevelTree(node1, depth - 2))
                         {
                             foreach (var node2 in ValidNodes)
                             {
-                                foreach (var subtree2 in GetNLevelTree(node2, depth - 1))
+                                foreach (var subtree2 in GetNLevelTree(node2, depth - 2))
                                 {
-                                    var newRoot = root.Clone();
-                                    (newRoot as NodeOp2).Node0 = subtree1;
-                                    (newRoot as NodeOp2).Node1 = subtree2;
-                                    yield return newRoot;
+                                    if (subtree1.Size() + subtree2.Size() <= depth - 1)
+                                    {
+                                        var newRoot = root.Clone();
+                                        (newRoot as NodeOp2).Node0 = subtree1;
+                                        (newRoot as NodeOp2).Node1 = subtree2;
+                                        //if (newRoot.Size() > depth)
+                                        //{
+                                        //    Console.WriteLine("Asked for {0}, got {1}: {2}", depth, newRoot.Size(), newRoot.Serialize());
+                                        //}
+                                        yield return newRoot;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                yield break;
+            }
+            else if (root is NodeOp3)
+            {
+                if (depth > 3)
+                {
+                    foreach (var node1 in ValidNodes)
+                    {
+                        foreach (var subtree1 in GetNLevelTree(node1, depth - 3))
+                        {
+                            foreach (var node2 in ValidNodes)
+                            {
+                                foreach (var subtree2 in GetNLevelTree(node2, depth - 3))
+                                {
+                                    foreach (var node3 in ValidNodes)
+                                    {
+                                        foreach (var subtree3 in GetNLevelTree(node3, depth - 3))
+                                        {
+                                            if (subtree1.Size() + subtree2.Size() + subtree3.Size() <= depth - 1)
+                                            {
+                                                var newRoot = root.Clone();
+                                                (newRoot as NodeOp3).Node0 = subtree1;
+                                                (newRoot as NodeOp3).Node1 = subtree2;
+                                                (newRoot as NodeOp3).Node2 = subtree3;
+                                                yield return newRoot;
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -156,9 +196,8 @@ namespace Icfpc2013
                 yield break;
             }
 
-            Console.WriteLine("Unknown node!");
-            //throw new Exception("unknown node");
-            yield break;
+            //Console.WriteLine("Unknown node!");
+            throw new Exception("unknown node");
         }
 
         #endregion

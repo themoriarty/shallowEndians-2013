@@ -83,6 +83,7 @@
     <Compile Include="DynamicTree.cs" />
     <Compile Include="FTreeGenerator.cs" />
     <Compile Include="ExecContext.cs" />
+    <Compile Include="Ops\NodeOp3.cs" />
     <Compile Include="Ops\Lambda2.cs" />
     <Compile Include="Ops\Lambda1.cs" />
     <Compile Include="Ops\NodeFold.cs" />
