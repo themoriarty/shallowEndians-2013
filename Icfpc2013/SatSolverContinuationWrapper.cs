@@ -27,6 +27,8 @@
         private StreamWriter sw;
         private StreamReader sr;
 
+        private Process p;
+
         #endregion
 
         #region Constructors and Destructors
@@ -53,7 +55,7 @@
 
         protected override IEnumerable<Node> RunImpl()
         {
-            Process p = new Process
+            p = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
@@ -73,31 +75,37 @@
 
             sw.WriteLine(start);
 
-
-            string output = sr.ReadLine();
-
-            if (output == null || !output.StartsWith("SOLUTION:"))
+            while (!Canceled)
             {
-                throw new FormatException("SOLUTION: expected");
+                string output = sr.ReadLine();
+
+                if (output == null || !output.StartsWith("SOLUTION:"))
+                {
+                    throw new FormatException("SOLUTION: expected");
+                }
+
+                var solution = output.Substring("SOLUTION:".Length);
+
+                if (string.IsNullOrEmpty(solution))
+                {
+                    Console.WriteLine("NO RESULT");
+
+                    yield break;
+                }
+
+                var node = ProgramTree.Parse(solution);
+
+                yield return node.Program.Node0;
             }
 
-            var solution = output.Substring("SOLUTION:".Length);
-
-            if (string.IsNullOrEmpty(solution))
+            try
             {
-                Console.WriteLine("NO RESULT");
-
-                yield break;
+                sw.WriteLine("STATUS:ok");
+                p.Close();
             }
-
-            var node = ProgramTree.Parse(solution);
-
-            yield return node.Program.Node0;
-
-            p.WaitForExit();
-            p.Close();
-
-
+            catch (Exception)
+            {
+            }
         }
 
         protected override void StopImpl()
@@ -105,11 +113,21 @@
             cts.Cancel();
             Canceled = true;
 
-            sw.WriteLine("STATUS:ok");
+            try
+            {
+                sw.WriteLine("STATUS:ok");
+                p.Close();
+            }
+            catch (Exception)
+            {
+            }
         }
 
         protected override void AddCounterExampleImpl(ulong newInput, ulong newOutput)
         {
+            sw.WriteLine("STATUS:mismatch");
+            sw.WriteLine("0x{0:X16}", newInput);
+            sw.WriteLine("0x{0:X16}", newOutput);
         }
 
         #endregion

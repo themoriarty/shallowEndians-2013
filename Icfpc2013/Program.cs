@@ -787,12 +787,14 @@
 
             var solvers = new List<SolverContinuationWrapper>();
 
-            SolverContinuationWrapper solver = new BfsSolverContinuationWrapper(judgesProgramSize, ops, inputs, outputs, FilterSolution, (n) => Checker(programId, n));
-            SolverContinuationWrapper solverSat = new SatSolverContinuationWrapper(judgesProgramSize, ops, operators, inputs, outputs, FilterSolution, (n) => OfflineChecker(programId, n));
-            //SolverContinuationWrapper solver1 = new BfsSolverContinuationWrapper(judgesProgramSize, ops, inputs, outputs, FilterSolution, (n) => Checker(programId, n));
+            if ((ops & OpTypes.fold) == OpTypes.none)
+            {
+                SolverContinuationWrapper solverSat = new SatSolverContinuationWrapper(judgesProgramSize, ops, operators, inputs, outputs, FilterSolution, (n) => OfflineChecker(programId, n));
+                solvers.Add(solverSat);
+            }
 
+            SolverContinuationWrapper solver = new BfsSolverContinuationWrapper(judgesProgramSize, ops, inputs, outputs, FilterSolution, (n) => Checker(programId, n));
             solvers.Add(solver);
-            solvers.Add(solverSat);
 
             var tasks = solvers.Select(s => Task.Run(() => solver.Run())).ToList();
 
@@ -832,7 +834,7 @@
 
         public static bool SolveGbfsTrainingProgram()
         {
-            int judgesProgramSize = 6;
+            int judgesProgramSize = 10;
             var options = new string[] { };
 
             Throttle();
@@ -853,13 +855,12 @@
         private static void Main(string[] args)
         {
             //SolveTrainingProgram(true);
-            SolveMyProblems();
+            //SolveMyProblems();
             //SolveOffline();
             //SolveSatOffline();
             //SolveGbfsOffline();
-            //SolveGbfsMyProblems();
+            SolveGbfsMyProblems();
             //SolveGbfsTrainingProgram();
-
         }
         
         private static bool Solve(string programId, int judgesProgramSize, string[] operators, bool useSat)
@@ -1052,7 +1053,7 @@
                 var ops = ProgramTree.GetOpTypes(operators);
 
                 //if (solved.HasValue == false && size == 17 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.tfold && Bits(ops) < 7)
-                if (solved.HasValue == false && size < 15)
+                if (solved.HasValue == false && size == 16)
                 //if (solved.HasValue == false && size == 15 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none && Bits(ops) == 5)
                 //if (id == "yLhLthAhzsROkibpnr8In656")
                 //if (solved.HasValue == true && solved.Value == false && size < 12)
