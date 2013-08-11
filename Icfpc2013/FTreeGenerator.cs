@@ -49,7 +49,7 @@ namespace Icfpc2013
 
         #region Methods
 
-        private IEnumerable<Node> GetNLevelTree(Node root, int depth)
+        public IEnumerable<Node> GetNLevelTree(Node root, int depth)
         {
             // TODO: remove
             /*
@@ -76,33 +76,17 @@ namespace Icfpc2013
             {
                 if (depth > 1)
                 {
-                    /*
-                    var subtrees = new List<Node>();
-                    foreach (var node in ValidNodes)
-                    {
-                        var subtree = GetNLevelTree(node, depth - 1);
-                        if (subtree != null)
-                        {
-                            subtrees.AddRange(subtree);
-                        }
-                    }
-
-                    foreach (var subtree in subtrees)
-                    {
-                        var newRoot = root.Clone();
-                        (newRoot as NodeOp1).Node0 = subtree;
-                        yield return newRoot;
-                    }
-                    */
-
                     foreach (var node in ValidNodes)
                     {
                         var subtrees = GetNLevelTree(node, depth - 1);
                         foreach (var subtree in subtrees)
                         {
-                            var newRoot = root.Clone();
-                            (newRoot as NodeOp1).Node0 = subtree;
-                            yield return newRoot;
+                            if (subtree.Size() == depth - 1)
+                            {
+                                var newRoot = root.Clone();
+                                (newRoot as NodeOp1).Node0 = subtree;
+                                yield return newRoot;
+                            }
                         }
                     }
                 }
@@ -112,30 +96,6 @@ namespace Icfpc2013
             {
                 if (depth > 2)
                 {
-                    // This can be transformed into two foreach yield in different directions - this will decrease RAM usage and substantially increase CPU
-                    /*
-                    var subtrees = new List<Node>();
-                    foreach (var node in ValidNodes)
-                    {
-                        var subtree = GetNLevelTree(node, depth - 1);
-                        if (subtree != null)
-                        {
-                            subtrees.AddRange(subtree);
-                        }
-                    }
-
-                    for (var i = 0; i < subtrees.Count; ++i)
-                    {
-                        for (var j = i; j < subtrees.Count; ++j)
-                        {
-                            var newRoot = root.Clone();
-                            (newRoot as NodeOp2).Node0 = subtrees[i];
-                            (newRoot as NodeOp2).Node1 = subtrees[j];
-                            yield return newRoot;
-                        }
-                    }
-                    */
-
                     foreach (var node1 in ValidNodes)
                     {
                         foreach (var subtree1 in GetNLevelTree(node1, depth - 2))
@@ -144,15 +104,12 @@ namespace Icfpc2013
                             {
                                 foreach (var subtree2 in GetNLevelTree(node2, depth - 2))
                                 {
-                                    if (subtree1.Size() + subtree2.Size() <= depth - 1)
+                                    //if (subtree1.Size() + subtree2.Size() <= depth - 1)
+                                    if (subtree1.Size() + subtree2.Size() == depth - 1)
                                     {
                                         var newRoot = root.Clone();
                                         (newRoot as NodeOp2).Node0 = subtree1;
                                         (newRoot as NodeOp2).Node1 = subtree2;
-                                        //if (newRoot.Size() > depth)
-                                        //{
-                                        //    Console.WriteLine("Asked for {0}, got {1}: {2}", depth, newRoot.Size(), newRoot.Serialize());
-                                        //}
                                         yield return newRoot;
                                     }
                                 }
