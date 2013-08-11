@@ -87,12 +87,12 @@
             }
         }
 
-        static IEnumerable<Node> GenerateCorrectPrograms(List<Node> validNodes, List<Node> validFoldNodes, int targetSize, CancellationToken token)
+        static IEnumerable<Node> GenerateCorrectPrograms(List<Node> validNodes, List<Node> validFoldNodes, int targetSize, Func<Node, bool> filter, CancellationToken token)
         {
 
 #if true
 #if true
-            var builder = new PTreeGeneratorContainer(validNodes, validFoldNodes, targetSize);
+            var builder = new PTreeGeneratorContainer(validNodes, validFoldNodes, targetSize, filter);
             foreach (var root in builder.GenerateAllPrograms(token))
             {
                 yield return root;
@@ -340,8 +340,52 @@
             List<Node> validFoldNodes;
             ProgramTree.GetAvailableNodes(validOps, tfoldMode, out validNodes, out validFoldNodes);
 
+
+            Func<Node, bool> filter = (node) =>
+                {
+                    var filterSolution = node;
+
+                    if (tfoldMode)
+                    {
+                        filterSolution = new NodeFold { Node0 = new NodeId { Name = "x" }, Node1 = new Node0(), Node2 = new Lambda2 { Id0 = new NodeId { Name = "x1" }, Id1 = new NodeId { Name = "x2" }, Node0 = node } };
+                    }
+
+                    bool filterValid = true;
+                    for (int i = 0; i < inputs.Length; ++i)
+                    {
+                        var ctx = new ExecContext();
+                        ctx.Vars["x"] = inputs[i];
+                        var output = filterSolution.Eval(ctx);
+                        if (output != outputs[i])
+                        {
+                            filterValid = false;
+                            break;
+                        }
+                    }
+
+                    if (filterValid)
+                    {
+                        var currentOps = OpTypes.none;
+                        filterSolution.Op(ref currentOps);
+
+                        if (tfoldMode)
+                        {
+                            currentOps &= ~OpTypes.fold;
+                            currentOps |= OpTypes.tfold;
+                        }
+
+                        if (currentOps == validOps)
+                        {
+                            return true;
+                        }
+                    }
+
+                    return false;
+
+                };
+
             int index = 0;
-            foreach (var root in GenerateCorrectPrograms(validNodes, validFoldNodes, programSize, cts.Token))
+            foreach (var root in GenerateCorrectPrograms(validNodes, validFoldNodes, programSize, filter, cts.Token))
             {
                 //if (((++index) % 200000) == 0)
                 //{
@@ -417,19 +461,19 @@
                 var operators = task["operators"].Select(s => (string)s).ToArray();
                 var ops = ProgramTree.GetOpTypes(operators);
 
-                if (solved.HasValue == false && size < 14 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.fold) && (ops & OpTypes.tfold) == OpTypes.none  && Bits(ops) < 6)
-                //if (solved.HasValue == false && size < 14)
+                if (solved.HasValue == false && size < 15 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.tfold  /*&& Bits(ops) < 5*/)
+                //if (solved.HasValue == false && size < 20)
                 //if (solved.HasValue == false && size == 15 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none && Bits(ops) == 5)
                 //if (id == "Jb6H9d6n4E9QUCnBGdMwDfQx")
                 //if (solved.HasValue == true && solved.Value == false && size < 12)
                 {
                     Console.WriteLine("{0} {1} {2}", id, size, ops);
 
-                    if (Solve(id, size, operators, false))
-                    {
-                        ++cntSolved;
-                    }
-                    Thread.Sleep(20000);
+                    //if (Solve(id, size, operators, false))
+                    //{
+                    //    ++cntSolved;
+                    //}
+                    //Thread.Sleep(20000);
 
                     ++cnt;
                 }
@@ -442,11 +486,11 @@
         {
             const int judgesProgramSize = 13;
 
-            var programId = "R0XyWOYjDZHP1El7jdytKmZ7";
-            var operators = new[] { "if0", "fold", "not", "or" };
+            var programId = "nZHmZcwRNbs0nZQrtqTenRAZ";
+            var operators = new[] { "fold", "not", "or", "shl1", "shr16" };
 
-            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x11E001A860B349B8, 0x4167FEEDE279DF34, 0xE243B96BBF77EF6B, 0xE34E2D4576E40AC4, 0x23A282379AF7850C, 0xF3D35174C949BB0D, 0xFE7C0264DF27E86F, 0x06CC691C9D9CD006, 0xE809CD0767D69590, 0x736D7A70B0B2534C, 0x097E6E055D07F036, 0xA30604E66793F909, 0xA2EC6C7ADE3842EF };
-            ulong[] outputs = { 0xFFFFFFFFFFFFFF01, 0x0000000000000000, 0xEE1FFE579F4CB647, 0xBE9801121D8620CB, 0x1DBC469440881094, 0x1CB1D2BA891BF53B, 0xDC5D7DC865087AF3, 0x0C2CAE8B36B644F2, 0x0183FD9B20D81790, 0xF93396E362632FF9, 0x17F632F898296A6F, 0x8C92858F4F4DACB3, 0xF68191FAA2F80FC9, 0x5CF9FB19986C06F6, 0x5D13938521C7BD10 };
+            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x18096DBAA8CB0F8A, 0x5A03DC0159110794, 0xBF4D18DBD2DC49F1, 0x94100789E102FF0B, 0x3C5076D92EEFB498, 0x03FA893DD9A6F2EF, 0x72B925181C0BC875, 0x8C8E286BBB9C0CC2, 0x7B80D4ED4DC17DF7, 0x82817471E9E39FF9, 0x727BF3FCC16BFE05, 0xC6D194DACD6C7DFA, 0xA016ACC8C0E21964 };
+            ulong[] outputs = { 0x000000000000FFFE, 0xFFFFFFFFFFFFFFFE, 0x12DB7551961F7FFE, 0x07B802B2220FFFFE, 0x9A31B7A5B893FFFE, 0x200F13C205FEFFFE, 0xA0EDB25DDF6977FE, 0xF5127BB34DE5FFFE, 0x724A30381790FFFE, 0x1C50D7773819DFFE, 0x01A9DA9B82FBFFFE, 0x02E8E3D3C73FFFFE, 0xF7E7F982D7FC3FFE, 0xA329B59AD8FBFFFE, 0x2D599181C432FFFE };
 
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
@@ -511,8 +555,8 @@
         private static void Main(string[] args)
         {
             //SolveTrainingProgram(false);
-            SolveMyProblems();
-            //SolveOffline();
+            //SolveMyProblems();
+            SolveOffline();
             //SolveSatOffline();
         }
         

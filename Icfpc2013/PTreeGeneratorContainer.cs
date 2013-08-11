@@ -20,16 +20,19 @@ namespace Icfpc2013
         private readonly List<Node> ValidNodes;
         private readonly List<Node> ValidFoldNodes;
 
+        private readonly Func<Node, bool> filter;
+
         #endregion
 
         #region Constructors and Destructors
 
-        public PTreeGeneratorContainer(List<Node> validNodes, List<Node> validFoldNodes, int maxDepth)
+        public PTreeGeneratorContainer(List<Node> validNodes, List<Node> validFoldNodes, int maxDepth, Func<Node, bool> filter)
         {
             Console.WriteLine("Using PTreeGeneratorContainer - parallel");
             ValidNodes = validNodes;
             ValidFoldNodes = validFoldNodes;
             MaxDepth = maxDepth;
+            this.filter = filter;
         }
 
         #endregion
@@ -90,7 +93,10 @@ namespace Icfpc2013
 
             foreach (var subtree in builder.GetNLevelTree(node, MaxDepth))
             {
-                candidates.Enqueue(subtree);
+                if (filter(subtree))
+                {
+                    candidates.Enqueue(subtree);
+                }
 
                 if (token.IsCancellationRequested)
                 {
