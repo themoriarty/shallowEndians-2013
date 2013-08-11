@@ -70,13 +70,29 @@
 
             sw.WriteLine(start);
 
-            string output = sr.ReadLine();
-            Console.WriteLine("output=<<" + output + ">>");
-            
-            yield break;
 
-            //p.WaitForExit();
-            //p.Close();
+            string output = sr.ReadLine();
+
+            if (output == null || !output.StartsWith("SOLUTION:"))
+            {
+                throw new FormatException("SOLUTION: expected");
+            }
+
+            var solution = output.Substring("SOLUTION:".Length);
+
+            if (string.IsNullOrEmpty(solution))
+            {
+                Console.WriteLine("NO RESULT");
+
+                yield break;
+            }
+
+            var node = ProgramTree.Parse(solution);
+
+            yield return node.Program.Node0;
+
+            p.WaitForExit();
+            p.Close();
 
 
         }

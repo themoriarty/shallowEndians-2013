@@ -525,7 +525,7 @@
                 var operators = task["operators"].Select(s => (string)s).ToArray();
                 var ops = ProgramTree.GetOpTypes(operators);
 
-                if (solved.HasValue == false && size == 17 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.tfold && Bits(ops) < 7)
+                if (solved.HasValue == false && size == 14 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none/* && Bits(ops) < 7*/)
                 //if (solved.HasValue == false && size < 15)
                 //if (solved.HasValue == false && size == 15 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none && Bits(ops) == 5)
                 //if (id == "Jb6H9d6n4E9QUCnBGdMwDfQx")
@@ -533,7 +533,7 @@
                 {
                     Console.WriteLine("{0} {1} {2}", id, size, ops);
 
-                    if (Solve(id, size, operators, false))
+                    if (Solve(id, size, operators, true))
                     {
                         ++cntSolved;
                     }
@@ -788,10 +788,11 @@
             var solvers = new List<SolverContinuationWrapper>();
 
             SolverContinuationWrapper solver = new BfsSolverContinuationWrapper(judgesProgramSize, ops, inputs, outputs, FilterSolution, (n) => Checker(programId, n));
+            SolverContinuationWrapper solverSat = new SatSolverContinuationWrapper(judgesProgramSize, ops, operators, inputs, outputs, FilterSolution, (n) => OfflineChecker(programId, n));
             //SolverContinuationWrapper solver1 = new BfsSolverContinuationWrapper(judgesProgramSize, ops, inputs, outputs, FilterSolution, (n) => Checker(programId, n));
 
             solvers.Add(solver);
-            //solvers.Add(solver1);
+            solvers.Add(solverSat);
 
             var tasks = solvers.Select(s => Task.Run(() => solver.Run())).ToList();
 
@@ -852,10 +853,10 @@
         private static void Main(string[] args)
         {
             //SolveTrainingProgram(true);
-            //SolveMyProblems();
+            SolveMyProblems();
             //SolveOffline();
             //SolveSatOffline();
-            SolveGbfsOffline();
+            //SolveGbfsOffline();
             //SolveGbfsMyProblems();
             //SolveGbfsTrainingProgram();
 
