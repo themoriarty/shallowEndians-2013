@@ -116,9 +116,15 @@
         {
             int programSize = judgesProgramSize - 1;
 
-            List<ArgNode> nodes = new List<ArgNode>();
+            var tfoldMode = (validOps & OpTypes.tfold) != OpTypes.none;
 
-            for (int i = 0; i < programSize; ++i)
+            List<ArgNode> nodes = new List<ArgNode>();
+            int size = programSize;
+            if (tfoldMode)
+            {
+                size = programSize - 4;
+            }
+            for (int i = 0; i < size; ++i)
             {
                 nodes.Add(new MetaArgNode { Name = string.Format("n{0}",i) });
             }
@@ -183,7 +189,21 @@
                 permitted[(int)OpCodes.If0] = true;
             }
 
-            List<ArgNode> res = SATGeneratation.Utils.SolveNodeArray(inputs, outputs, nodes, permitted);
+            if (tfoldMode)
+            {
+                permitted[(int)OpCodes.Input2] = true;
+            }
+
+            List<ArgNode> res;
+            if (tfoldMode)
+            {
+                TreeStructure.UseFwLinks = false;
+                res = SATGeneratation.Utils.SolveTFoldArray(inputs, outputs, nodes, permitted);
+            }
+            else
+            {
+                res = SATGeneratation.Utils.SolveNodeArray(inputs, outputs, nodes, permitted);
+            }
             Console.Write("[Node array] And example output :::");
             for (int i = 0; i < res.Count; i++)
             {
@@ -192,13 +212,18 @@
             Console.Write("\n");
 
             int pos = 0;
-            var rootNode = BuildFromSat(res, ref pos);
+            var rootNode = BuildFromSat(res, ref pos, tfoldMode);
 
             if (pos != res.Count)
             {
                 //throw new Exception("pos != end");
             }
 
+            if (tfoldMode)
+            {
+                rootNode = new NodeFold { Node0 = new NodeId { Name = "x" }, Node1 = new Node0(), Node2 = new Lambda2 { Id0 = new NodeId { Name = "x1" }, Id1 = new NodeId { Name = "x2" }, Node0 = rootNode } };
+            }
+            
             var result = new ProgramTree { Program = new Lambda1 { Node0 = rootNode, Id0 = new NodeId { Name = "x" } } };
 
             Console.WriteLine("SAT: {0}", rootNode.Serialize());
@@ -221,7 +246,7 @@
                 return result.Program;
         }
 
-        public static Node BuildFromSat(List<ArgNode> solution, ref int index)
+        public static Node BuildFromSat(List<ArgNode> solution, ref int index, bool tfoldMode)
         {
             var arg = solution[index++];
             Node node1;
@@ -236,51 +261,51 @@
                     return new Node1();
                     break;
                 case OpCodes.Input:
-                    return new NodeId() {Name = "x"};
+                    return new NodeId() {Name = tfoldMode ? "x1" : "x"};
                     break;
                 case OpCodes.Input2:
-                    return new NodeId() { Name = "y" };
+                    return new NodeId() { Name = "x2" };
                 case OpCodes.And:
-                    node1 = BuildFromSat(solution, ref index);
-                    node2 = BuildFromSat(solution, ref index);
+                    node1 = BuildFromSat(solution, ref index, tfoldMode);
+                    node2 = BuildFromSat(solution, ref index, tfoldMode);
                     return new NodeOp2And{Node0 = node1, Node1 = node2};
                     break;
                 case OpCodes.Or:
-                    node1 = BuildFromSat(solution, ref index);
-                    node2 = BuildFromSat(solution, ref index);
+                    node1 = BuildFromSat(solution, ref index, tfoldMode);
+                    node2 = BuildFromSat(solution, ref index, tfoldMode);
                     return new NodeOp2Or{Node0 = node1, Node1 = node2};
                     break;
                 case OpCodes.Xor:
-                    node1 = BuildFromSat(solution, ref index);
-                    node2 = BuildFromSat(solution, ref index);
+                    node1 = BuildFromSat(solution, ref index, tfoldMode);
+                    node2 = BuildFromSat(solution, ref index, tfoldMode);
                     return new NodeOp2Xor{Node0 = node1, Node1 = node2};
                     break;
                 case OpCodes.Plus:
-                    node1 = BuildFromSat(solution, ref index);
-                    node2 = BuildFromSat(solution, ref index);
+                    node1 = BuildFromSat(solution, ref index, tfoldMode);
+                    node2 = BuildFromSat(solution, ref index, tfoldMode);
                     return new NodeOp2Plus{Node0 = node1, Node1 = node2};
                     break;
                 case OpCodes.Not:
-                    node1 = BuildFromSat(solution, ref index);
+                    node1 = BuildFromSat(solution, ref index, tfoldMode);
                     return new NodeOp1Not { Node0 = node1 };
                     break;
                 case OpCodes.Shl1:
-                    node1 = BuildFromSat(solution, ref index);
+                    node1 = BuildFromSat(solution, ref index, tfoldMode);
                     return new NodeOp1Shl1 { Node0 = node1 };
                     break;
                 case OpCodes.Shr1:
-                    node1 = BuildFromSat(solution, ref index);
+                    node1 = BuildFromSat(solution, ref index, tfoldMode);
                     return new NodeOp1Shr1 { Node0 = node1 };
                 case OpCodes.Shr4:
-                    node1 = BuildFromSat(solution, ref index);
+                    node1 = BuildFromSat(solution, ref index, tfoldMode);
                     return new NodeOp1Shr4 { Node0 = node1 };
                 case OpCodes.Shr16:
-                    node1 = BuildFromSat(solution, ref index);
+                    node1 = BuildFromSat(solution, ref index, tfoldMode);
                     return new NodeOp1Shr16 { Node0 = node1 };
                 case OpCodes.If0:
-                    node1 = BuildFromSat(solution, ref index);
-                    node2 = BuildFromSat(solution, ref index);
-                    node3 = BuildFromSat(solution, ref index);
+                    node1 = BuildFromSat(solution, ref index, tfoldMode);
+                    node2 = BuildFromSat(solution, ref index, tfoldMode);
+                    node3 = BuildFromSat(solution, ref index, tfoldMode);
                     return new NodeIf0() { Node0 = node1, Node1 = node2, Node2 = node3 };
                     break;
                 default:
@@ -451,7 +476,7 @@
 
         public static bool SolveTrainingProgram(bool useSat)
         {
-            int judgesProgramSize = 13;
+            int judgesProgramSize = 14;
             var options = new[] { "tfold" };
             //options = new string[0];
             var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, options));
@@ -469,10 +494,10 @@
 
         private static void Main(string[] args)
         {
-            //SolveTrainingProgram(true);
+            SolveTrainingProgram(true);
             //SolveMyProblems();
             //SolveOffline();
-            SolveSatOffline();
+            //SolveSatOffline();
         }
         
         private static bool Solve(string programId, int judgesProgramSize, string[] operators, bool useSat)
