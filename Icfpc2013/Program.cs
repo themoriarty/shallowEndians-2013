@@ -417,19 +417,19 @@
                 var operators = task["operators"].Select(s => (string)s).ToArray();
                 var ops = ProgramTree.GetOpTypes(operators);
 
-                if (solved.HasValue == false && size <= 12 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.fold) && (ops & OpTypes.tfold) == OpTypes.none  && Bits(ops) == 3)
-                //if (solved.HasValue == false && size == 12)
+                if (solved.HasValue == false && size < 13 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.fold) && (ops & OpTypes.tfold) == OpTypes.none  && Bits(ops) < 6)
+                //if (solved.HasValue == false && size < 14)
                 //if (solved.HasValue == false && size == 15 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none && Bits(ops) == 5)
                 //if (id == "Jb6H9d6n4E9QUCnBGdMwDfQx")
                 //if (solved.HasValue == true && solved.Value == false && size < 12)
                 {
                     Console.WriteLine("{0} {1} {2}", id, size, ops);
 
-                    //if (Solve(id, size, operators, true))
-                    //{
-                    //    ++cntSolved;
-                    //}
-                    //Thread.Sleep(20000);
+                    if (Solve(id, size, operators, false))
+                    {
+                        ++cntSolved;
+                    }
+                    Thread.Sleep(20000);
 
                     ++cnt;
                 }
@@ -440,22 +440,13 @@
 
         public static void SolveOffline()
         {
-            //const int judgesProgramSize = 11;
+            const int judgesProgramSize = 13;
 
-            //var programId = "OYGBVSlqtUveOjRVvjIJOrBG";
-            //var operators = new[] { "and", "fold", "or", "shr16" };
+            var programId = "R0XyWOYjDZHP1El7jdytKmZ7";
+            var operators = new[] { "if0", "fold", "not", "or" };
 
-            //ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xD8E4755D6F460C1A, 0xC8DB19F5D56567AD, 0x0085F8373B347C2B, 0x0DB3935300645EEC, 0x0F6C74CF7529404A, 0x4BEB041E4DC2BEF4, 0x216AB546A8FE98B5, 0x1A84E410FE824686, 0xB7F866EFB48B57B4, 0xE7E1383679462410, 0x94C60A94BB4B1973, 0x10FF6DF188EE07D6, 0x4E5B3679C799A739 };
-            //ulong[] outputs = { 0x0000000000000000, 0x00000000000000FF, 0x00000000000000D8, 0x00000000000000C8, 0x0000000000000000, 0x000000000000000D, 0x000000000000000F, 0x000000000000004B, 0x0000000000000021, 0x000000000000001A, 0x00000000000000B7, 0x00000000000000E7, 0x0000000000000094, 0x0000000000000010, 0x000000000000004E };
-
-
-            const int judgesProgramSize = 11;
-
-            var programId = "pAYRrTnGcuU5PYVQEW6q1bs7";
-            var operators = new[] { "fold", "if0", "shl1", "shr4" };
-
-            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xD8E4755D6F460C1A, 0xC8DB19F5D56567AD, 0x0085F8373B347C2B, 0x0DB3935300645EEC, 0x0F6C74CF7529404A, 0x4BEB041E4DC2BEF4, 0x216AB546A8FE98B5, 0x1A84E410FE824686, 0xB7F866EFB48B57B4, 0xE7E1383679462410, 0x94C60A94BB4B1973, 0x10FF6DF188EE07D6, 0x4E5B3679C799A739 };
-            ulong[] outputs = { 0x0000000000000000, 0x000000000000000F, 0x000000000000000B, 0x0000000000000009, 0x0000000000000000, 0x0000000000000001, 0x0000000000000001, 0x0000000000000009, 0x0000000000000004, 0x0000000000000003, 0x0000000000000006, 0x000000000000000C, 0x0000000000000002, 0x0000000000000002, 0x0000000000000009 };
+            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x11E001A860B349B8, 0x4167FEEDE279DF34, 0xE243B96BBF77EF6B, 0xE34E2D4576E40AC4, 0x23A282379AF7850C, 0xF3D35174C949BB0D, 0xFE7C0264DF27E86F, 0x06CC691C9D9CD006, 0xE809CD0767D69590, 0x736D7A70B0B2534C, 0x097E6E055D07F036, 0xA30604E66793F909, 0xA2EC6C7ADE3842EF };
+            ulong[] outputs = { 0xFFFFFFFFFFFFFF01, 0x0000000000000000, 0xEE1FFE579F4CB647, 0xBE9801121D8620CB, 0x1DBC469440881094, 0x1CB1D2BA891BF53B, 0xDC5D7DC865087AF3, 0x0C2CAE8B36B644F2, 0x0183FD9B20D81790, 0xF93396E362632FF9, 0x17F632F898296A6F, 0x8C92858F4F4DACB3, 0xF68191FAA2F80FC9, 0x5CF9FB19986C06F6, 0x5D13938521C7BD10 };
 
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
@@ -519,9 +510,9 @@
 
         private static void Main(string[] args)
         {
-            SolveTrainingProgram(false);
+            //SolveTrainingProgram(false);
             //SolveMyProblems();
-            //SolveOffline();
+            SolveOffline();
             //SolveSatOffline();
         }
         
