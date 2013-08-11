@@ -437,11 +437,8 @@
 
             var startTime = DateTime.Now;
             TreeStructure.UseFwLinks = false;
-            sw.Start();
             var solution = SolveSat(judgesProgramSize, ops, inputs, outputs);
-            sw.Stop();
 
-            Console.WriteLine("It took " + sw.ElapsedMilliseconds / 1000.0 + " sec\n\n");
 
             var finalResult = solution != null ? solution.Serialize() : "NO RESULT";
 
