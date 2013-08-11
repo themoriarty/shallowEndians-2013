@@ -15,9 +15,11 @@
     using Newtonsoft.Json.Linq;
 
     using SATGeneratation;
+    using System.Text;
 
     public class Program
     {
+        public static bool UseSimpleTFold = false;
         #region Public Methods and Operators
 
         public static int Bits(OpTypes ops)
@@ -120,6 +122,23 @@
 #endif
         }
 
+
+
+        public static string GenerateOutput(string prodId, int progSize, string[] ops, ulong[] inputs, ulong[] outputs)
+        {
+            StringBuilder b = new StringBuilder();
+            b.Append("START:");
+            b.Append(prodId);
+            b.Append("\n");
+            b.Append(progSize);
+            b.Append("\n\n");
+            b.Append(string.Join(" ", inputs));
+            b.Append("\n");
+            b.Append(string.Join(" ", outputs));
+
+            return b.ToString();
+        }
+
         public static Lambda1 SolveSat(int judgesProgramSize, OpTypes validOps, ulong[] inputs, ulong[] outputs)
         {
             int programSize = judgesProgramSize - 1;
@@ -202,14 +221,47 @@
                 permitted[(int)OpCodes.Input2] = true;
             }
 
-            List<ArgNode> res;
+            List<ArgNode> res = null;
             if (tfoldMode)
             {
-                TreeStructure.UseFwLinks = false;
-                res = SATGeneratation.Utils.SolveTFoldArray(inputs, outputs, nodes, permitted);
+                ulong[] processedInputs = new ulong[inputs.Length];
+                for (int i = 0; i < inputs.Length; ++i)
+                {
+                    unchecked
+                    {
+                        processedInputs[i] = (inputs[i] & (ulong)0xFF00000000000000) >> 56;
+                    }
+                }
+
+                List<ArgNode> res1 = null;
+                List<ArgNode> res2 = null;
+
+                List<ArgNode> inputNodes2 = new List<ArgNode>();
+                for (int i = 0; i < size; ++i)
+                {
+                    inputNodes2.Add(new MetaArgNode { Name = string.Format("bn{0}", i) });
+                }
+
+                if (UseSimpleTFold)
+                {
+                    Console.WriteLine("Running simpler assumption for tfold SAT");
+                    res1 = SATGeneratation.Utils.SolveNodeArray(processedInputs, outputs, inputNodes2, permitted);
+                }
+                if(!(res1 == null || res1[0].ComputedOpcode == OpCodes.Zero))
+                {
+                    res = res1;
+                }
+                else
+                {
+                    if (UseSimpleTFold)
+                    {
+                        Console.WriteLine("SAT Tfold simple assumption failed, running complex tree");
+                    }
+                    res = SATGeneratation.Utils.SolveTFoldArray(inputs, outputs, inputNodes2, permitted);
+                }
             }
             else
-            {
+            {                
                 res = SATGeneratation.Utils.SolveNodeArray(inputs, outputs, nodes, permitted);
             }
             Console.Write("[Node array] And example output :::");
@@ -225,6 +277,11 @@
             if (pos != res.Count)
             {
                 //throw new Exception("pos != end");
+            }
+
+            if (res[0].ComputedOpcode == OpCodes.Zero)
+            {
+                throw new Exception("SAT failed");
             }
 
             if (tfoldMode)
@@ -679,7 +736,7 @@
 
         public static bool SolveTrainingProgram(bool useSat)
         {
-            int judgesProgramSize = 16;
+            int judgesProgramSize = 10;
             var options = new[] { "tfold" };
             //options = new string[0];
             var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, options));
@@ -783,7 +840,7 @@
 
         private static void Main(string[] args)
         {
-            //SolveTrainingProgram(false);
+            SolveTrainingProgram(true);
             //SolveMyProblems();
             //SolveOffline();
             //SolveSatOffline();
