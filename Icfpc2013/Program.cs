@@ -417,7 +417,7 @@
                 var operators = task["operators"].Select(s => (string)s).ToArray();
                 var ops = ProgramTree.GetOpTypes(operators);
 
-                if (solved.HasValue == false && size < 13 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.fold) && (ops & OpTypes.tfold) == OpTypes.none  && Bits(ops) < 6)
+                if (solved.HasValue == false && size < 14 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.fold) && (ops & OpTypes.tfold) == OpTypes.none  && Bits(ops) < 6)
                 //if (solved.HasValue == false && size < 14)
                 //if (solved.HasValue == false && size == 15 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none && Bits(ops) == 5)
                 //if (id == "Jb6H9d6n4E9QUCnBGdMwDfQx")
@@ -511,8 +511,8 @@
         private static void Main(string[] args)
         {
             //SolveTrainingProgram(false);
-            //SolveMyProblems();
-            SolveOffline();
+            SolveMyProblems();
+            //SolveOffline();
             //SolveSatOffline();
         }
         

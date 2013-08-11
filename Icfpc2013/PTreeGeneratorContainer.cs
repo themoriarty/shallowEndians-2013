@@ -90,10 +90,7 @@ namespace Icfpc2013
 
             foreach (var subtree in builder.GetNLevelTree(node, MaxDepth))
             {
-                lock (candidates)
-                {
-                    candidates.Enqueue(subtree);
-                }
+                candidates.Enqueue(subtree);
 
                 if (token.IsCancellationRequested)
                 {
