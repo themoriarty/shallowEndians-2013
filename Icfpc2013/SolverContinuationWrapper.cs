@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Icfpc2013.Ops;
 
@@ -48,6 +49,9 @@
             var newOutputs = new List<ulong>(Outputs);
             newOutputs.Add(newOutput);
             Outputs = newOutputs.ToArray();
+
+            Console.WriteLine("Input: {{{0}}}", string.Join(", ", Inputs.Select(s => string.Format("0x{0:X16}", s)).ToArray()));
+            Console.WriteLine("Output: {{{0}}}", string.Join(", ", Outputs.Select(s => string.Format("0x{0:X16}", s)).ToArray()));
 
             AddCounterExampleImpl(newInput, newOutput);
         }

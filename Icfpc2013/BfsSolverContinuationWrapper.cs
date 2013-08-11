@@ -69,7 +69,7 @@
                 filterSolution = new NodeFold { Node0 = new NodeId { Name = "x" }, Node1 = new Node0(), Node2 = new Lambda2 { Id0 = new NodeId { Name = "x1" }, Id1 = new NodeId { Name = "x2" }, Node0 = node } };
             }
 
-            bool filterValid = Filter(testInputs, testInputs, filterSolution);
+            bool filterValid = Filter(testInputs, testOutputs, filterSolution);
 
             if (filterValid)
             {
@@ -101,7 +101,7 @@
                 yield return root;
             }
 #else
-            var builder = new FTreeGenerator(validNodes, validFoldNodes, targetSize);
+            var builder = new FTreeGenerator(validNodes, validFoldNodes, programSize);
             foreach (var root in builder.GenerateAllPrograms())
             {
                 yield return root;
