@@ -80,6 +80,7 @@
     <Compile Include="API\Utils.cs" />
     <Compile Include="BfsSolverContinuationWrapper.cs" />
     <Compile Include="Compiler.cs" />
+    <Compile Include="SatSolverContinuationWrapper.cs" />
     <Compile Include="DynamicTree.cs" />
     <Compile Include="FTreeGenerator.cs" />
     <Compile Include="ExecContext.cs" />

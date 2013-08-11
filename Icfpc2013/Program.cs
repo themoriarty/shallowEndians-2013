@@ -701,7 +701,8 @@
 
             var startTime = DateTime.Now;
 
-            SolverContinuationWrapper solver = new BfsSolverContinuationWrapper(judgesProgramSize, ops, inputs, outputs, FilterSolution, (n) => OfflineChecker(programId, n));
+            //SolverContinuationWrapper solver = new BfsSolverContinuationWrapper(judgesProgramSize, ops, inputs, outputs, FilterSolution, (n) => OfflineChecker(programId, n));
+            SolverContinuationWrapper solver = new SatSolverContinuationWrapper(judgesProgramSize, ops, inputs, outputs, FilterSolution, (n) => OfflineChecker(programId, n));
 
             var solution = solver.Run();
 
@@ -844,8 +845,8 @@
             //SolveMyProblems();
             //SolveOffline();
             //SolveSatOffline();
-            //SolveGbfsOffline();
-            SolveGbfsMyProblems();
+            SolveGbfsOffline();
+            //SolveGbfsMyProblems();
             //SolveGbfsTrainingProgram();
 
         }
