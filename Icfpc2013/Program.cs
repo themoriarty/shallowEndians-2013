@@ -461,7 +461,7 @@
                 var operators = task["operators"].Select(s => (string)s).ToArray();
                 var ops = ProgramTree.GetOpTypes(operators);
 
-                if (solved.HasValue == false && size < 15 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.tfold  /*&& Bits(ops) < 5*/)
+                if (solved.HasValue == false && size < 13 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none /* && Bits(ops) < 5*/)
                 //if (solved.HasValue == false && size < 20)
                 //if (solved.HasValue == false && size == 15 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none && Bits(ops) == 5)
                 //if (id == "Jb6H9d6n4E9QUCnBGdMwDfQx")
@@ -537,7 +537,7 @@
         public static bool SolveTrainingProgram(bool useSat)
         {
             int judgesProgramSize = 15;
-            var options = new[] { "fold" };
+            var options = new[] { "tfold" };
             //options = new string[0];
             var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, options));
             var programId = training.id;
@@ -555,8 +555,8 @@
         private static void Main(string[] args)
         {
             //SolveTrainingProgram(false);
-            //SolveMyProblems();
-            SolveOffline();
+            SolveMyProblems();
+            //SolveOffline();
             //SolveSatOffline();
         }
         
