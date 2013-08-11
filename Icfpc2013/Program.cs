@@ -6,6 +6,7 @@
     using System.Globalization;
     using System.IO;
     using System.Linq;
+    using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -34,7 +35,6 @@
 
             return cnt;
         }
-
         
         static IEnumerable<Node> AddOp(Node oldRoot, Node newNode)
         {
@@ -523,7 +523,7 @@
                 var operators = task["operators"].Select(s => (string)s).ToArray();
                 var ops = ProgramTree.GetOpTypes(operators);
 
-                if (solved.HasValue == false && size == 16 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.tfold /* && Bits(ops) < 5*/)
+                if (solved.HasValue == false && size == 17 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.tfold && Bits(ops) < 7)
                 //if (solved.HasValue == false && size < 15)
                 //if (solved.HasValue == false && size == 15 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none && Bits(ops) == 5)
                 //if (id == "Jb6H9d6n4E9QUCnBGdMwDfQx")
@@ -572,6 +572,144 @@
             Console.WriteLine("Result: {0}, execution time: {1}", finalResult, DateTime.Now - startTime);
         }
 
+        private static bool FilterSolution(ulong[] inputs, ulong[] outputs, Node node)
+        {
+            for (int i = 0; i < inputs.Length; ++i)
+            {
+                var ctx = new ExecContext();
+                ctx.Vars["x"] = inputs[i];
+                var output = node.Eval(ctx);
+
+                if (output != outputs[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static Tuple<bool, bool, ulong, ulong> OfflineChecker(string programId, Node solution)
+        {
+            return new Tuple<bool, bool, ulong, ulong>(true, false, 0, 0);
+        }
+
+        private static int requestsInWindows = 0;
+
+        private static DateTime requestWindowStart = DateTime.MinValue;
+
+        private static object throttleLock = new object(); 
+
+        private static void Throttle()
+        {
+            Console.WriteLine("******************** {0} {1} {2}", DateTime.UtcNow, requestWindowStart, requestsInWindows);
+
+            lock (throttleLock)
+            {
+                if (requestWindowStart == DateTime.MinValue || (DateTime.UtcNow - requestWindowStart).TotalSeconds >= 20)
+                {
+                    requestsInWindows = 0;
+                    requestWindowStart = DateTime.UtcNow;
+                }
+
+                ++requestsInWindows;
+
+                if (requestsInWindows > 3)
+                {
+                    var sleepMs = (int)(20000 - (DateTime.UtcNow - requestWindowStart).TotalSeconds);
+                    Console.WriteLine("Throttling. Sleeping {0} seconds", sleepMs / 1000);
+
+                    Thread.Sleep(sleepMs);
+
+                    requestsInWindows = 0;
+                    requestWindowStart = DateTime.UtcNow;
+                }
+            }
+
+            Console.WriteLine("==================== {0} {1} {2}", DateTime.UtcNow, requestWindowStart, requestsInWindows);
+        }
+
+        private static Tuple<bool,bool, ulong, ulong> Checker(string programId, Node solution)
+        {
+            var lambda1 = new Lambda1 { Id0 = new NodeId { Name = "x" }, Node0 = solution };
+            var program = lambda1.Serialize();
+
+            Console.WriteLine("Submitting: {0}", program);
+
+            GuessResponse response = null;
+
+            for (int i = 0; i < 5; ++i)
+            {
+                try
+                {
+                    Throttle();
+
+                    response = API.Guess(new Guess(programId, program));
+
+                    break;
+                }
+                catch (WebException wex)
+                {
+                    if (wex.Message.IndexOf("Too many requests") < 0)
+                    {
+                        throw;
+                    }
+                    else
+                    {
+                        Thread.Sleep(4000);
+                    }
+                }
+                
+            }
+
+            Console.WriteLine("Guess: {0}", response.status);
+
+            if (response.status == "win")
+            {
+                return new Tuple<bool, bool, ulong, ulong>(true, false, 0, 0);
+            }
+
+            if (response.status == "mismatch")
+            {
+                var newInput = ulong.Parse(response.values[0].Replace("0x", string.Empty), NumberStyles.HexNumber);
+                var newOutput = ulong.Parse(response.values[1].Replace("0x", string.Empty), NumberStyles.HexNumber);
+
+                return new Tuple<bool, bool, ulong, ulong>(false, true, newInput, newOutput);
+            }
+
+            return new Tuple<bool, bool, ulong, ulong>(false, false, 0, 0);
+        }
+
+        public static void SolveGbfsOffline()
+        {
+            const int judgesProgramSize = 13;
+
+            var programId = "nZHmZcwRNbs0nZQrtqTenRAZ";
+            var operators = new[] { "fold", "not", "or", "shl1", "shr16" };
+
+            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x18096DBAA8CB0F8A, 0x5A03DC0159110794, 0xBF4D18DBD2DC49F1, 0x94100789E102FF0B, 0x3C5076D92EEFB498, 0x03FA893DD9A6F2EF, 0x72B925181C0BC875, 0x8C8E286BBB9C0CC2, 0x7B80D4ED4DC17DF7, 0x82817471E9E39FF9, 0x727BF3FCC16BFE05, 0xC6D194DACD6C7DFA, 0xA016ACC8C0E21964 };
+            ulong[] outputs = { 0x000000000000FFFE, 0xFFFFFFFFFFFFFFFE, 0x12DB7551961F7FFE, 0x07B802B2220FFFFE, 0x9A31B7A5B893FFFE, 0x200F13C205FEFFFE, 0xA0EDB25DDF6977FE, 0xF5127BB34DE5FFFE, 0x724A30381790FFFE, 0x1C50D7773819DFFE, 0x01A9DA9B82FBFFFE, 0x02E8E3D3C73FFFFE, 0xF7E7F982D7FC3FFE, 0xA329B59AD8FBFFFE, 0x2D599181C432FFFE };
+
+            Console.WriteLine("ProgramId: {0}", programId);
+            Console.WriteLine("Training: {0}", string.Join(", ", operators));
+
+            Console.WriteLine("Input: {{{0}}}", string.Join(", ", inputs.Select(s => string.Format("0x{0:X16}", s)).ToArray()));
+            Console.WriteLine("Output: {{{0}}}", string.Join(", ", outputs.Select(s => string.Format("0x{0:X16}", s)).ToArray()));
+
+
+            var ops = ProgramTree.GetOpTypes(operators);
+
+            var startTime = DateTime.Now;
+
+            SolverContinuationWrapper solver = new BfsSolverContinuationWrapper(judgesProgramSize, ops, inputs, outputs, FilterSolution, (n) => OfflineChecker(programId, n));
+
+            var solution = solver.Run();
+
+            var finalResult = solution != null ? solution.Serialize() : "NO RESULT";
+
+            Console.WriteLine("Result: {0}, execution time: {1}", finalResult, DateTime.Now - startTime);
+        }
+
         public static void SolveSatOffline()
         {
             const int judgesProgramSize = 13;
@@ -610,6 +748,92 @@
             return Solve(programId, judgesProgramSize, operators, useSat);
         }
 
+        private static bool SolveGbfs(string programId, int judgesProgramSize, string[] operators)
+        {
+            ulong[] inputs = ProgramTree.GetInputVectorList(15).ToArray(); //{0x12, 0x137};
+            var inputStrings = inputs.Select(s => string.Format("0x{0:X16}", s)).ToArray();
+
+            Throttle();
+            var outputsResponse = API.Eval(new EvalRequest(programId, null, inputStrings));
+
+            if (outputsResponse.status != "ok" || outputsResponse.outputs == null)
+            {
+                throw new Exception("eval failed");
+            }
+
+            ulong[] outputs = outputsResponse.outputs.Select(s => ulong.Parse(s.Replace("0x", string.Empty), NumberStyles.HexNumber)).ToArray();
+
+
+            Console.WriteLine("ProgramId: {0}", programId);
+            Console.WriteLine("Operators: {0}", string.Join(", ", operators.Select(s => "\"" + s + "\"")));
+
+            Console.WriteLine("Input: {{{0}}}", string.Join(", ", inputs.Select(s => string.Format("0x{0:X16}", s)).ToArray()));
+            Console.WriteLine("Output: {{{0}}}", string.Join(", ", outputs.Select(s => string.Format("0x{0:X16}", s)).ToArray()));
+
+            var ops = ProgramTree.GetOpTypes(operators);
+
+            var startTime = DateTime.Now;
+
+            var solvers = new List<SolverContinuationWrapper>();
+
+            SolverContinuationWrapper solver = new BfsSolverContinuationWrapper(judgesProgramSize, ops, inputs, outputs, FilterSolution, (n) => Checker(programId, n));
+            //SolverContinuationWrapper solver1 = new BfsSolverContinuationWrapper(judgesProgramSize, ops, inputs, outputs, FilterSolution, (n) => Checker(programId, n));
+
+            solvers.Add(solver);
+            //solvers.Add(solver1);
+
+            var tasks = solvers.Select(s => Task.Run(() => solver.Run())).ToList();
+
+            Lambda1 solution = null;
+
+            while (tasks.Count > 0)
+            {
+                var completed = Task.WaitAny(tasks.ToArray(), TimeSpan.FromSeconds(5 * 60));
+
+                var task = (Task<Lambda1>)tasks[completed];
+
+                tasks.RemoveAt(completed);
+
+                if (task.Result != null)
+                {
+                    solution = task.Result;
+                    Console.WriteLine("One thread completed  successfully");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Solver failed, waiting for other ones");
+                }
+            }
+
+            foreach (var solveri in solvers)
+            {
+                solveri.Stop();
+            }
+
+            var finalResult = solution != null ? solution.Serialize() : "NO RESULT";
+
+            Console.WriteLine("Result: {0}, execution time: {1}", finalResult, DateTime.Now - startTime);
+
+            return solution != null;
+        }
+
+        public static bool SolveGbfsTrainingProgram()
+        {
+            int judgesProgramSize = 6;
+            var options = new string[] { };
+
+            Throttle();
+            var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, options));
+            
+            var programId = training.id;
+
+            var operators = training.operators;
+            judgesProgramSize = (int)training.size;
+
+            return SolveGbfs(programId, judgesProgramSize, operators);
+        }
+
         #endregion
 
         #region Methods
@@ -620,6 +844,10 @@
             //SolveMyProblems();
             //SolveOffline();
             //SolveSatOffline();
+            //SolveGbfsOffline();
+            SolveGbfsMyProblems();
+            //SolveGbfsTrainingProgram();
+
         }
         
         private static bool Solve(string programId, int judgesProgramSize, string[] operators, bool useSat)
@@ -792,6 +1020,60 @@
             }
 
             return response.status == "win";
+        }
+
+
+
+        public static void SolveGbfsMyProblems()
+        {
+            var todo = JArray.Parse(File.ReadAllText(@"..\..\..\..\myproblems.json"));
+
+            int cnt = 0;
+            int cntSolved = 0;
+            var orderedList = todo.OrderBy(s => (int)s["size"]).ThenBy(s => s["operators"].Count()).ToList();
+            foreach (var task in orderedList)
+            {
+                var solved = (bool?)task["solved"];
+                var id = (string)task["id"];
+                var size = (int)task["size"];
+                var operators = task["operators"].Select(s => (string)s).ToArray();
+                var ops = ProgramTree.GetOpTypes(operators);
+
+                //if (solved.HasValue == false && size == 17 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.tfold && Bits(ops) < 7)
+                if (solved.HasValue == false && size < 15)
+                //if (solved.HasValue == false && size == 15 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none && Bits(ops) == 5)
+                //if (id == "yLhLthAhzsROkibpnr8In656")
+                //if (solved.HasValue == true && solved.Value == false && size < 12)
+                {
+                    Console.WriteLine("{0} {1} {2}", id, size, ops);
+
+                    try
+                    {
+                        //if (SolveGbfs(id, size, operators))
+                        //{
+                        //    Console.WriteLine("------------------------ SOLVED");
+                        //    ++cntSolved;
+                        //}
+                        //else
+                        //{
+                        //    Console.WriteLine("------------------------ FAILED");
+                        //}
+                        // DEBUG
+                        //Thread.Sleep(5000);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("------------------------ ERROR: {0}", ex);
+                        
+                        Thread.Sleep(5000);
+                    }
+
+
+                    ++cnt;
+                }
+            }
+
+            Console.WriteLine("cnt={0} cntSolved={1}", cnt, cntSolved);
         }
 
         #endregion
