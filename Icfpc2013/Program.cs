@@ -712,7 +712,7 @@
             var startTime = DateTime.Now;
 
             //SolverContinuationWrapper solver = new BfsSolverContinuationWrapper(judgesProgramSize, ops, inputs, outputs, FilterSolution, (n) => OfflineChecker(programId, n));
-            SolverContinuationWrapper solver = new SatSolverContinuationWrapper(judgesProgramSize, ops, operators, inputs, outputs, FilterSolution, (n) => OfflineChecker(programId, n));
+            SolverContinuationWrapper solver = new SatSolverContinuationWrapper(judgesProgramSize, ops, operators, inputs, outputs, FilterSolution, (n) => OfflineChecker(programId, n), true);
 
             var solution = solver.Run();
 
@@ -789,7 +789,13 @@
 
             if ((ops & OpTypes.fold) == OpTypes.none)
             {
-                SolverContinuationWrapper solverSat = new SatSolverContinuationWrapper(judgesProgramSize, ops, operators, inputs, outputs, FilterSolution, (n) => OfflineChecker(programId, n));
+                SolverContinuationWrapper solverSat = new SatSolverContinuationWrapper(judgesProgramSize, ops, operators, inputs, outputs, FilterSolution, (n) => OfflineChecker(programId, n), false);
+                solvers.Add(solverSat);
+            }
+
+            if ((ops & OpTypes.tfold) == OpTypes.tfold)
+            {
+                SolverContinuationWrapper solverSat = new SatSolverContinuationWrapper(judgesProgramSize, ops, operators, inputs, outputs, FilterSolution, (n) => OfflineChecker(programId, n), true);
                 solvers.Add(solverSat);
             }
 
@@ -1062,15 +1068,15 @@
 
                     try
                     {
-                        //if (SolveGbfs(id, size, operators))
-                        //{
-                        //    Console.WriteLine("------------------------ SOLVED");
-                        //    ++cntSolved;
-                        //}
-                        //else
-                        //{
-                        //    Console.WriteLine("------------------------ FAILED");
-                        //}
+                        if (SolveGbfs(id, size, operators))
+                        {
+                            Console.WriteLine("------------------------ SOLVED");
+                            ++cntSolved;
+                        }
+                        else
+                        {
+                            Console.WriteLine("------------------------ FAILED");
+                        }
                         // DEBUG
                         //Thread.Sleep(5000);
                     }

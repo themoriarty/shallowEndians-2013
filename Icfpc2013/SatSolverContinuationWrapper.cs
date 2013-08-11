@@ -33,10 +33,11 @@
 
         #region Constructors and Destructors
 
-        public SatSolverContinuationWrapper(int judgesProgramSize, OpTypes validOps, string[] operators, ulong[] inputs, ulong[] outputs, Func<ulong[], ulong[], Node, bool> filter, Func<Node, Tuple<bool, bool, ulong, ulong>> checker)
+        public SatSolverContinuationWrapper(int judgesProgramSize, OpTypes validOps, string[] operators, ulong[] inputs, ulong[] outputs, Func<ulong[], ulong[], Node, bool> filter, Func<Node, Tuple<bool, bool, ulong, ulong>> checker, bool tfoldmode)
             : base(judgesProgramSize, validOps, inputs, outputs, filter, checker)
         {
             this.operators = operators;
+            this.tfoldMode = tfoldmode;
         }
 
         #endregion
@@ -61,6 +62,7 @@
                 {
                     CreateNoWindow = true,
                     FileName = @"..\..\..\..\SatSolverRunner\bin\x64\Release\SatSolverRunner.exe",
+                    Arguments = tfoldMode ? "simple simple simple" : string.Empty,
                     RedirectStandardInput = true,
                     RedirectStandardOutput = true,
                     UseShellExecute = false
