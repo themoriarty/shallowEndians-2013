@@ -34,7 +34,7 @@
 
         public Node Clone()
         {
-            return new NodeFold { Node0 = this.Node0.Clone(), Node1 = this.Node1.Clone(), Node2 = this.Node2.Clone() };
+            return new NodeFold { Node0 = Node0 == null ? null : this.Node0.Clone(), Node1 = Node1 == null ? null : this.Node1.Clone(), Node2 = Node2 == null ? null : this.Node2.Clone() };
         }
 
         public ulong Eval(ExecContext context)
@@ -61,7 +61,7 @@
 
         public long Size()
         {
-            return 2 + this.Node0.Size() + this.Node1.Size() + this.Node2.Node0.Size();
+            return 2 + (Node0 == null ? 0 : Node0.Size()) + (Node1 == null ? 0 : Node1.Size()) + (Node2 == null ? 0 : this.Node2.Size());
         }
 
         public string ToString(int indentLevel)

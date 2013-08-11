@@ -13,7 +13,6 @@
         {
             ArgumentCount = (ArrayExpr)ctx.MkConst(name + "a", ctx.MkArraySort(ctx.IntSort, ctx.IntSort));
             ReverseLink = (ArrayExpr)ctx.MkConst(name + "r", ctx.MkArraySort(ctx.IntSort, ctx.IntSort));
-            //PinLink = (ArrayExpr)ctx.MkConst(name + "p", ctx.MkArraySort(ctx.IntSort, ctx.IntSort));
             PinLink = new IntExpr[treeSize];
 
             for (int i = 0; i < treeSize; i++)
@@ -66,6 +65,18 @@
                     ctx.MkAnd(ctx.MkEq(ctx.MkInt(TreeSize), ctx.MkInt(1)), ctx.MkEq(ctx.MkSelect(ArgumentCount, ctx.MkInt(0)), ctx.MkInt(0))), 
                     ctx.MkAnd(ctx.MkNot(ctx.MkEq(ctx.MkInt(TreeSize), ctx.MkInt(1))), ctx.MkNot(ctx.MkEq(ctx.MkSelect(ArgumentCount, ctx.MkInt(0)), ctx.MkInt(0))))));
 
+            //for (int i = 0; i < TreeSize; ++i)
+            //{
+            //    treeConstrains.Add(ctx.MkGe((ArithExpr)ctx.MkSelect(ReverseLink, ctx.MkInt(i)), ctx.MkInt(0)));
+            //    treeConstrains.Add(ctx.MkGe((ArithExpr)ctx.MkSelect(FwLink1, ctx.MkInt(i)), ctx.MkInt(0)));
+            //    treeConstrains.Add(ctx.MkGe((ArithExpr)ctx.MkSelect(FwLink2, ctx.MkInt(i)), ctx.MkInt(0)));
+            //    treeConstrains.Add(ctx.MkGe((ArithExpr)ctx.MkSelect(FwLink3, ctx.MkInt(i)), ctx.MkInt(0)));
+            //    treeConstrains.Add(ctx.MkLt((ArithExpr)ctx.MkSelect(ReverseLink, ctx.MkInt(i)), ctx.MkInt(TreeSize)));
+            //    treeConstrains.Add(ctx.MkLt((ArithExpr)ctx.MkSelect(FwLink1, ctx.MkInt(i)), ctx.MkInt(TreeSize)));
+            //    treeConstrains.Add(ctx.MkLt((ArithExpr)ctx.MkSelect(FwLink2, ctx.MkInt(i)), ctx.MkInt(TreeSize)));
+            //    treeConstrains.Add(ctx.MkLt((ArithExpr)ctx.MkSelect(FwLink3, ctx.MkInt(i)), ctx.MkInt(TreeSize)));
+            //}
+
             // Make sure each node has at least one other one node pointing to it
             var flinkConsraints = new List<BoolExpr>();
             var argConstraints = new List<BoolExpr>();
@@ -73,9 +84,6 @@
             {
                 argConstraints.Add(ctx.MkLt((ArithExpr)ctx.MkSelect(ReverseLink, ctx.MkInt(i)), ctx.MkInt(TreeSize)));
                 argConstraints.Add(ctx.MkGe((ArithExpr)ctx.MkSelect(ReverseLink, ctx.MkInt(i)), ctx.MkInt(0)));
-
-
-
 
                 var parIndex = ctx.MkSelect(ReverseLink, ctx.MkInt(i));
                 var selPin = PinLink[i];

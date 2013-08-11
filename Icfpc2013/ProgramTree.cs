@@ -148,9 +148,12 @@ namespace Icfpc2013
             return Parser.ParseOps(operators).Aggregate(OpTypes.none, (seed, value) => seed | value);
         }
 
-        public static List<Node> GetAvailableNodes(OpTypes ops, bool tfoldMode)
+        public static void GetAvailableNodes(OpTypes ops, bool tfoldMode, out List<Node> validNodes, out List<Node> validFoldNodes)
         {
-            var validNodes = new List<Node>();
+            validNodes = new List<Node>();
+            validFoldNodes = new List<Node>();
+
+ 
             if (tfoldMode)
             {
                 validNodes.Add(new NodeId { Name = "x1" });
@@ -158,61 +161,90 @@ namespace Icfpc2013
             }
             else
             {
-                validNodes.Add(new NodeId{Name = "x" });
+                validNodes.Add(new NodeId { Name = "x" });
+                validFoldNodes.Add(new NodeId { Name = "x1" });
+                validFoldNodes.Add(new NodeId { Name = "x2" });
             }
+
             validNodes.Add(Node0.Instance);
             validNodes.Add(Node1.Instance);
+            validFoldNodes.Add(Node0.Instance);
+            validFoldNodes.Add(Node1.Instance);
 
             if ((ops & OpTypes.not) != OpTypes.none)
             {
-                validNodes.Add(new NodeOp1Not());  
+                var op = new NodeOp1Not();
+                validNodes.Add(op);
+                validFoldNodes.Add(op);
             }
 
             if ((ops & OpTypes.shl1) != OpTypes.none)
             {
-                validNodes.Add(new NodeOp1Shl1());
+                var op = new NodeOp1Shl1();
+                validNodes.Add(op);
+                validFoldNodes.Add(op);
             }
 
             if ((ops & OpTypes.shr1) != OpTypes.none)
             {
-                validNodes.Add(new NodeOp1Shr1());
+                var op = new NodeOp1Shr1();
+                validNodes.Add(op);
+                validFoldNodes.Add(op);
             }
 
             if ((ops & OpTypes.shr4) != OpTypes.none)
             {
-                validNodes.Add(new NodeOp1Shr4());
+                var op = new NodeOp1Shr4();
+                validNodes.Add(op);
+                validFoldNodes.Add(op);
             }
 
             if ((ops & OpTypes.shr16) != OpTypes.none)
             {
-                validNodes.Add(new NodeOp1Shr16());
+                var op = new NodeOp1Shr16();
+                validNodes.Add(op);
+                validFoldNodes.Add(op);
             }
 
             if ((ops & OpTypes.and) != OpTypes.none)
             {
-                validNodes.Add(new NodeOp2And());
+                var op = new NodeOp2And();
+                validNodes.Add(op);
+                validFoldNodes.Add(op);
             }
 
             if ((ops & OpTypes.or) != OpTypes.none)
             {
-                validNodes.Add(new NodeOp2Or());
+                var op = new NodeOp2Or();
+                validNodes.Add(op);
+                validFoldNodes.Add(op);
             }
 
             if ((ops & OpTypes.xor) != OpTypes.none)
             {
-                validNodes.Add(new NodeOp2Xor());
+                var op = new NodeOp2Xor();
+                validNodes.Add(op);
+                validFoldNodes.Add(op);
             }
 
             if ((ops & OpTypes.plus) != OpTypes.none)
             {
-                validNodes.Add(new NodeOp2Plus());
+                var op = new NodeOp2Plus();
+                validNodes.Add(op);
+                validFoldNodes.Add(op);
             }
 
             if ((ops & OpTypes.if0) != OpTypes.none)
             {
-                validNodes.Add(new NodeIf0());
+                var op = new NodeIf0();
+                validNodes.Add(op);
+                validFoldNodes.Add(op);
             }
-            return validNodes;
+
+            if ((ops & OpTypes.fold) != OpTypes.none)
+            {
+                validNodes.Add(new NodeFold());
+            }
         }
 
         #endregion
