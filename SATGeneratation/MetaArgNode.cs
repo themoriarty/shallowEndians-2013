@@ -23,7 +23,7 @@ namespace SATGeneratation
             ThreeArgNode.Initialize(ctx, name + "_3a_");
         }
 
-        public override void AddConstraints(Context ctx, Solver solver, BitVecExpr prInput, BitVecExpr prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
+        public override void AddConstraints(Context ctx, Solver solver, BitVecExpr prInput, BitVecExpr prInput2, BitVecExpr prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
         {
             if(tree != null)
             {
@@ -31,13 +31,13 @@ namespace SATGeneratation
                 solver.Assert(ctx.MkEq(Arity, sel));
             }
             var zeroConst = ctx.MkAnd(ctx.MkEq(Arity, ctx.MkInt(0)), ctx.MkEq(Output, ZeroArgNode.Output), ctx.MkEq(OpCode, ZeroArgNode.OpCode),
-                ZeroArgNode.GenerateConstraints(ctx, solver, prInput, prOutput, permitted, nodes, curNodeIndex, tree));
+                ZeroArgNode.GenerateConstraints(ctx, solver, prInput, prInput2, prOutput, permitted, nodes, curNodeIndex, tree));
             var oneConst = ctx.MkAnd(ctx.MkEq(Arity, ctx.MkInt(1)), ctx.MkEq(Output, OneArgNode.Output), ctx.MkEq(OpCode, OneArgNode.OpCode),
-                OneArgNode.GenerateConstraints(ctx, solver, prInput, prOutput, permitted, nodes, curNodeIndex, tree));
+                OneArgNode.GenerateConstraints(ctx, solver, prInput, prInput2, prOutput, permitted, nodes, curNodeIndex, tree));
             var twoConst = ctx.MkAnd(ctx.MkEq(Arity, ctx.MkInt(2)), ctx.MkEq(Output, TwoArgNode.Output), ctx.MkEq(OpCode, TwoArgNode.OpCode),
-                TwoArgNode.GenerateConstraints(ctx, solver, prInput, prOutput, permitted, nodes, curNodeIndex, tree));
+                TwoArgNode.GenerateConstraints(ctx, solver, prInput, prInput2, prOutput, permitted, nodes, curNodeIndex, tree));
             var threeConst = ctx.MkAnd(ctx.MkEq(Arity, ctx.MkInt(3)), ctx.MkEq(Output, ThreeArgNode.Output), ctx.MkEq(OpCode, ThreeArgNode.OpCode),
-                ThreeArgNode.GenerateConstraints(ctx, solver, prInput, prOutput, permitted, nodes, curNodeIndex, tree));
+                ThreeArgNode.GenerateConstraints(ctx, solver, prInput, prInput2, prOutput, permitted, nodes, curNodeIndex, tree));
             solver.Assert(ctx.MkOr(zeroConst, oneConst, twoConst, threeConst));
         }
 

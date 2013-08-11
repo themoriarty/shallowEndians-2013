@@ -2,6 +2,7 @@ namespace Icfpc2013
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Icfpc2013.Ops;
 
@@ -13,16 +14,20 @@ namespace Icfpc2013
 
         // TODO: Change order valid operations
         private readonly List<Node> ValidNodes;
+        private readonly List<Node> ValidNodesFold;
+        private readonly List<Node> ValidNodesWithNoFold;
 
         #endregion
 
         #region Constructors and Destructors
 
-        public FTreeGenerator(List<Node> validNodes, int maxDepth)
+        public FTreeGenerator(List<Node> validNodes, List<Node> validNodesFold, int maxDepth)
         {
             Console.WriteLine("Using FTreeGenerator!");
             ValidNodes = validNodes;
+            ValidNodesFold = validNodesFold;
             MaxDepth = maxDepth;
+            ValidNodesWithNoFold = ValidNodes.Where(s => !(s is NodeFold)).ToList();
         }
 
         #endregion
@@ -38,7 +43,7 @@ namespace Icfpc2013
         {
             foreach (var node in ValidNodes)
             {
-                foreach (var subtree in GetNLevelTree(node, MaxDepth))
+                foreach (var subtree in GetNLevelTree(node, MaxDepth, ValidNodes))
                 {
                     yield return subtree;
                 }
@@ -49,8 +54,13 @@ namespace Icfpc2013
 
         #region Methods
 
-        public IEnumerable<Node> GetNLevelTree(Node root, int depth)
+        public IEnumerable<Node> GetNLevelTree(Node root, int depth, List<Node> activeNodes = null)
         {
+            if (activeNodes == null)
+            {
+                activeNodes = ValidNodes;
+            }
+
             // TODO: remove
             /*
             if (depth > MaxDepth)
@@ -76,9 +86,9 @@ namespace Icfpc2013
             {
                 if (depth > 1)
                 {
-                    foreach (var node in ValidNodes)
+                    foreach (var node in activeNodes)
                     {
-                        var subtrees = GetNLevelTree(node, depth - 1);
+                        var subtrees = GetNLevelTree(node, depth - 1, activeNodes);
                         foreach (var subtree in subtrees)
                         {
                             var newRoot = root.Clone();
@@ -93,15 +103,17 @@ namespace Icfpc2013
             {
                 if (depth > 2)
                 {
-                    foreach (var node1 in ValidNodes)
+                    foreach (var node1 in activeNodes)
                     {
-                        foreach (var subtree1 in GetNLevelTree(node1, depth - 2))
+                        foreach (var subtree1 in GetNLevelTree(node1, depth - 2, activeNodes))
                         {
-                            foreach (var node2 in ValidNodes)
+                            var subtree1Size = (int)subtree1.Size();
+
+                            foreach (var node2 in activeNodes)
                             {
-                                foreach (var subtree2 in GetNLevelTree(node2, depth - 2))
+                                foreach (var subtree2 in GetNLevelTree(node2, depth - 1 - subtree1Size, activeNodes))
                                 {
-                                    if (subtree1.Size() + subtree2.Size() <= depth - 1)
+                                    if (subtree1Size + subtree2.Size() <= depth - 1)
                                     {
                                         var newRoot = root.Clone();
                                         (newRoot as NodeOp2).Node0 = subtree1;
@@ -119,19 +131,21 @@ namespace Icfpc2013
             {
                 if (depth > 3)
                 {
-                    foreach (var node1 in ValidNodes)
+                    foreach (var node1 in activeNodes)
                     {
-                        foreach (var subtree1 in GetNLevelTree(node1, depth - 3))
+                        foreach (var subtree1 in GetNLevelTree(node1, depth - 3, activeNodes))
                         {
-                            foreach (var node2 in ValidNodes)
+                            var subtree1Size = (int)subtree1.Size();
+                            foreach (var node2 in activeNodes)
                             {
-                                foreach (var subtree2 in GetNLevelTree(node2, depth - 3))
+                                foreach (var subtree2 in GetNLevelTree(node2, depth - 2 - subtree1Size, activeNodes))
                                 {
-                                    foreach (var node3 in ValidNodes)
+                                    var subtree2Size = (int)subtree2.Size();
+                                    foreach (var node3 in activeNodes)
                                     {
-                                        foreach (var subtree3 in GetNLevelTree(node3, depth - 3))
+                                        foreach (var subtree3 in GetNLevelTree(node3, depth - 1 - subtree1Size - subtree2Size, activeNodes))
                                         {
-                                            if (subtree1.Size() + subtree2.Size() + subtree3.Size() <= depth - 1)
+                                            if (subtree1Size + subtree2Size + subtree3.Size() <= depth - 1)
                                             {
                                                 var newRoot = root.Clone();
                                                 (newRoot as NodeOp3).Node0 = subtree1;
@@ -148,6 +162,49 @@ namespace Icfpc2013
                 }
                 yield break;
             }
+            else if (root is NodeFold)
+            {
+                if (depth > 3)
+                {
+                    foreach (var node1 in ValidNodesWithNoFold)
+                    {
+                        foreach (var subtree1 in GetNLevelTree(node1, depth - 3, ValidNodesWithNoFold))
+                        {
+                            var subtree1Size = (int)subtree1.Size();
+                            foreach (var node2 in ValidNodesWithNoFold)
+                            {
+                                foreach (var subtree2 in GetNLevelTree(node2, depth - 2 - subtree1Size, ValidNodesWithNoFold))
+                                {
+                                    var subtree2Size = (int)subtree2.Size();
+                                    foreach (var node3 in ValidNodesFold)
+                                    {
+                                        foreach (var subtree3 in GetNLevelTree(node3, depth - 1 - subtree1Size - subtree2Size, ValidNodesFold))
+                                        {
+                                            if (subtree1.Size() + subtree2.Size() + subtree3.Size() + 1 <= depth - 1)
+                                            {
+                                                var newRoot = root.Clone();
+                                                (newRoot as NodeFold).Node0 = subtree1;
+                                                (newRoot as NodeFold).Node1 = subtree2;
+
+                                                var lambda = (newRoot as NodeFold).Node2;
+                                                if (lambda == null)
+                                                {
+                                                    lambda = new Lambda2 { Id0 = new NodeId { Name = "x1" }, Id1 = new NodeId { Name = "x2" } };
+                                                    (newRoot as NodeFold).Node2 = lambda;
+                                                }
+                                                lambda.Node0 = subtree3;
+                                                yield return newRoot;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                yield break;
+            }
+
 
             //Console.WriteLine("Unknown node!");
             throw new Exception("unknown node");

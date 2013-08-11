@@ -87,15 +87,23 @@
             }
         }
 
-        static IEnumerable<Node> GenerateCorrectPrograms(List<Node> validNodes, int targetSize, CancellationToken token)
+        static IEnumerable<Node> GenerateCorrectPrograms(List<Node> validNodes, List<Node> validFoldNodes, int targetSize, Func<Node, bool> filter, CancellationToken token)
         {
 
 #if true
-            var builder = new PTreeGeneratorContainer(validNodes, targetSize);
+#if true
+            var builder = new PTreeGeneratorContainer(validNodes, validFoldNodes, targetSize, filter);
             foreach (var root in builder.GenerateAllPrograms(token))
             {
                 yield return root;
             }
+#else
+            var builder = new FTreeGenerator(validNodes, validFoldNodes, targetSize);
+            foreach (var root in builder.GenerateAllPrograms())
+            {
+                yield return root;
+            }
+#endif
 #else
 
             int bfsSize = targetSize > 5 ? 5 : targetSize;
@@ -122,9 +130,15 @@
         {
             int programSize = judgesProgramSize - 1;
 
-            List<ArgNode> nodes = new List<ArgNode>();
+            var tfoldMode = (validOps & OpTypes.tfold) != OpTypes.none;
 
-            for (int i = 0; i < programSize; ++i)
+            List<ArgNode> nodes = new List<ArgNode>();
+            int size = programSize;
+            if (tfoldMode)
+            {
+                size = programSize - 4;
+            }
+            for (int i = 0; i < size; ++i)
             {
                 nodes.Add(new MetaArgNode { Name = string.Format("n{0}",i) });
             }
@@ -189,7 +203,55 @@
                 permitted[(int)OpCodes.If0] = true;
             }
 
-            List<ArgNode> res = SATGeneratation.Utils.SolveNodeArray(inputs, outputs, nodes, permitted);
+            if (tfoldMode)
+            {
+                permitted[(int)OpCodes.Input2] = true;
+            }
+
+            List<ArgNode> res = null;
+            if (tfoldMode)
+            {
+                ulong[] processedInputs = new ulong[inputs.Length];
+                for (int i = 0; i < inputs.Length; ++i)
+                {
+                    unchecked
+                    {
+                        processedInputs[i] = (inputs[i] & (ulong)0xFF00000000000000) >> 56;
+                    }
+                }
+
+                List<ArgNode> res1 = null;
+                List<ArgNode> res2 = null;
+
+                List<ArgNode> inputNodes2 = new List<ArgNode>();
+                for (int i = 0; i < size; ++i)
+                {
+                    inputNodes2.Add(new MetaArgNode { Name = string.Format("bn{0}", i) });
+                }
+
+                bool runSimplerAssumptionFirst = false;
+                if (runSimplerAssumptionFirst)
+                {
+                    Console.WriteLine("Running simpler assumption for tfold SAT");
+                    res1 = SATGeneratation.Utils.SolveNodeArray(processedInputs, outputs, inputNodes2, permitted);
+                }
+                if(!(res1 == null || res1[0].ComputedOpcode == OpCodes.Zero))
+                {
+                    res = res1;
+                }
+                else
+                {
+                    if(runSimplerAssumptionFirst)
+                    {
+                        Console.WriteLine("SAT Tfold simple assumption failed, running complex tree");
+                    }
+                    res = SATGeneratation.Utils.SolveTFoldArray(inputs, outputs, inputNodes2, permitted);
+                }
+            }
+            else
+            {                
+                res = SATGeneratation.Utils.SolveNodeArray(inputs, outputs, nodes, permitted);
+            }
             Console.Write("[Node array] And example output :::");
             for (int i = 0; i < res.Count; i++)
             {
@@ -198,7 +260,7 @@
             Console.Write("\n");
 
             int pos = 0;
-            var rootNode = BuildFromSat(res, ref pos);
+            var rootNode = BuildFromSat(res, ref pos, tfoldMode);
 
             if (res[0].ComputedOpcode == OpCodes.Zero)
             {
@@ -206,9 +268,14 @@
             }
             if (pos != res.Count)
             {
-                throw new Exception("pos != end");
+                //throw new Exception("pos != end");
             }
 
+            if (tfoldMode)
+            {
+                rootNode = new NodeFold { Node0 = new NodeId { Name = "x" }, Node1 = new Node0(), Node2 = new Lambda2 { Id0 = new NodeId { Name = "x1" }, Id1 = new NodeId { Name = "x2" }, Node0 = rootNode } };
+            }
+            
             var result = new ProgramTree { Program = new Lambda1 { Node0 = rootNode, Id0 = new NodeId { Name = "x" } } };
 
             Console.WriteLine("SAT: {0}", rootNode.Serialize());
@@ -231,7 +298,7 @@
                 return result.Program;
         }
 
-        public static Node BuildFromSat(List<ArgNode> solution, ref int index)
+        public static Node BuildFromSat(List<ArgNode> solution, ref int index, bool tfoldMode)
         {
             var arg = solution[index++];
             Node node1;
@@ -246,49 +313,51 @@
                     return new Node1();
                     break;
                 case OpCodes.Input:
-                    return new NodeId() {Name = "x"};
+                    return new NodeId() {Name = tfoldMode ? "x1" : "x"};
                     break;
+                case OpCodes.Input2:
+                    return new NodeId() { Name = "x2" };
                 case OpCodes.And:
-                    node1 = BuildFromSat(solution, ref index);
-                    node2 = BuildFromSat(solution, ref index);
+                    node1 = BuildFromSat(solution, ref index, tfoldMode);
+                    node2 = BuildFromSat(solution, ref index, tfoldMode);
                     return new NodeOp2And{Node0 = node1, Node1 = node2};
                     break;
                 case OpCodes.Or:
-                    node1 = BuildFromSat(solution, ref index);
-                    node2 = BuildFromSat(solution, ref index);
+                    node1 = BuildFromSat(solution, ref index, tfoldMode);
+                    node2 = BuildFromSat(solution, ref index, tfoldMode);
                     return new NodeOp2Or{Node0 = node1, Node1 = node2};
                     break;
                 case OpCodes.Xor:
-                    node1 = BuildFromSat(solution, ref index);
-                    node2 = BuildFromSat(solution, ref index);
+                    node1 = BuildFromSat(solution, ref index, tfoldMode);
+                    node2 = BuildFromSat(solution, ref index, tfoldMode);
                     return new NodeOp2Xor{Node0 = node1, Node1 = node2};
                     break;
                 case OpCodes.Plus:
-                    node1 = BuildFromSat(solution, ref index);
-                    node2 = BuildFromSat(solution, ref index);
+                    node1 = BuildFromSat(solution, ref index, tfoldMode);
+                    node2 = BuildFromSat(solution, ref index, tfoldMode);
                     return new NodeOp2Plus{Node0 = node1, Node1 = node2};
                     break;
                 case OpCodes.Not:
-                    node1 = BuildFromSat(solution, ref index);
+                    node1 = BuildFromSat(solution, ref index, tfoldMode);
                     return new NodeOp1Not { Node0 = node1 };
                     break;
                 case OpCodes.Shl1:
-                    node1 = BuildFromSat(solution, ref index);
+                    node1 = BuildFromSat(solution, ref index, tfoldMode);
                     return new NodeOp1Shl1 { Node0 = node1 };
                     break;
                 case OpCodes.Shr1:
-                    node1 = BuildFromSat(solution, ref index);
+                    node1 = BuildFromSat(solution, ref index, tfoldMode);
                     return new NodeOp1Shr1 { Node0 = node1 };
                 case OpCodes.Shr4:
-                    node1 = BuildFromSat(solution, ref index);
+                    node1 = BuildFromSat(solution, ref index, tfoldMode);
                     return new NodeOp1Shr4 { Node0 = node1 };
                 case OpCodes.Shr16:
-                    node1 = BuildFromSat(solution, ref index);
+                    node1 = BuildFromSat(solution, ref index, tfoldMode);
                     return new NodeOp1Shr16 { Node0 = node1 };
                 case OpCodes.If0:
-                    node1 = BuildFromSat(solution, ref index);
-                    node2 = BuildFromSat(solution, ref index);
-                    node3 = BuildFromSat(solution, ref index);
+                    node1 = BuildFromSat(solution, ref index, tfoldMode);
+                    node2 = BuildFromSat(solution, ref index, tfoldMode);
+                    node3 = BuildFromSat(solution, ref index, tfoldMode);
                     return new NodeIf0() { Node0 = node1, Node1 = node2, Node2 = node3 };
                     break;
                 default:
@@ -312,23 +381,68 @@
 
             CancellationTokenSource cts = new CancellationTokenSource();
 
+            List<Node> validNodes;
+            List<Node> validFoldNodes;
+            ProgramTree.GetAvailableNodes(validOps, tfoldMode, out validNodes, out validFoldNodes);
+
             IEnumerable<Node> solutions = null;
-            if (bonus1Mode)
-            {
-                var slv = new Bonus1Solver(inputs, outputs, judgesProgramSize, ProgramTree.GetAvailableNodes(validOps, false));
-                solutions = slv.Solve();
-            }
-            else
-            {
-                var slv = new AStarSolver(inputs, outputs, judgesProgramSize, ProgramTree.GetAvailableNodes(validOps, tfoldMode));
-                solutions = slv.Solve();
-            }
 
-            
+            Func<Node, bool> filter = (node) =>
+                {
+                    if (node.Size() != programSize)
+                    {
+                        return false;
+                    }
 
-            foreach (var root in solutions)
+                    var filterSolution = node;
+
+                    if (tfoldMode)
+                    {
+                        filterSolution = new NodeFold { Node0 = new NodeId { Name = "x" }, Node1 = new Node0(), Node2 = new Lambda2 { Id0 = new NodeId { Name = "x1" }, Id1 = new NodeId { Name = "x2" }, Node0 = node } };
+                    }
+
+                    bool filterValid = true;
+                    for (int i = 0; i < inputs.Length; ++i)
+                    {
+                        var ctx = new ExecContext();
+                        ctx.Vars["x"] = inputs[i];
+                        var output = filterSolution.Eval(ctx);
+                        if (output != outputs[i])
+                        {
+                            filterValid = false;
+                            break;
+                        }
+                    }
+
+                    if (filterValid)
+                    {
+                        var currentOps = OpTypes.none;
+                        filterSolution.Op(ref currentOps);
+
+                        if (tfoldMode)
+                        {
+                            currentOps &= ~OpTypes.fold;
+                            currentOps |= OpTypes.tfold;
+                        }
+
+                        if (currentOps == validOps)
+                        {
+                            return true;
+                        }
+                    }
+
+                    return false;
+
+                };
+
+            int index = 0;
+            foreach (var root in bonus1Mode ? new Bonus1Solver(inputs, outputs, judgesProgramSize, validNodes).Solve() : GenerateCorrectPrograms(validNodes, validFoldNodes, programSize, filter, cts.Token))
             {
-                //if (root.Size() == programSize)
+                //if (((++index) % 200000) == 0)
+                //{
+                //    Console.WriteLine("{0} {1}", root.Serialize(), root.Size());
+                //}
+
                 {
                     var solution = root;
 
@@ -397,19 +511,19 @@
                 var operators = task["operators"].Select(s => (string)s).ToArray();
                 var ops = ProgramTree.GetOpTypes(operators);
 
-                //if (solved.HasValue == false && size == 14 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none /* && Bits(ops) == 3*/)
-                if (solved.HasValue == false && size == 12)
-                //if (solved.HasValue == false && size < 14 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.tfold && Bits(ops) == 4)
-                //if (id == "DHFIBTGnJmvnArn3B5xx0i8x")
+                if (solved.HasValue == false && size == 16 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.tfold /* && Bits(ops) < 5*/)
+                //if (solved.HasValue == false && size < 15)
+                //if (solved.HasValue == false && size == 15 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none && Bits(ops) == 5)
+                //if (id == "Jb6H9d6n4E9QUCnBGdMwDfQx")
                 //if (solved.HasValue == true && solved.Value == false && size < 12)
                 {
                     Console.WriteLine("{0} {1} {2}", id, size, ops);
 
-                    //if (Solve(id, size, operators, false))
-                    //{
-                    //    ++cntSolved;
-                    //}
-                    //Thread.Sleep(20000);
+                    if (Solve(id, size, operators, false))
+                    {
+                        ++cntSolved;
+                    }
+                    Thread.Sleep(20000);
 
                     ++cnt;
                 }
@@ -518,52 +632,43 @@
 
             var ops = ProgramTree.GetOpTypes(operators);
 
+            var startTime = DateTime.Now;
+
             var solution = Solve(judgesProgramSize, ops, inputs, outputs);
+
             var finalResult = solution != null ? solution.Serialize() : "NO RESULT";
 
-            Console.WriteLine(finalResult);
+            Console.WriteLine("Result: {0}, execution time: {1}", finalResult, DateTime.Now - startTime);
         }
 
         public static void SolveSatOffline()
         {
-            const int judgesProgramSize = 8;
+            const int judgesProgramSize = 13;
 
-            var programId = "A9B9ZTcETn4hWT3Bx5sLk6Jv";
-            //var operators = new[] { "and", "if0", "plus", "shr1", "shr16", "shr4" };
-            var operators = new[] { "and",
-        "if0",
-        "plus",
-        "shl1",
-        "shr1",
-        "shr16",
-        "shr4" };
+            var programId = "6nE6n1FvE1QtnmOeriZCqv6O";
+            var operators = new[] { "if0", "shr1", "shr4", "shr16", "plus" };
 
             // Solution: (lambda (x) (xor x (xor x (plus x x))))
-
-            //ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x707708E25622A01C, 0x2ED773588336EF20, 0x4BAE5BB138FCF580, 0xEC3738AD9C394E2C, 0x1DC06F4ED6CBF8D0, 0x4AE3EBE3AF6ECFBE };
-            //ulong[] outputs = { 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x1DC06F4ED6CBF8D1, 0x0000000000000001 };
-            ulong[] inputs = { 0xFFFFFFFFFFFFFFFF };
-            ulong[] outputs = { 0x3FFFFFFFFFFFFFFE };
-
-            int reducesInputCount = 5;
-            inputs = inputs.Take(reducesInputCount).ToArray();
-            outputs = outputs.Take(reducesInputCount).ToArray();
+            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x097E6E055D07F036, 0xA30604E66793F909, 0x000000000001F8EC, 0x000000000003F4C2 };
+            ulong[] outputs = { 0x0000000000000000, 0x00FFFFFFFFFFFFFF, 0x00097E6E055D07F0, 0x00A30604E66793F9, 0x0000000000000218, 0x00000000000003F4 };
 
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
 
             var ops = ProgramTree.GetOpTypes(operators);
 
-
+            var startTime = DateTime.Now;
+            //TreeStructure.UseFwLinks = false;
             var solution = SolveSat(judgesProgramSize, ops, inputs, outputs);
+
             var finalResult = solution != null ? solution.Serialize() : "NO RESULT";
 
-            Console.WriteLine(finalResult);
+            Console.WriteLine("Result: {0}, execution time: {1}", finalResult, DateTime.Now - startTime);
         }
 
         public static bool SolveTrainingProgram(bool useSat)
         {
-            int judgesProgramSize = 13;
+            int judgesProgramSize = 10;
             var options = new[] { "tfold" };
             //options = new string[0];
             var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, options));
@@ -581,7 +686,7 @@
 
         private static void Main(string[] args)
         {
-            //SolveTrainingProgram(false);
+            //SolveTrainingProgram(true);
             //SolveMyProblems();
             SolveOffline();
             //SolveSatOffline();
@@ -627,8 +732,6 @@
 
             try
             {
-
-
                 if (useSat)
                 {
                     try

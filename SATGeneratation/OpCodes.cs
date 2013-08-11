@@ -20,6 +20,7 @@ namespace SATGeneratation
         Shr1 = 9,
         Shr4 = 10,
         Shr16 = 11,
-        If0 = 12
+        If0 = 12,
+        Input2 = 13
     }
 }

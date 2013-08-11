@@ -22,7 +22,7 @@ namespace SATGeneratation
             return ctx.MkAnd(andExpressions.ToArray());
         }
 
-        public BoolExpr GenerateConstraints(Context ctx, Solver solver, BitVecExpr prInput, BitVecExpr prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
+        public BoolExpr GenerateConstraints(Context ctx, Solver solver, BitVecExpr prInput, BitVecExpr prInput2, BitVecExpr prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
         {
             List<BoolExpr> andExpressions = new List<BoolExpr>();
             BitVecExpr arg0Output = ctx.MkBVConst(Name + "_bva0_", 64);
@@ -75,9 +75,9 @@ namespace SATGeneratation
             return ctx.MkAnd(andExpressions.ToArray());
         }
 
-        public override void AddConstraints(Context ctx, Solver solver, BitVecExpr prInput, BitVecExpr prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
+        public override void AddConstraints(Context ctx, Solver solver, BitVecExpr prInput, BitVecExpr prInput2, BitVecExpr prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
         {
-            solver.Assert(GenerateConstraints(ctx, solver, prInput, prOutput, permitted, nodes, curNodeIndex, tree));
+            solver.Assert(GenerateConstraints(ctx, solver, prInput, prInput2, prOutput, permitted, nodes, curNodeIndex, tree));
         }
 
         public override ArgNode[] GetChildren()

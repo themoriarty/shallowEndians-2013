@@ -13,7 +13,7 @@ namespace SATGeneratation
         public ArgNode Arg1;
         public ArgNode Arg2;
 
-        public BoolExpr GenerateConstraints(Context ctx, Solver solver, BitVecExpr prInput, BitVecExpr prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
+        public BoolExpr GenerateConstraints(Context ctx, Solver solver, BitVecExpr prInput, BitVecExpr prInput2, BitVecExpr prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
         {
             List<BoolExpr> andClauses = new List<BoolExpr>();
             BitVecExpr arg0Output = ctx.MkBVConst(Name + "_bva0_", 64);
@@ -39,7 +39,7 @@ namespace SATGeneratation
                 {
                     var selNode = ctx.MkSelect(tree.ReverseLink, ctx.MkInt(i));
                     var eqCheck = ctx.MkEq(selNode, ctx.MkInt(curNodeIndex));
-                    var selPin = ctx.MkSelect(tree.PinLink, ctx.MkInt(i));
+                    var selPin = tree.PinLink[i];
                     var pinCheck = ctx.MkEq(selPin, ctx.MkInt(1));
 
                     orClauses.Add(ctx.MkAnd(pinCheck, eqCheck, ctx.MkEq(arg1Output, nodes[i].Output)));
@@ -72,7 +72,7 @@ namespace SATGeneratation
                 {
                     var selNode = ctx.MkSelect(tree.ReverseLink, ctx.MkInt(i));
                     var eqCheck = ctx.MkEq(selNode, ctx.MkInt(curNodeIndex));
-                    var selPin = ctx.MkSelect(tree.PinLink, ctx.MkInt(i));
+                    var selPin = tree.PinLink[i];
                     var pinCheck = ctx.MkEq(selPin, ctx.MkInt(2));
 
                     orClauses.Add(ctx.MkAnd(pinCheck, eqCheck, ctx.MkEq(arg2Output, nodes[i].Output)));
@@ -110,9 +110,9 @@ namespace SATGeneratation
             return ctx.MkAnd(andClauses.ToArray());
         }
 
-        public override void AddConstraints(Context ctx, Solver solver, BitVecExpr prInput, BitVecExpr prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
+        public override void AddConstraints(Context ctx, Solver solver, BitVecExpr prInput, BitVecExpr prInput2, BitVecExpr prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
         {
-            solver.Assert(GenerateConstraints(ctx, solver, prInput, prOutput, permitted, nodes, curNodeIndex, tree));
+            solver.Assert(GenerateConstraints(ctx, solver, prInput, prInput2, prOutput, permitted, nodes, curNodeIndex, tree));
         }
 
         public override ArgNode[] GetChildren()
