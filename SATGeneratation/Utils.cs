@@ -46,6 +46,7 @@ namespace SATGeneratation
             {
                 var ret = new MetaArgNode();
                 ret.Initialize(ctx, root.Name + nameSuffix);
+                ret.OpCode = root.OpCode;
                 return ret;
             }
 
@@ -224,6 +225,10 @@ namespace SATGeneratation
             solv.Assert(ctx.MkOr(expressions.ToArray()));
         }
 
+
+        public static int nodeName = 0;
+
+
         public static List<ArgNode> SolveNodeArray(ulong[] inputs, ulong[] outputs, List<ArgNode> nodes, bool[] permitted)
         {
             if (inputs.Length == 0 || inputs.Length != outputs.Length)
@@ -239,6 +244,10 @@ namespace SATGeneratation
                 TreeStructure tree = new TreeStructure(ctx, "progtree", nodes.Count);
                 s.Assert(tree.GetTreeLevelConstrains(ctx));
 
+                for (int i = 0; i < nodes.Count; ++i)
+                {
+                    nodes[i].Initialize(ctx, "x" + (nodeName++).ToString());
+                }
 
                 for (int i = 0; i < inputs.Length; ++i)
                 {
@@ -317,6 +326,11 @@ namespace SATGeneratation
                 List<ArgNode>[] results = new List<ArgNode>[inputs.Length*8];
                 TreeStructure tree = new TreeStructure(ctx, "progtree", nodes.Count);
                 s.Assert(tree.GetTreeLevelConstrains(ctx));
+
+                for (int i = 0; i < nodes.Count; ++i)
+                {
+                    nodes[i].Initialize(ctx, "x" + (nodeName++).ToString());
+                }
 
 
                 for (int i = 0; i < results.Length; i += 8)

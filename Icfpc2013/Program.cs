@@ -471,9 +471,9 @@
 
         public static bool SolveTrainingProgram(bool useSat)
         {
-            int judgesProgramSize = 11;
+            int judgesProgramSize = 20;
             var options = new[] { "tfold" };
-            //options = new string[0];
+            options = new string[0];
             var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, options));
             var programId = training.id;
             Console.WriteLine("Challenge: {0}", string.Join(", ", training.challenge));
