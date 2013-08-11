@@ -16,7 +16,7 @@
 
         public override string Serialize()
         {
-            return string.Format("(or {0} {1})", this.Node0.Serialize(), this.Node1.Serialize());
+            return string.Format("(or {0} {1})", this.Node0 == null ? "NULL" : this.Node0.Serialize(), this.Node1 == null ? "NULL" : this.Node1.Serialize());
         }
 
         public override string ToString(int indentLevel)

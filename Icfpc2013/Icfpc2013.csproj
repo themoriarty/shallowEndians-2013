@@ -59,6 +59,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -78,6 +79,7 @@
     <Compile Include="API\TrainingProblem.cs" />
     <Compile Include="API\TrainRequest.cs" />
     <Compile Include="API\Utils.cs" />
+    <Compile Include="AStarSolver.cs" />
     <Compile Include="Compiler.cs" />
     <Compile Include="DynamicTree.cs" />
     <Compile Include="FTreeGenerator.cs" />
