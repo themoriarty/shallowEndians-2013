@@ -401,6 +401,7 @@
             var todo = JArray.Parse(File.ReadAllText(@"..\..\..\..\myproblems.json"));
 
             int cnt = 0;
+            int cntSolved = 0;
             foreach (var task in todo)
             {
                 var solved = (bool?)task["solved"];
@@ -409,19 +410,22 @@
                 var operators = task["operators"].Select(s => (string)s).ToArray();
                 var ops = ProgramTree.GetOpTypes(operators);
 
-                if (solved.HasValue == false && size == 11 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none /* && Bits(ops) == 3*/)
-                //if (solved.HasValue == false && size < 16 && ((ops & (OpTypes.fold | OpTypes.bonus)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none)
+                if (solved.HasValue == false && size == 12 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none /* && Bits(ops) == 3*/)
+                //if (solved.HasValue == true && solved.Value == false && size < 12)
                 {
                     Console.WriteLine("{0} {1} {2}", id, size, ops);
 
-                    Solve(id, size, operators, true);
+                    if (Solve(id, size, operators, true))
+                    {
+                        ++cntSolved;
+                    }
                     Thread.Sleep(20000);
 
                     ++cnt;
                 }
             }
 
-            Console.WriteLine("cnt={0}", cnt);
+            Console.WriteLine("cnt={0} cntSolved={1}", cnt, cntSolved);
         }
 
         public static void SolveOffline()
