@@ -343,6 +343,11 @@
 
             Func<Node, bool> filter = (node) =>
                 {
+                    if (node.Size() != programSize)
+                    {
+                        return false;
+                    }
+
                     var filterSolution = node;
 
                     if (tfoldMode)
@@ -461,19 +466,19 @@
                 var operators = task["operators"].Select(s => (string)s).ToArray();
                 var ops = ProgramTree.GetOpTypes(operators);
 
-                //if (solved.HasValue == false && size == 13 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.fold) && (ops & OpTypes.tfold) == OpTypes.none /* && Bits(ops) < 5*/)
-                if (solved.HasValue == false && size < 15)
+                if (solved.HasValue == false && size == 16 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.tfold /* && Bits(ops) < 5*/)
+                //if (solved.HasValue == false && size < 15)
                 //if (solved.HasValue == false && size == 15 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none && Bits(ops) == 5)
                 //if (id == "Jb6H9d6n4E9QUCnBGdMwDfQx")
                 //if (solved.HasValue == true && solved.Value == false && size < 12)
                 {
                     Console.WriteLine("{0} {1} {2}", id, size, ops);
 
-                    //if (Solve(id, size, operators, false))
-                    //{
-                    //    ++cntSolved;
-                    //}
-                    //Thread.Sleep(20000);
+                    if (Solve(id, size, operators, false))
+                    {
+                        ++cntSolved;
+                    }
+                    Thread.Sleep(20000);
 
                     ++cnt;
                 }
@@ -536,7 +541,7 @@
 
         public static bool SolveTrainingProgram(bool useSat)
         {
-            int judgesProgramSize = 15;
+            int judgesProgramSize = 16;
             var options = new[] { "tfold" };
             //options = new string[0];
             var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, options));
