@@ -47,15 +47,17 @@ namespace SatSolverRunner
             {
                 throw new Exception("There were " + ins.Length + " inputs and " + outs.Length + " outputs provided");
             }
+            int size = Math.Max(4, ins.Length);
+            inputs = new ulong[size];
+            outputs = new ulong[size];
 
-            inputs = new ulong[ins.Length];
-            outputs = new ulong[outs.Length];
-
-            for (int i = 0; i < ins.Length; ++i)
+            for (int i = 0; i < size; ++i)
             {
                 inputs[i] = ulong.Parse(ins[i].Substring(2), System.Globalization.NumberStyles.HexNumber);
                 outputs[i] = ulong.Parse(outs[i].Substring(2), System.Globalization.NumberStyles.HexNumber);
             }
+
+
         }
 
         static void Main(string[] args)
@@ -102,6 +104,13 @@ namespace SatSolverRunner
                 if (res != null)
                 {
                     commStream.Write("SOLUTION:" + finalResult + "\n");
+                    commStream.Flush();
+                }
+                else
+                {
+                    commStream.Write("SOLUTION:\n");
+                    commStream.Flush();
+                    break;
                 }
 
                 string line = GetNextLine();
