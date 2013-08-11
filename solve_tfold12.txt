@@ -1,0 +1,199 @@
+2TLDWE0hWMwLbBioB6CWvCYo 11 tfold, shr1, or, xor
+ProgramId: 2TLDWE0hWMwLbBioB6CWvCYo
+Training: or, shr1, tfold, xor
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xD8E4755D6F460C1A, 0xC8DB19F5D56567AD, 0x0085F8373B347C2B, 0x0DB3935300645EEC, 0x0F6C74CF75
+29404A, 0x4BEB041E4DC2BEF4}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0x00000000000000FF, 0x00000000000000D9, 0x00000000000000FB, 0x00000000000000BD, 0x00000000000000FD, 0x000000000
+00000EF, 0x00000000000000CF}
+Using BFS!
+Using FTreeGenerator!
+* computation completed in 0
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (or x1 (xor x2 (shr1 x1))))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+3sRpsiYGJqMb0AKjnlDxTbPy 11 tfold, shl1, xor
+ProgramId: 3sRpsiYGJqMb0AKjnlDxTbPy
+Training: shl1, tfold, xor
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x216AB546A8FE98B5, 0x1A84E410FE824686, 0xB7F866EFB48B57B4, 0xE7E1383679462410, 0x94C60A94BB
+4B1973, 0x10FF6DF188EE07D6}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0x0000000000000000, 0x0000000000000145, 0x000000000000017A, 0x000000000000002E, 0x0000000000000005, 0x000000000
+00000FA, 0x000000000000014C}
+Using BFS!
+Using FTreeGenerator!
+* computation completed in 0
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (xor x1 (xor x2 (shl1 x1))))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+46QsaTY2KQg23IogprnAoau6 12 tfold, shl1, shr16, or, plus
+ProgramId: 46QsaTY2KQg23IogprnAoau6
+Training: or, plus, shl1, shr16, tfold
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x4E5B3679C799A739, 0x4EEBF16E2198469F, 0xA986C998F78B9A65, 0xA2C57077E8DDF691, 0x3C6E1A9F8F
+3F3625, 0xE526A4724D1CFCBD}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0x0000000000007FFF, 0x0000000000003FFE, 0x0000000000005FFE, 0x0000000000003FFD, 0x0000000000007FFA, 0x000000000
+0001FFC, 0x0000000000007FFD}
+Using BFS!
+Using FTreeGenerator!
+* computation completed in 0
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (or x1 (shl1 (plus x2 (shr16 x1)))))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+6x9yYSmElORo8bWIm0bu0KRt 12 tfold, shr1, shr16, xor
+ProgramId: 6x9yYSmElORo8bWIm0bu0KRt
+Training: shr1, shr16, tfold, xor
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x707708E25622A01C, 0x2ED773588336EF20, 0x4BAE5BB138FCF580, 0xEC3738AD9C394E2C, 0x1DC06F4ED6
+CBF8D0, 0x4AE3EBE3AF6ECFBE}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0x0000000000000000, 0x0000000000000012, 0x0000000000000054, 0x000000000000005F, 0x0000000000000044, 0x000000000
+0000064, 0x0000000000000008}
+Using BFS!
+Using FTreeGenerator!
+* computation completed in 0
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (xor x2 (shr1 (xor x1 (shr16 x1)))))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+7tNOYdLuCAswMSlKxUjyvALg 11 tfold, shr4, plus
+ProgramId: 7tNOYdLuCAswMSlKxUjyvALg
+Training: plus, shr4, tfold
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xC033EDA87DCCED24, 0xE8C2DBCE9329D7F2, 0x11E001A860B349B8, 0x4167FEEDE279DF34, 0xE243B96BBF
+77EF6B, 0xE34E2D4576E40AC4}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0x0000000000000870, 0x000000000000052C, 0x0000000000000632, 0x00000000000003E7, 0x000000000000054D, 0x000000000
+0000522, 0x0000000000000404}
+Using BFS!
+Using FTreeGenerator!
+* computation completed in 0
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (plus x1 (plus x2 (shr4 x1))))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+8JanhX26RZKVQf9SKow3j4p5 12 if0, tfold, not, shl1, shr1
+ProgramId: 8JanhX26RZKVQf9SKow3j4p5
+Training: if0, not, shl1, shr1, tfold
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x23A282379AF7850C, 0xF3D35174C949BB0D, 0xFE7C0264DF27E86F, 0x06CC691C9D9CD006, 0xE809CD0767
+D69590, 0x736D7A70B0B2534C}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0xFFFFFFFFFFFFFFFF, 0x00000000000000FF, 0x0000000000000023, 0x00000000000000F3, 0x00000000000000FE, 0x0000000000000006, 0x000000000
+00000E8, 0x0000000000000073}
+Using BFS!
+Using FTreeGenerator!
+* computation completed in 0
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (if0 x1 (not x1) (shr1 (shl1 x1))))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: mismatch  0x0100000000000000, 0xFFFFFFFFFFFFFFFF, 0x0000000000000001
+
+
+8ThODBEcPljv49Zu0HCAFTmi 11 tfold, not, shl1, shr4, xor
+ProgramId: 8ThODBEcPljv49Zu0HCAFTmi
+Training: not, shl1, shr4, tfold, xor
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xD8E4755D6F460C1A, 0xC8DB19F5D56567AD, 0x0085F8373B347C2B, 0x0DB3935300645EEC, 0x0F6C74CF75
+29404A, 0x4BEB041E4DC2BEF4, 0x216AB546A8FE98B5, 0x1A84E410FE824686}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFE0, 0xFFFFFFFFFFFFFFE4, 0xFFFFFFFFFFFFFFE6, 0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFF
+FFFFFFE, 0xFFFFFFFFFFFFFFF6, 0xFFFFFFFFFFFFFFFA, 0xFFFFFFFFFFFFFFFC}
+Using BFS!
+Using FTreeGenerator!
+* computation completed in 0
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (not (xor 1 (shl1 (shr4 x1)))))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+8nlIynoGACTkaoKlyRvy3ScK 11 tfold, not, shl1, shr4, xor
+ProgramId: 8nlIynoGACTkaoKlyRvy3ScK
+Training: not, shl1, shr4, tfold, xor
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xB7F866EFB48B57B4, 0xE7E1383679462410, 0x94C60A94BB4B1973, 0x10FF6DF188EE07D6, 0x4E5B3679C7
+99A739, 0x4EEBF16E2198469F, 0xA986C998F78B9A65, 0xA2C57077E8DDF691}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFF01, 0xFFFFFFFFFFFFFF49, 0xFFFFFFFFFFFFFF19, 0xFFFFFFFFFFFFFF6A, 0xFFFFFFFFFFFFFFEE, 0xFFFFFFFFF
+FFFFFB0, 0xFFFFFFFFFFFFFFB0, 0xFFFFFFFFFFFFFF57, 0xFFFFFFFFFFFFFF5C}
+Using BFS!
+Using FTreeGenerator!
+* computation completed in 0
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (xor x1 (shl1 (not (shr4 0)))))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+AKb8ZvBlSV5rlCt3PL63XTGV 12 if0, tfold, shl1, or
+ProgramId: AKb8ZvBlSV5rlCt3PL63XTGV
+Training: if0, or, shl1, tfold
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x3C6E1A9F8F3F3625, 0xE526A4724D1CFCBD, 0x707708E25622A01C, 0x2ED773588336EF20, 0x4BAE5BB138
+FCF580, 0xEC3738AD9C394E2C, 0x1DC06F4ED6CBF8D0, 0x4AE3EBE3AF6ECFBE}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0x00000000000000FF, 0x000000000000003C, 0x00000000000000E5, 0x0000000000000070, 0x000000000000002E, 0x000000000
+000004B, 0x00000000000000EC, 0x000000000000001D, 0x000000000000004A}
+Using BFS!
+Using FTreeGenerator!
+* computation completed in 0
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (or x1 (shl1 (if0 x1 x1 0))))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+APBjYuSfBaCFWD5Zqzs6KMG1 12 tfold, shr1, shr16, xor, plus
+ProgramId: APBjYuSfBaCFWD5Zqzs6KMG1
+Training: plus, shr1, shr16, tfold, xor
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xC033EDA87DCCED24, 0xE8C2DBCE9329D7F2, 0x11E001A860B349B8, 0x4167FEEDE279DF34, 0xE243B96BBF
+77EF6B, 0xE34E2D4576E40AC4, 0x23A282379AF7850C, 0xF3D35174C949BB0D}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000001, 0x00000000000000FE, 0x00000000000000C1, 0x00000000000000E9, 0x0000000000000010, 0x0000000000000040, 0x000000000
+00000E3, 0x00000000000000E2, 0x0000000000000022, 0x00000000000000F2}
+Using BFS!
+Using FTreeGenerator!
+* computation completed in 0
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (xor x1 (plus 1 (shr1 (shr16 x1)))))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+Aaeku9XEXlB90zxkxCsr4scL 11 tfold, shr16, or, xor
+ProgramId: Aaeku9XEXlB90zxkxCsr4scL
+Training: or, shr16, tfold, xor
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xFE7C0264DF27E86F, 0x06CC691C9D9CD006, 0xE809CD0767D69590, 0x736D7A70B0B2534C, 0x097E6E055D
+07F036, 0xA30604E66793F909, 0xA2EC6C7ADE3842EF, 0x8B8DCC5011923FDE}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0x00000000000000FF, 0x00000000000000FE, 0x0000000000000006, 0x00000000000000E8, 0x0000000000000073, 0x000000000
+0000009, 0x00000000000000A3, 0x00000000000000A2, 0x000000000000008B}
+Using BFS!
+Using FTreeGenerator!
+* computation completed in 0
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (or x1 (shr16 (xor x1 x1))))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+AlBACWiykQSwTSFNGcTZXRQa 12 tfold, shl1, shr1, xor
+ProgramId: AlBACWiykQSwTSFNGcTZXRQa
+Training: shl1, shr1, tfold, xor
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x22006E622C672963, 0x4801A2390D5DCD16, 0xC9F88E422EC10F4C, 0x3CB96DDBC67E6503, 0x8041DA9DBD
+03076B, 0x3C68DE0EADC71541, 0xD4495F0A40C44A3D, 0xA9473AF0FC289D30}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0x0000000000000080, 0x0000000000000033, 0x000000000000006C, 0x00000000000000AD, 0x0000000000000022, 0x000000000
+00000C0, 0x0000000000000022, 0x00000000000000BE, 0x00000000000000FD}
+Using BFS!
+Using FTreeGenerator!
+* computation completed in 0
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (shr1 (shl1 (shr1 (xor x1 (shl1 x1))))))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+B97VQ61qGtJsK5Gox3Sch01t 11 tfold, not, shl1, or
+ProgramId: B97VQ61qGtJsK5Gox3Sch01t
+Training: not, or, shl1, tfold
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x72AA449E32A22113, 0x25BB4BC62CEC41CE, 0x0C3278A9908842FD, 0x079044B1008C2FBE, 0xF99D363CED
+991ECE, 0xE50D1C72C972529F, 0x9BFFB6B1ADFF03E1, 0x89C0AAB76F7396EE}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFE00, 0xFFFFFFFFFFFFFF5E, 0xFFFFFFFFFFFFFFF4, 0xFFFFFFFFFFFFFFE6, 0xFFFFFFFFFFFFFFF0, 0xFFFFFFFFF
+FFFFF3E, 0xFFFFFFFFFFFFFE36, 0xFFFFFFFFFFFFFFFA, 0xFFFFFFFFFFFFFFEC}
+Using BFS!
+Using FTreeGenerator!
+* computation completed in 0
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (or (not x2) (shl1 (not x1))))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+DHFIBTGnJmvnArn3B5xx0i8x 12 if0, tfold, shl1, xor
+ProgramId: DHFIBTGnJmvnArn3B5xx0i8x
+Training: if0, shl1, tfold, xor
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xC7E8CDB1A75EE5B1, 0xA199680556F18FA4, 0x1855E244AE1EA721, 0xF5412EC2A6FEFD1E, 0x143365BE8C
+18E891, 0x8695A9C52208381A, 0xCE45128B104DD1FC, 0x760442CEB4894690}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000001, 0x00000000000000FE, 0x00000000000000C6, 0x00000000000000A0, 0x0000000000000019, 0x00000000000000F4, 0x000000000
+0000015, 0x0000000000000087, 0x00000000000000CF, 0x0000000000000077}
+Using BFS!
+Using FTreeGenerator!
+* computation completed in 0
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (xor x1 (if0 x2 (shl1 1) 1)))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: mismatch  0x4001020100020202, 0x0000000000000001, 0x0000000000000041
+^CPress any key to continue . . .
