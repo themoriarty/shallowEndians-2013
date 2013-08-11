@@ -438,11 +438,12 @@
 
             var ops = ProgramTree.GetOpTypes(operators);
 
+            var startTime = DateTime.Now;
 
             var solution = SolveSat(judgesProgramSize, ops, inputs, outputs);
             var finalResult = solution != null ? solution.Serialize() : "NO RESULT";
 
-            Console.WriteLine(finalResult);
+            Console.WriteLine("Result: {0}, execution time: {1}", finalResult, DateTime.Now - startTime);
         }
 
         public static bool SolveTrainingProgram(bool useSat)
