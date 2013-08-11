@@ -447,31 +447,27 @@
 
         public static void SolveSatOffline()
         {
-            const int judgesProgramSize = 12;
+            const int judgesProgramSize = 15;
 
-            var programId = "pT0hM36gGHADqBPNOYK0hkkq";
-            var operators = new[] { "if0", "plus", "shr1", "shr16", "shr4" };
+            var programId = "6nE6n1FvE1QtnmOeriZCqv6O";
+            var operators = new[] { "if0", "not", "or", "plus", "shr16" };
 
             // Solution: (lambda (x) (xor x (xor x (plus x x))))
-
-            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x097E6E055D07F036, 0xA30604E66793F909, 0x000000000001F8EC };
-            ulong[] outputs = { 0x0000000000000000, 0x00FFFFFFFFFFFFFF, 0x00097E6E055D07F0, 0x00A30604E66793F9, 0x0000000000000218 };
+            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xD8E4755D6F460C1A, 0xC8DB19F5D56567AD };
+            ulong[] outputs = { 0x0000000000000000, 0x0000FFFFFFFFFFFD, 0xB1C8EABADE8C1834, 0x91B633EBAACACF5A };
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
 
             var ops = ProgramTree.GetOpTypes(operators);
 
-            Stopwatch sw = new Stopwatch();
-            TreeStructure.UseFwLinks = false;
-            sw.Start();
+            var startTime = DateTime.Now;
+            //TreeStructure.UseFwLinks = false;
             var solution = SolveSat(judgesProgramSize, ops, inputs, outputs);
-            sw.Stop();
 
-            Console.WriteLine("It took " + sw.ElapsedMilliseconds / 1000.0 + " sec\n\n");
 
             var finalResult = solution != null ? solution.Serialize() : "NO RESULT";
 
-            Console.WriteLine(finalResult);
+            Console.WriteLine("Result: {0}, execution time: {1}", finalResult, DateTime.Now - startTime);
         }
 
         public static bool SolveTrainingProgram(bool useSat)
