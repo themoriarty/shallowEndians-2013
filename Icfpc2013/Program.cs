@@ -420,12 +420,14 @@
 
         public static void SolveSatOffline()
         {
-            const int judgesProgramSize = 12;
+            const int judgesProgramSize = 15;
 
-            var programId = "A9B9ZTcETn4hWT3Bx5sLk6Jv";
-            var operators = new[] { "and", "if0", "plus", "shr1", "shr16", "shr4" };
+            var programId = "6nE6n1FvE1QtnmOeriZCqv6O";
+            var operators = new[] { "if0", "not", "or", "plus", "shr16" };
 
             // Solution: (lambda (x) (xor x (xor x (plus x x))))
+            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xD8E4755D6F460C1A, 0xC8DB19F5D56567AD };
+            ulong[] outputs = { 0x0000000000000000, 0x0000FFFFFFFFFFFD, 0xB1C8EABADE8C1834, 0x91B633EBAACACF5A };
 
             ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x707708E25622A01C, 0x2ED773588336EF20, 0x4BAE5BB138FCF580, 0xEC3738AD9C394E2C, 0x1DC06F4ED6CBF8D0, 0x4AE3EBE3AF6ECFBE };
             ulong[] outputs = { 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x1DC06F4ED6CBF8D1, 0x0000000000000001 };
