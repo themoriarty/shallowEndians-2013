@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace Icfpc2013
 {
+    using System.Threading;
+
     public class PTreeGeneratorContainer
     {
         #region Fields
@@ -37,14 +39,14 @@ namespace Icfpc2013
         // new NodeOp2Or(), new NodeOp2Plus(), new NodeOp2Xor()};
         #region Public Methods and Operators
 
-        public IEnumerable<Node> GenerateAllPrograms()
+        public IEnumerable<Node> GenerateAllPrograms(CancellationToken token)
         {
             var tasks = new Task[ValidNodes.Count];
 
             for (int i=0; i< ValidNodes.Count; i++)
             {
                 var node = ValidNodes[i];
-                tasks[i] = Task.Factory.StartNew(() => GetPartialResult(ValidNodes, node, MaxDepth));
+                tasks[i] = Task.Factory.StartNew(() => GetPartialResult(ValidNodes, node, MaxDepth, token));
             }
 
             do
@@ -73,12 +75,12 @@ namespace Icfpc2013
 
                     yield break;
                 }
-            } while (true == true);
+            } while (!token.IsCancellationRequested);
         }
 
         private ConcurrentQueue<Node> candidates = new ConcurrentQueue<Node>();
 
-        private void GetPartialResult(List<Node> validNodes, Node node, int maxDepth)
+        private void GetPartialResult(List<Node> validNodes, Node node, int maxDepth, CancellationToken token)
         {
             var ret = new List<Node>();
 
@@ -89,6 +91,11 @@ namespace Icfpc2013
                 lock (candidates)
                 {
                     candidates.Enqueue(subtree);
+                }
+
+                if (token.IsCancellationRequested)
+                {
+                    break;
                 }
             }
         }

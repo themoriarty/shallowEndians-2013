@@ -81,12 +81,9 @@ namespace Icfpc2013
                         var subtrees = GetNLevelTree(node, depth - 1);
                         foreach (var subtree in subtrees)
                         {
-                            if (subtree.Size() == depth - 1)
-                            {
-                                var newRoot = root.Clone();
-                                (newRoot as NodeOp1).Node0 = subtree;
-                                yield return newRoot;
-                            }
+                            var newRoot = root.Clone();
+                            (newRoot as NodeOp1).Node0 = subtree;
+                            yield return newRoot;
                         }
                     }
                 }
@@ -104,8 +101,7 @@ namespace Icfpc2013
                             {
                                 foreach (var subtree2 in GetNLevelTree(node2, depth - 2))
                                 {
-                                    //if (subtree1.Size() + subtree2.Size() <= depth - 1)
-                                    if (subtree1.Size() + subtree2.Size() == depth - 1)
+                                    if (subtree1.Size() + subtree2.Size() <= depth - 1)
                                     {
                                         var newRoot = root.Clone();
                                         (newRoot as NodeOp2).Node0 = subtree1;
