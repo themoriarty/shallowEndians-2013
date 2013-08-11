@@ -543,6 +543,7 @@
 
         private static void Throttle()
         {
+            Console.WriteLine("******************** {0} {1} {2}", DateTime.UtcNow, requestWindowStart, requestsInWindows);
             if (requestWindowStart == DateTime.MinValue || (DateTime.UtcNow - requestWindowStart).TotalSeconds >= 20)
             {
                 requestsInWindows = 0;
@@ -551,7 +552,7 @@
 
             ++requestsInWindows;
 
-            if (requestsInWindows > 4)
+            if (requestsInWindows > 3)
             {
                 var sleepMs = (int)(20000 - (DateTime.UtcNow - requestWindowStart).TotalSeconds);
                 Console.WriteLine("Throttling. Sleeping {0} seconds", sleepMs / 1000);
@@ -561,6 +562,8 @@
                 requestsInWindows = 0;
                 requestWindowStart = DateTime.UtcNow;
             }
+
+            Console.WriteLine("==================== {0} {1} {2}", DateTime.UtcNow, requestWindowStart, requestsInWindows);
         }
 
         private static Tuple<bool,bool, ulong, ulong> Checker(string programId, Node solution)
@@ -697,9 +700,42 @@
 
             var startTime = DateTime.Now;
 
-            SolverContinuationWrapper solver = new BfsSolverContinuationWrapper(judgesProgramSize, ops, inputs, outputs, FilterSolution, (n) => Checker(programId, n));
+            var solvers = new List<SolverContinuationWrapper>();
 
-            var solution = solver.Run();
+            SolverContinuationWrapper solver = new BfsSolverContinuationWrapper(judgesProgramSize, ops, inputs, outputs, FilterSolution, (n) => Checker(programId, n));
+            SolverContinuationWrapper solver1 = new BfsSolverContinuationWrapper(judgesProgramSize, ops, inputs, outputs, FilterSolution, (n) => Checker(programId, n));
+
+            solvers.Add(solver);
+            solvers.Add(solver1);
+
+            var tasks = solvers.Select(s => Task.Run(() => solver.Run())).ToList();
+
+            Lambda1 solution = null;
+
+            while (tasks.Count > 0)
+            {
+                var completed = Task.WaitAny(tasks.ToArray(), TimeSpan.FromSeconds(5*60));
+
+                var task = (Task<Lambda1>)tasks[completed];
+
+                tasks.RemoveAt(completed);
+
+                if (task.Result != null)
+                {
+                    solution = task.Result;
+                    Console.WriteLine("One thread completed  successfully");
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Solver failed, waiting for other ones");
+                }
+            }
+
+            foreach (var solveri in solvers)
+            {
+                solveri.Stop();
+            }
 
             var finalResult = solution != null ? solution.Serialize() : "NO RESULT";
 

@@ -68,32 +68,46 @@
 
         public Lambda1 Run()
         {
-            foreach (var candidate in RunImpl())
+            try
             {
-                if (FilterImpl(Inputs, Outputs, candidate))
+
+                foreach (var candidate in RunImpl())
                 {
-                    var result = CheckerImpl(candidate);
+                    if (FilterImpl(Inputs, Outputs, candidate))
+                    {
+                        var result = CheckerImpl(candidate);
 
-                    if (result.Item1)
-                    {
-                        StopImpl();
+                        if (result.Item1)
+                        {
+                            StopImpl();
 
-                        return new Lambda1 { Id0 = new NodeId { Name = "x" }, Node0 = candidate };
-                    }
-                    else if (!result.Item2)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        AddCounterExample(result.Item3, result.Item4);
+                            return new Lambda1 { Id0 = new NodeId { Name = "x" }, Node0 = candidate };
+                        }
+                        else if (!result.Item2)
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            AddCounterExample(result.Item3, result.Item4);
+                        }
                     }
                 }
-            }
 
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: {0}", ex);
+            }
+            
             StopImpl();
 
             return null;
+        }
+
+        public void Stop()
+        {
+            this.StopImpl();
         }
 
         #endregion
