@@ -78,6 +78,7 @@
     <Compile Include="API\TrainingProblem.cs" />
     <Compile Include="API\TrainRequest.cs" />
     <Compile Include="API\Utils.cs" />
+    <Compile Include="BfsSolverContinuationWrapper.cs" />
     <Compile Include="Compiler.cs" />
     <Compile Include="DynamicTree.cs" />
     <Compile Include="FTreeGenerator.cs" />
@@ -110,6 +111,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PTreeGeneratorContainer.cs" />
     <Compile Include="Random.cs" />
+    <Compile Include="SolverContinuationWrapper.cs" />
     <Compile Include="TreeGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
