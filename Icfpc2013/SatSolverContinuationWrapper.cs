@@ -24,6 +24,9 @@
 
         private string[] operators;
 
+        private StreamWriter sw;
+        private StreamReader sr;
+
         #endregion
 
         #region Constructors and Destructors
@@ -63,8 +66,8 @@
             };
 
             p.Start();
-            StreamWriter sw = p.StandardInput;
-            StreamReader sr = p.StandardOutput;
+            sw = p.StandardInput;
+            sr = p.StandardOutput;
 
             var start = Program.GenerateOutput("dummy", JudgesProgramSize, operators, Inputs, Outputs);
 
@@ -101,6 +104,12 @@
         {
             cts.Cancel();
             Canceled = true;
+
+            sw.WriteLine("STATUS:ok");
+        }
+
+        protected override void AddCounterExampleImpl(ulong newInput, ulong newOutput)
+        {
         }
 
         #endregion
