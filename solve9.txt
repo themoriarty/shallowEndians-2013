@@ -1,0 +1,676 @@
+tv6cSlvnixY6jeTgBFb3uFm6 8 shr1, shr16, and, or
+ProgramId: tv6cSlvnixY6jeTgBFb3uFm6
+Training: and, or, shr1, shr16
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xD8E4755D6F460C1A, 0xC8DB19F5D56567AD, 0x0085F8373B347C2B, 0x0DB3935300645EEC, 0x0F6C74CF75
+29404A, 0x4BEB041E4DC2BEF4}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0x0000FFFFFFFFFFFF, 0x0000504465440C02, 0x000008D111654525, 0x0000000538343820, 0x0000011300400064, 0x0000044C7
+4094008, 0x0000000A04020CC0}
+Using SAT!
+Using SAT only!
+WARNING: Error setting model, unknown option.
+Success
+Success Tree
+ArgCount:
+[2 -> 0, 3 -> 2, 4 -> 0, 1 -> 1, 0 -> 2, 5 -> 1, 6 -> 0, else -> 0]
+Revlinks:
+[2 -> 1, 3 -> 0, 5 -> 3, 1 -> 0, 6 -> 5, 4 -> 3, else -> 0]
+Pins:
+[2 -> 0, 3 -> 1, 5 -> 1, 1 -> 0, 6 -> 0, 4 -> 0, else -> 0]
+FW1:
+[3 -> 4, 5 -> 6, 1 -> 2, 0 -> 1, else -> 4]
+Node[0] = And Arity = 2
+Node[1] = Shr16 Arity = 1
+Node[2] = Input Arity = 0
+Node[3] = Or Arity = 2
+Node[4] = Input Arity = 0
+Node[5] = Shr1 Arity = 1
+Node[6] = One Arity = 0
+[Node array] And example output :::And Shr16 Input Or Input Shr1 One
+SAT: (and (shr16 x) (or x (shr1 1)))
+[0] 0000000000000000 0000000000000000 0000000000000000
+[1] FFFFFFFFFFFFFFFF 0000FFFFFFFFFFFF 0000FFFFFFFFFFFF
+[2] D8E4755D6F460C1A 0000504465440C02 0000504465440C02
+[3] C8DB19F5D56567AD 000008D111654525 000008D111654525
+[4] 0085F8373B347C2B 0000000538343820 0000000538343820
+[5] 0DB3935300645EEC 0000011300400064 0000011300400064
+[6] 0F6C74CF7529404A 0000044C74094008 0000044C74094008
+[7] 4BEB041E4DC2BEF4 0000000A04020CC0 0000000A04020CC0
+* computation completed in 1
+Submitting: (lambda (x) (and (shr16 x) (or x (shr1 1))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+xuDn0qAcp9dAE1mg8doIZGSG 8 shl1, shr4, or, plus
+ProgramId: xuDn0qAcp9dAE1mg8doIZGSG
+Training: or, plus, shl1, shr4
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x216AB546A8FE98B5, 0x1A84E410FE824686, 0xB7F866EFB48B57B4, 0xE7E1383679462410, 0x94C60A94BB
+4B1973, 0x10FF6DF188EE07D6}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x297ABD57AAFFBEBD, 0x1EA5FD14FFA2D7A7, 0xBFFE7FFFFDABD7FD, 0xEFF97E3FFF57AD14, 0x95F78AB5B
+FDBDF7F, 0x14FFFFFDEAFF87F7}
+Using SAT!
+Using SAT only!
+WARNING: Error setting model, unknown option.
+Success
+Success Tree
+ArgCount:
+[2 -> 1, 3 -> 2, 4 -> 0, 1 -> 1, 0 -> 2, 5 -> 0, 6 -> 0, else -> 0]
+Revlinks:
+[2 -> 1, 3 -> 2, 5 -> 0, 1 -> 0, 6 -> 3, 4 -> 3, else -> 0]
+Pins:
+[2 -> 0, 3 -> 0, 5 -> 1, 1 -> 0, 6 -> 1, 4 -> 0, else -> 0]
+FW1:
+[2 -> 3, 3 -> 4, 1 -> 2, 0 -> 1, else -> 3]
+Node[0] = Or Arity = 2
+Node[1] = Shr4 Arity = 1
+Node[2] = Shl1 Arity = 1
+Node[3] = Plus Arity = 2
+Node[4] = Input Arity = 0
+Node[5] = Input Arity = 0
+Node[6] = Input Arity = 0
+[Node array] And example output :::Or Shr4 Shl1 Plus Input Input Input
+SAT: (or (shr4 (shl1 (plus x x))) x)
+[0] 0000000000000000 0000000000000000 0000000000000000
+[1] FFFFFFFFFFFFFFFF FFFFFFFFFFFFFFFF FFFFFFFFFFFFFFFF
+[2] 216AB546A8FE98B5 297ABD57AAFFBEBD 297ABD57AAFFBEBD
+[3] 1A84E410FE824686 1EA5FD14FFA2D7A7 1EA5FD14FFA2D7A7
+[4] B7F866EFB48B57B4 BFFE7FFFFDABD7FD BFFE7FFFFDABD7FD
+[5] E7E1383679462410 EFF97E3FFF57AD14 EFF97E3FFF57AD14
+[6] 94C60A94BB4B1973 95F78AB5BFDBDF7F 95F78AB5BFDBDF7F
+[7] 10FF6DF188EE07D6 14FFFFFDEAFF87F7 14FFFFFDEAFF87F7
+* computation completed in 2
+Submitting: (lambda (x) (or (shr4 (shl1 (plus x x))) x))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+zNktlnkOYBFqvKrPqdj0ONme 8 not, shl1, or, plus
+ProgramId: zNktlnkOYBFqvKrPqdj0ONme
+Training: not, or, plus, shl1
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x4E5B3679C799A739, 0x4EEBF16E2198469F, 0xA986C998F78B9A65, 0xA2C57077E8DDF691, 0x3C6E1A9F8F
+3F3625, 0xE526A4724D1CFCBD}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0xFFFFFFFFFFFFFFFC, 0xFFFFFFFFFFFFFFFF, 0xB1A4C986386658C5, 0xB1140E91DE67B95F, 0x5679366708746599, 0x5D3A8F881722096D, 0xC391E5607
+0C0C9D9, 0x1AD95B8DB2E30341}
+Using SAT!
+Using SAT only!
+WARNING: Error setting model, unknown option.
+Success
+Success Tree
+ArgCount:
+[2 -> 1, 3 -> 1, 4 -> 2, 1 -> 0, 0 -> 2, 5 -> 0, 6 -> 0, else -> 0]
+Revlinks:
+[2 -> 0, 3 -> 2, 5 -> 4, 1 -> 0, 6 -> 4, 4 -> 3, else -> 0]
+Pins:
+[2 -> 1, 3 -> 0, 5 -> 0, 1 -> 0, 6 -> 1, 4 -> 0, else -> 0]
+FW1:
+[2 -> 3, 3 -> 4, 0 -> 1, 4 -> 5, else -> 3]
+Node[0] = Plus Arity = 2
+Node[1] = Input Arity = 0
+Node[2] = Shl1 Arity = 1
+Node[3] = Not Arity = 1
+Node[4] = Or Arity = 2
+Node[5] = Input Arity = 0
+Node[6] = One Arity = 0
+[Node array] And example output :::Plus Input Shl1 Not Or Input One
+SAT: (plus x (shl1 (not (or x 1))))
+[0] 0000000000000000 FFFFFFFFFFFFFFFC FFFFFFFFFFFFFFFC
+[1] FFFFFFFFFFFFFFFF FFFFFFFFFFFFFFFF FFFFFFFFFFFFFFFF
+[2] 4E5B3679C799A739 B1A4C986386658C5 B1A4C986386658C5
+[3] 4EEBF16E2198469F B1140E91DE67B95F B1140E91DE67B95F
+[4] A986C998F78B9A65 5679366708746599 5679366708746599
+[5] A2C57077E8DDF691 5D3A8F881722096D 5D3A8F881722096D
+[6] 3C6E1A9F8F3F3625 C391E56070C0C9D9 C391E56070C0C9D9
+[7] E526A4724D1CFCBD 1AD95B8DB2E30341 1AD95B8DB2E30341
+* computation completed in 2
+Submitting: (lambda (x) (plus x (shl1 (not (or x 1)))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+zf1WseMhzIFOn5YrvS7sjFHA 8 shl1, shr1, xor, plus
+ProgramId: zf1WseMhzIFOn5YrvS7sjFHA
+Training: plus, shl1, shr1, xor
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x707708E25622A01C, 0x2ED773588336EF20, 0x4BAE5BB138FCF580, 0xEC3738AD9C394E2C, 0x1DC06F4ED6
+CBF8D0, 0x4AE3EBE3AF6ECFBE}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0x0000000000000001, 0x90991926FA67E024, 0x737995E9855B3160, 0xDCF2ECD349051E80, 0x345949F6A44BD274, 0x2640B1D37
+B5C0970, 0xDF243C24F1B350C2}
+Using SAT!
+Using SAT only!
+WARNING: Error setting model, unknown option.
+Success
+Success Tree
+ArgCount:
+[2 -> 1, 3 -> 1, 4 -> 2, 1 -> 0, 0 -> 2, 5 -> 0, 6 -> 0, else -> 0]
+Revlinks:
+[2 -> 0, 3 -> 2, 5 -> 4, 1 -> 0, 6 -> 4, 4 -> 3, else -> 0]
+Pins:
+[2 -> 1, 3 -> 0, 5 -> 0, 1 -> 0, 6 -> 1, 4 -> 0, else -> 0]
+FW1:
+[2 -> 3, 3 -> 4, 0 -> 1, 4 -> 5, else -> 3]
+Node[0] = Xor Arity = 2
+Node[1] = Input Arity = 0
+Node[2] = Shl1 Arity = 1
+Node[3] = Shr1 Arity = 1
+Node[4] = Plus Arity = 2
+Node[5] = Input Arity = 0
+Node[6] = Input Arity = 0
+[Node array] And example output :::Xor Input Shl1 Shr1 Plus Input Input
+SAT: (xor x (shl1 (shr1 (plus x x))))
+[0] 0000000000000000 0000000000000000 0000000000000000
+[1] FFFFFFFFFFFFFFFF 0000000000000001 0000000000000001
+[2] 707708E25622A01C 90991926FA67E024 90991926FA67E024
+[3] 2ED773588336EF20 737995E9855B3160 737995E9855B3160
+[4] 4BAE5BB138FCF580 DCF2ECD349051E80 DCF2ECD349051E80
+[5] EC3738AD9C394E2C 345949F6A44BD274 345949F6A44BD274
+[6] 1DC06F4ED6CBF8D0 2640B1D37B5C0970 2640B1D37B5C0970
+[7] 4AE3EBE3AF6ECFBE DF243C24F1B350C2 DF243C24F1B350C2
+* computation completed in 2
+Submitting: (lambda (x) (xor x (shl1 (shr1 (plus x x)))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+Press any key to continue . . .
+
+TkpzLkIaNy5qBi3REufGwcb4 9 if0, shl1, shr16, and
+ProgramId: TkpzLkIaNy5qBi3REufGwcb4
+Training: and, if0, shl1, shr16
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xD8E4755D6F460C1A, 0xC8DB19F5D56567AD, 0x0085F8373B347C2B, 0x0DB3935300645EEC, 0x0F6C74CF75
+29404A, 0x4BEB041E4DC2BEF4}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x0000000000000000, 0xC8DB19F5D56567AD, 0x0085F8373B347C2B, 0x0000000000000000, 0x000000000
+0000000, 0x0000000000000000}
+Using SAT!
+Using SAT only!
+WARNING: Error setting model, unknown option.
+Success
+Success Tree
+ArgCount:
+[3 -> 0, 5 -> 1, 6 -> 0, 0 -> 3, 2 -> 0, 1 -> 2, 7 -> 0, 4 -> 1, else -> 0]
+Revlinks:
+[2 -> 1, 3 -> 1, 5 -> 4, 1 -> 0, 6 -> 5, 7 -> 0, 4 -> 0, else -> 0]
+Pins:
+[2 -> 0, 3 -> 1, 5 -> 0, 1 -> 0, 6 -> 0, 7 -> 2, 4 -> 1, else -> 0]
+FW1:
+[5 -> 6, 1 -> 2, 0 -> 1, 4 -> 5, else -> 6]
+Node[0] = If0 Arity = 3
+Node[1] = And Arity = 2
+Node[2] = Input Arity = 0
+Node[3] = One Arity = 0
+Node[4] = Shl1 Arity = 1
+Node[5] = Shr16 Arity = 1
+Node[6] = Zero Arity = 0
+Node[7] = Input Arity = 0
+[Node array] And example output :::If0 And Input One Shl1 Shr16 Zero Input
+SAT: (if0 (and x 1) (shl1 (shr16 0)) x)
+[0] 0000000000000000 0000000000000000 0000000000000000
+[1] FFFFFFFFFFFFFFFF FFFFFFFFFFFFFFFF FFFFFFFFFFFFFFFF
+[2] D8E4755D6F460C1A 0000000000000000 0000000000000000
+[3] C8DB19F5D56567AD C8DB19F5D56567AD C8DB19F5D56567AD
+[4] 0085F8373B347C2B 0085F8373B347C2B 0085F8373B347C2B
+[5] 0DB3935300645EEC 0000000000000000 0000000000000000
+[6] 0F6C74CF7529404A 0000000000000000 0000000000000000
+[7] 4BEB041E4DC2BEF4 0000000000000000 0000000000000000
+* computation completed in 5
+Submitting: (lambda (x) (if0 (and x 1) (shl1 (shr16 0)) x))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+YKrM8K337ClBmsUG6BdByJzu 9 if0, and, or
+ProgramId: YKrM8K337ClBmsUG6BdByJzu
+Training: and, if0, or
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x216AB546A8FE98B5, 0x1A84E410FE824686, 0xB7F866EFB48B57B4, 0xE7E1383679462410, 0x94C60A94BB
+4B1973, 0x10FF6DF188EE07D6}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x1A84E410FE824686, 0xB7F866EFB48B57B4, 0xE7E1383679462410, 0x000000000
+0000000, 0x10FF6DF188EE07D6}
+Using SAT!
+Using SAT only!
+WARNING: Error setting model, unknown option.
+Success
+Success Tree
+ArgCount:
+[3 -> 0, 5 -> 0, 6 -> 0, 0 -> 3, 2 -> 0, 1 -> 2, 7 -> 0, 4 -> 2, else -> 0]
+Revlinks:
+[2 -> 1, 3 -> 1, 5 -> 4, 1 -> 0, 6 -> 0, 7 -> 4, 4 -> 0, else -> 0]
+Pins:
+[2 -> 0, 3 -> 1, 5 -> 0, 1 -> 0, 6 -> 2, 7 -> 1, 4 -> 1, else -> 0]
+FW1:
+[1 -> 2, 0 -> 1, 4 -> 5, else -> 2]
+Node[0] = If0 Arity = 3
+Node[1] = And Arity = 2
+Node[2] = Input Arity = 0
+Node[3] = One Arity = 0
+Node[4] = Or Arity = 2
+Node[5] = Input Arity = 0
+Node[6] = Zero Arity = 0
+Node[7] = Input Arity = 0
+[Node array] And example output :::If0 And Input One Or Input Input Zero
+SAT: (if0 (and x 1) (or x x) 0)
+[0] 0000000000000000 0000000000000000 0000000000000000
+[1] FFFFFFFFFFFFFFFF 0000000000000000 0000000000000000
+[2] 216AB546A8FE98B5 0000000000000000 0000000000000000
+[3] 1A84E410FE824686 1A84E410FE824686 1A84E410FE824686
+[4] B7F866EFB48B57B4 B7F866EFB48B57B4 B7F866EFB48B57B4
+[5] E7E1383679462410 E7E1383679462410 E7E1383679462410
+[6] 94C60A94BB4B1973 0000000000000000 0000000000000000
+[7] 10FF6DF188EE07D6 10FF6DF188EE07D6 10FF6DF188EE07D6
+* computation completed in 0
+Submitting: (lambda (x) (if0 (and x 1) (or x x) 0))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+f1YIssMNYnmQyF4RfGMdlzAA 9 if0, and, xor
+ProgramId: f1YIssMNYnmQyF4RfGMdlzAA
+Training: and, if0, xor
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x4E5B3679C799A739, 0x4EEBF16E2198469F, 0xA986C998F78B9A65, 0xA2C57077E8DDF691, 0x3C6E1A9F8F
+3F3625, 0xE526A4724D1CFCBD}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x000000000
+0000001, 0x0000000000000001}
+Using SAT!
+Using SAT only!
+WARNING: Error setting model, unknown option.
+Success
+Success Tree
+ArgCount:
+[3 -> 2, 5 -> 2, 6 -> 0, 0 -> 3, 2 -> 0, 1 -> 0, 7 -> 0, 4 -> 0, else -> 0]
+Revlinks:
+[2 -> 0, 3 -> 0, 5 -> 3, 1 -> 0, 6 -> 5, 7 -> 5, 4 -> 3, else -> 0]
+Pins:
+[2 -> 1, 3 -> 2, 5 -> 1, 1 -> 0, 6 -> 0, 7 -> 1, 4 -> 0, else -> 1]
+FW1:
+[3 -> 4, 5 -> 6, 0 -> 1, else -> 4]
+Node[0] = If0 Arity = 3
+Node[1] = Input Arity = 0
+Node[2] = Zero Arity = 0
+Node[3] = Xor Arity = 2
+Node[4] = One Arity = 0
+Node[5] = And Arity = 2
+Node[6] = Input Arity = 0
+Node[7] = Zero Arity = 0
+[Node array] And example output :::If0 Input Zero Xor One And Input Zero
+SAT: (if0 x 0 (xor 1 (and x 0)))
+[0] 0000000000000000 0000000000000000 0000000000000000
+[1] FFFFFFFFFFFFFFFF 0000000000000001 0000000000000001
+[2] 4E5B3679C799A739 0000000000000001 0000000000000001
+[3] 4EEBF16E2198469F 0000000000000001 0000000000000001
+[4] A986C998F78B9A65 0000000000000001 0000000000000001
+[5] A2C57077E8DDF691 0000000000000001 0000000000000001
+[6] 3C6E1A9F8F3F3625 0000000000000001 0000000000000001
+[7] E526A4724D1CFCBD 0000000000000001 0000000000000001
+* computation completed in 1
+Submitting: (lambda (x) (if0 x 0 (xor 1 (and x 0))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: mismatch  0x0000000080000000, 0x0000000000000000, 0x0000000000000001
+SAT MISMATCH!!!
+New Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x4E5B3679C799A739, 0x4EEBF16E2198469F, 0xA986C998F78B9A65, 0xA2C57077E8DDF691, 0x3C6E1A
+9F8F3F3625, 0xE526A4724D1CFCBD, 0x0000000080000000}
+New Output: {0x0000000000000000, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x00000
+00000000001, 0x0000000000000001, 0x0000000000000000}
+WARNING: Error setting model, unknown option.
+Success
+Success Tree
+ArgCount:
+[3 -> 0, 5 -> 0, 6 -> 0, 0 -> 2, 2 -> 3, 1 -> 2, 7 -> 0, 4 -> 0, else -> 0]
+Revlinks:
+[2 -> 1, 3 -> 2, 5 -> 2, 1 -> 0, 6 -> 0, 7 -> 1, 4 -> 2, else -> 2]
+Pins:
+[2 -> 0, 3 -> 0, 5 -> 2, 1 -> 0, 6 -> 1, 7 -> 1, 4 -> 1, else -> 0]
+FW1:
+[2 -> 3, 1 -> 2, 0 -> 1, else -> 3]
+Node[0] = And Arity = 2
+Node[1] = Xor Arity = 2
+Node[2] = If0 Arity = 3
+Node[3] = Input Arity = 0
+Node[4] = Input Arity = 0
+Node[5] = Zero Arity = 0
+Node[6] = One Arity = 0
+Node[7] = Input Arity = 0
+[Node array] And example output :::And Xor If0 Input Input Zero Input One
+SAT: (and (xor (if0 x x 0) x) 1)
+[0] 0000000000000000 0000000000000000 0000000000000000
+[1] FFFFFFFFFFFFFFFF 0000000000000001 0000000000000001
+[2] 4E5B3679C799A739 0000000000000001 0000000000000001
+[3] 4EEBF16E2198469F 0000000000000001 0000000000000001
+[4] A986C998F78B9A65 0000000000000001 0000000000000001
+[5] A2C57077E8DDF691 0000000000000001 0000000000000001
+[6] 3C6E1A9F8F3F3625 0000000000000001 0000000000000001
+[7] E526A4724D1CFCBD 0000000000000001 0000000000000001
+[8] 0000000080000000 0000000000000000 0000000000000000
+Wait for 8984 msec before resubmitting result.
+Submitting: (lambda (x) (and (xor (if0 x x 0) x) 1))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+jfkzBY9jItM4flA8P88VPCmr 9 if0, and
+ProgramId: jfkzBY9jItM4flA8P88VPCmr
+Training: and, if0
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x707708E25622A01C, 0x2ED773588336EF20, 0x4BAE5BB138FCF580, 0xEC3738AD9C394E2C, 0x1DC06F4ED6
+CBF8D0, 0x4AE3EBE3AF6ECFBE}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000001, 0xFFFFFFFFFFFFFFFF, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x000000000
+0000001, 0x0000000000000001}
+Using SAT!
+Using SAT only!
+WARNING: Error setting model, unknown option.
+Success
+Success Tree
+ArgCount:
+[3 -> 2, 5 -> 0, 6 -> 0, 0 -> 3, 2 -> 0, 1 -> 2, 7 -> 0, 4 -> 0, else -> 0]
+Revlinks:
+[2 -> 1, 3 -> 0, 5 -> 3, 1 -> 0, 6 -> 0, 7 -> 1, 4 -> 3, else -> 0]
+Pins:
+[2 -> 0, 3 -> 1, 5 -> 1, 1 -> 0, 6 -> 2, 7 -> 1, 4 -> 0, else -> 1]
+FW1:
+[3 -> 4, 1 -> 2, 0 -> 1, else -> 4]
+Node[0] = If0 Arity = 3
+Node[1] = And Arity = 2
+Node[2] = One Arity = 0
+Node[3] = And Arity = 2
+Node[4] = One Arity = 0
+Node[5] = One Arity = 0
+Node[6] = Input Arity = 0
+Node[7] = Input Arity = 0
+[Node array] And example output :::If0 And One Input And One One Input
+SAT: (if0 (and 1 x) (and 1 1) x)
+[0] 0000000000000000 0000000000000001 0000000000000001
+[1] FFFFFFFFFFFFFFFF FFFFFFFFFFFFFFFF FFFFFFFFFFFFFFFF
+[2] 707708E25622A01C 0000000000000001 0000000000000001
+[3] 2ED773588336EF20 0000000000000001 0000000000000001
+[4] 4BAE5BB138FCF580 0000000000000001 0000000000000001
+[5] EC3738AD9C394E2C 0000000000000001 0000000000000001
+[6] 1DC06F4ED6CBF8D0 0000000000000001 0000000000000001
+[7] 4AE3EBE3AF6ECFBE 0000000000000001 0000000000000001
+* computation completed in 0
+Submitting: (lambda (x) (if0 (and 1 x) (and 1 1) x))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+lOq8tcY3bOPdoWFQJBCaBsth 9 if0, shr1, shr4, shr16
+ProgramId: lOq8tcY3bOPdoWFQJBCaBsth
+Training: if0, shr1, shr16, shr4
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xC033EDA87DCCED24, 0xE8C2DBCE9329D7F2, 0x11E001A860B349B8, 0x4167FEEDE279DF34, 0xE243B96BBF
+77EF6B, 0xE34E2D4576E40AC4}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0x00000FFFFFFFFFFF, 0x00000C033EDA87DC, 0x00000E8C2DBCE932, 0x0000011E001A860B, 0x000004167FEEDE27, 0x00000E243
+B96BBF7, 0x00000E34E2D4576E}
+Using SAT!
+Using SAT only!
+WARNING: Error setting model, unknown option.
+Success
+Success Tree
+ArgCount:
+[3 -> 1, 5 -> 0, 6 -> 1, 0 -> 1, 2 -> 3, 1 -> 1, 7 -> 0, 4 -> 0, else -> 1]
+Revlinks:
+[2 -> 1, 3 -> 2, 5 -> 2, 1 -> 0, 6 -> 2, 7 -> 6, 4 -> 3, else -> 2]
+Pins:
+[2 -> 0, 3 -> 0, 5 -> 1, 1 -> 0, 6 -> 2, 7 -> 0, 4 -> 0, else -> 0]
+FW1:
+[2 -> 3, 3 -> 4, 1 -> 2, 0 -> 1, 6 -> 7, else -> 3]
+Node[0] = Shr16 Arity = 1
+Node[1] = Shr4 Arity = 1
+Node[2] = If0 Arity = 3
+Node[3] = Shr16 Arity = 1
+Node[4] = One Arity = 0
+Node[5] = Input Arity = 0
+Node[6] = Shr1 Arity = 1
+Node[7] = Zero Arity = 0
+[Node array] And example output :::Shr16 Shr4 If0 Shr16 One Input Shr1 Zero
+SAT: (shr16 (shr4 (if0 (shr16 1) x (shr1 0))))
+[0] 0000000000000000 0000000000000000 0000000000000000
+[1] FFFFFFFFFFFFFFFF 00000FFFFFFFFFFF 00000FFFFFFFFFFF
+[2] C033EDA87DCCED24 00000C033EDA87DC 00000C033EDA87DC
+[3] E8C2DBCE9329D7F2 00000E8C2DBCE932 00000E8C2DBCE932
+[4] 11E001A860B349B8 0000011E001A860B 0000011E001A860B
+[5] 4167FEEDE279DF34 000004167FEEDE27 000004167FEEDE27
+[6] E243B96BBF77EF6B 00000E243B96BBF7 00000E243B96BBF7
+[7] E34E2D4576E40AC4 00000E34E2D4576E 00000E34E2D4576E
+* computation completed in 2
+Submitting: (lambda (x) (shr16 (shr4 (if0 (shr16 1) x (shr1 0)))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: mismatch  0x0000000000000001, 0x0000000000000001, 0x0000000000000000
+SAT MISMATCH!!!
+New Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xC033EDA87DCCED24, 0xE8C2DBCE9329D7F2, 0x11E001A860B349B8, 0x4167FEEDE279DF34, 0xE243B9
+6BBF77EF6B, 0xE34E2D4576E40AC4, 0x0000000000000001}
+New Output: {0x0000000000000000, 0x00000FFFFFFFFFFF, 0x00000C033EDA87DC, 0x00000E8C2DBCE932, 0x0000011E001A860B, 0x000004167FEEDE27, 0x00000
+E243B96BBF7, 0x00000E34E2D4576E, 0x0000000000000001}
+WARNING: Error setting model, unknown option.
+Success
+Success Tree
+ArgCount:
+[3 -> 0, 5 -> 1, 6 -> 1, 0 -> 3, 2 -> 1, 1 -> 1, 7 -> 0, 4 -> 0, else -> 1]
+Revlinks:
+[2 -> 1, 3 -> 2, 5 -> 0, 1 -> 0, 6 -> 5, 7 -> 6, 4 -> 0, else -> 0]
+Pins:
+[2 -> 0, 3 -> 0, 5 -> 2, 1 -> 0, 6 -> 0, 7 -> 0, 4 -> 1, else -> 0]
+FW1:
+[2 -> 3, 5 -> 6, 1 -> 2, 0 -> 1, 6 -> 7, else -> 3]
+Node[0] = If0 Arity = 3
+Node[1] = Shr1 Arity = 1
+Node[2] = Shr4 Arity = 1
+Node[3] = Input Arity = 0
+Node[4] = Input Arity = 0
+Node[5] = Shr4 Arity = 1
+Node[6] = Shr16 Arity = 1
+Node[7] = Input Arity = 0
+[Node array] And example output :::If0 Shr1 Shr4 Input Input Shr4 Shr16 Input
+SAT: (if0 (shr1 (shr4 x)) x (shr4 (shr16 x)))
+[0] 0000000000000000 0000000000000000 0000000000000000
+[1] FFFFFFFFFFFFFFFF 00000FFFFFFFFFFF 00000FFFFFFFFFFF
+[2] C033EDA87DCCED24 00000C033EDA87DC 00000C033EDA87DC
+[3] E8C2DBCE9329D7F2 00000E8C2DBCE932 00000E8C2DBCE932
+[4] 11E001A860B349B8 0000011E001A860B 0000011E001A860B
+[5] 4167FEEDE279DF34 000004167FEEDE27 000004167FEEDE27
+[6] E243B96BBF77EF6B 00000E243B96BBF7 00000E243B96BBF7
+[7] E34E2D4576E40AC4 00000E34E2D4576E 00000E34E2D4576E
+[8] 0000000000000001 0000000000000001 0000000000000001
+Wait for 7115 msec before resubmitting result.
+Submitting: (lambda (x) (if0 (shr1 (shr4 x)) x (shr4 (shr16 x))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: mismatch  0x0000000000000005, 0x0000000000000000, 0x0000000000000005
+SAT MISMATCH!!!
+New Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xC033EDA87DCCED24, 0xE8C2DBCE9329D7F2, 0x11E001A860B349B8, 0x4167FEEDE279DF34, 0xE243B9
+6BBF77EF6B, 0xE34E2D4576E40AC4, 0x0000000000000001, 0x0000000000000005}
+New Output: {0x0000000000000000, 0x00000FFFFFFFFFFF, 0x00000C033EDA87DC, 0x00000E8C2DBCE932, 0x0000011E001A860B, 0x000004167FEEDE27, 0x00000
+E243B96BBF7, 0x00000E34E2D4576E, 0x0000000000000001, 0x0000000000000000}
+WARNING: Error setting model, unknown option.
+Success
+Success Tree
+ArgCount:
+[3 -> 0, 5 -> 1, 6 -> 1, 0 -> 3, 2 -> 1, 1 -> 1, 7 -> 0, 4 -> 0, else -> 1]
+Revlinks:
+[2 -> 1, 3 -> 2, 5 -> 0, 1 -> 0, 6 -> 5, 7 -> 6, 4 -> 0, else -> 0]
+Pins:
+[2 -> 0, 3 -> 0, 5 -> 2, 1 -> 0, 6 -> 0, 7 -> 0, 4 -> 1, else -> 0]
+FW1:
+[2 -> 3, 5 -> 6, 1 -> 2, 0 -> 1, 6 -> 7, else -> 3]
+Node[0] = If0 Arity = 3
+Node[1] = Shr1 Arity = 1
+Node[2] = Shr1 Arity = 1
+Node[3] = Input Arity = 0
+Node[4] = Input Arity = 0
+Node[5] = Shr4 Arity = 1
+Node[6] = Shr16 Arity = 1
+Node[7] = Input Arity = 0
+[Node array] And example output :::If0 Shr1 Shr1 Input Input Shr4 Shr16 Input
+SAT: (if0 (shr1 (shr1 x)) x (shr4 (shr16 x)))
+[0] 0000000000000000 0000000000000000 0000000000000000
+[1] FFFFFFFFFFFFFFFF 00000FFFFFFFFFFF 00000FFFFFFFFFFF
+[2] C033EDA87DCCED24 00000C033EDA87DC 00000C033EDA87DC
+[3] E8C2DBCE9329D7F2 00000E8C2DBCE932 00000E8C2DBCE932
+[4] 11E001A860B349B8 0000011E001A860B 0000011E001A860B
+[5] 4167FEEDE279DF34 000004167FEEDE27 000004167FEEDE27
+[6] E243B96BBF77EF6B 00000E243B96BBF7 00000E243B96BBF7
+[7] E34E2D4576E40AC4 00000E34E2D4576E 00000E34E2D4576E
+[8] 0000000000000001 0000000000000001 0000000000000001
+[9] 0000000000000005 0000000000000000 0000000000000000
+Wait for 5335 msec before resubmitting result.
+Submitting: (lambda (x) (if0 (shr1 (shr1 x)) x (shr4 (shr16 x))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+p1Bh85a4hLX6bgA8eaXO7YzF 9 if0, shl1, shr1, xor
+ProgramId: p1Bh85a4hLX6bgA8eaXO7YzF
+Training: if0, shl1, shr1, xor
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x23A282379AF7850C, 0xF3D35174C949BB0D, 0xFE7C0264DF27E86F, 0x06CC691C9D9CD006, 0xE809CD0767
+D69590, 0x736D7A70B0B2534C}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000001, 0xFFFFFFFFFFFFFFFF, 0x0000000000000001, 0xF3D35174C949BB0D, 0xFE7C0264DF27E86F, 0x0000000000000001, 0xE809CD076
+7D69590, 0x0000000000000001}
+Using SAT!
+Using SAT only!
+WARNING: Error setting model, unknown option.
+Success
+Success Tree
+ArgCount:
+[3 -> 1, 5 -> 0, 6 -> 0, 0 -> 3, 2 -> 1, 1 -> 2, 7 -> 0, 4 -> 0, else -> 0]
+Revlinks:
+[2 -> 1, 3 -> 2, 5 -> 0, 1 -> 0, 6 -> 1, 7 -> 0, 4 -> 3, else -> 0]
+Pins:
+[2 -> 0, 3 -> 0, 5 -> 1, 1 -> 0, 6 -> 1, 7 -> 2, 4 -> 0, else -> 0]
+FW1:
+[2 -> 3, 3 -> 4, 1 -> 2, 0 -> 1, else -> 3]
+Node[0] = If0 Arity = 3
+Node[1] = Xor Arity = 2
+Node[2] = Shr1 Arity = 1
+Node[3] = Shl1 Arity = 1
+Node[4] = Input Arity = 0
+Node[5] = One Arity = 0
+Node[6] = Input Arity = 0
+Node[7] = Input Arity = 0
+[Node array] And example output :::If0 Xor Shr1 Shl1 Input Input One Input
+SAT: (if0 (xor (shr1 (shl1 x)) x) 1 x)
+[0] 0000000000000000 0000000000000001 0000000000000001
+[1] FFFFFFFFFFFFFFFF FFFFFFFFFFFFFFFF FFFFFFFFFFFFFFFF
+[2] 23A282379AF7850C 0000000000000001 0000000000000001
+[3] F3D35174C949BB0D F3D35174C949BB0D F3D35174C949BB0D
+[4] FE7C0264DF27E86F FE7C0264DF27E86F FE7C0264DF27E86F
+[5] 06CC691C9D9CD006 0000000000000001 0000000000000001
+[6] E809CD0767D69590 E809CD0767D69590 E809CD0767D69590
+[7] 736D7A70B0B2534C 0000000000000001 0000000000000001
+* computation completed in 1
+Submitting: (lambda (x) (if0 (xor (shr1 (shl1 x)) x) 1 x))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+p3rfqx5Po8YmdRgBmwpk2eQW 9 if0, or, xor
+ProgramId: p3rfqx5Po8YmdRgBmwpk2eQW
+Training: if0, or, xor
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x097E6E055D07F036, 0xA30604E66793F909, 0xA2EC6C7ADE3842EF, 0x8B8DCC5011923FDE, 0x22006E622C
+672963, 0x4801A2390D5DCD16}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000001, 0x0000000000000000, 0x0000000000000001, 0x0000000000000000, 0x0000000000000000, 0x0000000000000001, 0x000000000
+0000000, 0x0000000000000001}
+Using SAT!
+Using SAT only!
+WARNING: Error setting model, unknown option.
+Success
+Success Tree
+ArgCount:
+[3 -> 0, 5 -> 0, 6 -> 0, 0 -> 2, 2 -> 3, 1 -> 2, 7 -> 0, 4 -> 0, else -> 0]
+Revlinks:
+[2 -> 1, 3 -> 2, 5 -> 2, 1 -> 0, 6 -> 1, 7 -> 0, 4 -> 2, else -> 2]
+Pins:
+[2 -> 0, 3 -> 0, 5 -> 2, 1 -> 0, 6 -> 1, 7 -> 1, 4 -> 1, else -> 0]
+FW1:
+[2 -> 3, 1 -> 2, 0 -> 1, else -> 3]
+Node[0] = Xor Arity = 2
+Node[1] = Or Arity = 2
+Node[2] = If0 Arity = 3
+Node[3] = Zero Arity = 0
+Node[4] = Input Arity = 0
+Node[5] = Zero Arity = 0
+Node[6] = One Arity = 0
+Node[7] = Input Arity = 0
+[Node array] And example output :::Xor Or If0 Zero Input Zero One Input
+SAT: (xor (or (if0 0 x 0) 1) x)
+[0] 0000000000000000 0000000000000001 0000000000000001
+[1] FFFFFFFFFFFFFFFF 0000000000000000 0000000000000000
+[2] 097E6E055D07F036 0000000000000001 0000000000000001
+[3] A30604E66793F909 0000000000000000 0000000000000000
+[4] A2EC6C7ADE3842EF 0000000000000000 0000000000000000
+[5] 8B8DCC5011923FDE 0000000000000001 0000000000000001
+[6] 22006E622C672963 0000000000000000 0000000000000000
+[7] 4801A2390D5DCD16 0000000000000001 0000000000000001
+* computation completed in 0
+Submitting: (lambda (x) (xor (or (if0 0 x 0) 1) x))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+p8gkDOwCWgTVoW50Zh6EN5nx 9 if0, not, shl1, plus
+ProgramId: p8gkDOwCWgTVoW50Zh6EN5nx
+Training: if0, not, plus, shl1
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xC9F88E422EC10F4C, 0x3CB96DDBC67E6503, 0x8041DA9DBD03076B, 0x3C68DE0EADC71541, 0xD4495F0A40
+C44A3D, 0xA9473AF0FC289D30}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000001, 0x0000000000000000, 0xC9F88E422EC10F4D, 0x3CB96DDBC67E6504, 0x8041DA9DBD03076C, 0x3C68DE0EADC71542, 0xD4495F0A4
+0C44A3E, 0xA9473AF0FC289D31}
+Using SAT!
+Using SAT only!
+WARNING: Error setting model, unknown option.
+Success
+Success Tree
+ArgCount:
+[3 -> 1, 5 -> 0, 6 -> 0, 0 -> 2, 2 -> 0, 1 -> 3, 7 -> 0, 4 -> 1, else -> 0]
+Revlinks:
+[2 -> 1, 3 -> 1, 5 -> 4, 1 -> 0, 6 -> 0, 7 -> 1, 4 -> 3, else -> 1]
+Pins:
+[2 -> 0, 3 -> 1, 5 -> 0, 1 -> 0, 6 -> 1, 7 -> 2, 4 -> 0, else -> 0]
+FW1:
+[3 -> 4, 1 -> 2, 0 -> 1, 4 -> 5, else -> 4]
+Node[0] = Plus Arity = 2
+Node[1] = If0 Arity = 3
+Node[2] = One Arity = 0
+Node[3] = Shl1 Arity = 1
+Node[4] = Not Arity = 1
+Node[5] = Input Arity = 0
+Node[6] = Input Arity = 0
+Node[7] = One Arity = 0
+[Node array] And example output :::Plus If0 One Shl1 Not Input One Input
+SAT: (plus (if0 1 (shl1 (not x)) 1) x)
+[0] 0000000000000000 0000000000000001 0000000000000001
+[1] FFFFFFFFFFFFFFFF 0000000000000000 0000000000000000
+[2] C9F88E422EC10F4C C9F88E422EC10F4D C9F88E422EC10F4D
+[3] 3CB96DDBC67E6503 3CB96DDBC67E6504 3CB96DDBC67E6504
+[4] 8041DA9DBD03076B 8041DA9DBD03076C 8041DA9DBD03076C
+[5] 3C68DE0EADC71541 3C68DE0EADC71542 3C68DE0EADC71542
+[6] D4495F0A40C44A3D D4495F0A40C44A3E D4495F0A40C44A3E
+[7] A9473AF0FC289D30 A9473AF0FC289D31 A9473AF0FC289D31
+* computation completed in 2
+Submitting: (lambda (x) (plus (if0 1 (shl1 (not x)) 1) x))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+pYIqgBslxPjNNHuOBhckIrsA 9 if0, shr4, shr16, and
+ProgramId: pYIqgBslxPjNNHuOBhckIrsA
+Training: and, if0, shr16, shr4
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x72AA449E32A22113, 0x25BB4BC62CEC41CE, 0x0C3278A9908842FD, 0x079044B1008C2FBE, 0xF99D363CED
+991ECE, 0xE50D1C72C972529F}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000001, 0x0000000000000000, 0x0000000000000000, 0x0000000000000001, 0x0000000000000000, 0x0000000000000000, 0x000000000
+0000001, 0x0000000000000000}
+Using SAT!
+Using SAT only!
+WARNING: Error setting model, unknown option.
+Success
+Success Tree
+ArgCount:
+[3 -> 0, 5 -> 0, 6 -> 1, 0 -> 3, 2 -> 1, 1 -> 2, 7 -> 0, 4 -> 0, else -> 0]
+Revlinks:
+[2 -> 1, 3 -> 2, 5 -> 1, 1 -> 0, 6 -> 0, 7 -> 6, 4 -> 0, else -> 0]
+Pins:
+[2 -> 0, 3 -> 0, 5 -> 1, 1 -> 0, 6 -> 2, 7 -> 0, 4 -> 1, else -> 0]
+FW1:
+[2 -> 3, 1 -> 2, 0 -> 1, 6 -> 7, else -> 3]
+Node[0] = If0 Arity = 3
+Node[1] = And Arity = 2
+Node[2] = Shr4 Arity = 1
+Node[3] = Input Arity = 0
+Node[4] = One Arity = 0
+Node[5] = One Arity = 0
+Node[6] = Shr16 Arity = 1
+Node[7] = One Arity = 0
+[Node array] And example output :::If0 And Shr4 Input One One Shr16 One
+SAT: (if0 (and (shr4 x) 1) 1 (shr16 1))
+[0] 0000000000000000 0000000000000001 0000000000000001
+[1] FFFFFFFFFFFFFFFF 0000000000000000 0000000000000000
+[2] 72AA449E32A22113 0000000000000000 0000000000000000
+[3] 25BB4BC62CEC41CE 0000000000000001 0000000000000001
+[4] 0C3278A9908842FD 0000000000000000 0000000000000000
+[5] 079044B1008C2FBE 0000000000000000 0000000000000000
+[6] F99D363CED991ECE 0000000000000001 0000000000000001
+[7] E50D1C72C972529F 0000000000000000 0000000000000000
+* computation completed in 3
+Submitting: (lambda (x) (if0 (and (shr4 x) 1) 1 (shr16 1)))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+Press any key to continue . . .

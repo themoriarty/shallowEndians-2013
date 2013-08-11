@@ -400,6 +400,7 @@
         {
             var todo = JArray.Parse(File.ReadAllText(@"..\..\..\..\myproblems.json"));
 
+            int cnt = 0;
             foreach (var task in todo)
             {
                 var solved = (bool?)task["solved"];
@@ -408,14 +409,19 @@
                 var operators = task["operators"].Select(s => (string)s).ToArray();
                 var ops = ProgramTree.GetOpTypes(operators);
 
-                if (solved.HasValue == false && size <= 8 && ((ops & (OpTypes.fold /*| OpTypes.if0*/)) == OpTypes.none) /*&& (ops & OpTypes.tfold) == OpTypes.tfold*/ /* && Bits(ops) == 3*/)
+                if (solved.HasValue == false && size == 11 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none /* && Bits(ops) == 3*/)
+                //if (solved.HasValue == false && size < 16 && ((ops & (OpTypes.fold | OpTypes.bonus)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none)
                 {
                     Console.WriteLine("{0} {1} {2}", id, size, ops);
 
                     Solve(id, size, operators, true);
                     Thread.Sleep(20000);
+
+                    ++cnt;
                 }
             }
+
+            Console.WriteLine("cnt={0}", cnt);
         }
 
         public static void SolveOffline()
@@ -502,6 +508,7 @@
 
             Console.WriteLine("Input: {{{0}}}", string.Join(", ", inputStrings));
 
+            var lastrequest = Stopwatch.StartNew();
             var outputsResponse = API.Eval(new EvalRequest(programId, null, inputStrings));
 
             if (outputsResponse.status != "ok" || outputsResponse.outputs == null)
@@ -604,6 +611,8 @@
 
             if (response.status == "mismatch" && useSat)
             {
+                lastrequest.Restart();
+
                 while (response.status == "mismatch")
                 {
                     Console.WriteLine("SAT MISMATCH!!!");
@@ -624,9 +633,20 @@
                     solution = SolveSat(judgesProgramSize, ops, inputs, outputs);
                     finalResult = solution.Serialize();
 
+                    var elapsed = lastrequest.ElapsedMilliseconds;
+
+                    if (elapsed < 10000)
+                    {
+                        var sleepSecs = 10000 - (int)elapsed;
+                        Console.WriteLine("Wait for {0} msec before resubmitting result.", sleepSecs);
+                        Thread.Sleep(sleepSecs);
+                    }
+
                     Console.WriteLine("Submitting: {0}", finalResult);
                     response = API.Guess(new Guess(programId, finalResult));
                     Console.WriteLine("Gues: {0} {1} {2}", response.status, response.message, string.Join(", ", response.values ?? new string[] { }));
+
+                    lastrequest.Restart();
                 }
             }
 
