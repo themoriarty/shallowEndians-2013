@@ -367,17 +367,18 @@
                 var ops = ProgramTree.GetOpTypes(operators);
 
                 //if (solved.HasValue == false && size == 14 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none /* && Bits(ops) == 3*/)
-                //if (solved.HasValue == false && size < 13 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.tfold /* && Bits(ops) == 3*/)
-                if (id == "DHFIBTGnJmvnArn3B5xx0i8x")
+                if (solved.HasValue == false && size == 12)
+                //if (solved.HasValue == false && size < 14 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.tfold && Bits(ops) == 4)
+                //if (id == "DHFIBTGnJmvnArn3B5xx0i8x")
                 //if (solved.HasValue == true && solved.Value == false && size < 12)
                 {
                     Console.WriteLine("{0} {1} {2}", id, size, ops);
 
-                    if (Solve(id, size, operators, false))
-                    {
-                        ++cntSolved;
-                    }
-                    Thread.Sleep(20000);
+                    //if (Solve(id, size, operators, false))
+                    //{
+                    //    ++cntSolved;
+                    //}
+                    //Thread.Sleep(20000);
 
                     ++cnt;
                 }
@@ -456,8 +457,8 @@
         private static void Main(string[] args)
         {
             //SolveTrainingProgram(false);
-            //SolveMyProblems();
-            SolveOffline();
+            SolveMyProblems();
+            //SolveOffline();
             //SolveSatOffline();
         }
         
