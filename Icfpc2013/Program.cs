@@ -436,7 +436,7 @@
             var ops = ProgramTree.GetOpTypes(operators);
 
             var startTime = DateTime.Now;
-            TreeStructure.UseFwLinks = false;
+            //TreeStructure.UseFwLinks = false;
             var solution = SolveSat(judgesProgramSize, ops, inputs, outputs);
 
 
