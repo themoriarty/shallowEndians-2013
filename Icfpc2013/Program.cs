@@ -6,6 +6,7 @@
     using System.Globalization;
     using System.IO;
     using System.Linq;
+    using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -436,7 +437,9 @@
                 };
 
             int index = 0;
-            foreach (var root in bonus1Mode ? new Bonus1Solver(inputs, outputs, judgesProgramSize, validNodes).Solve() : GenerateCorrectPrograms(validNodes, validFoldNodes, programSize, filter, cts.Token))
+            var slv = new Bonus1Solver(inputs, outputs, judgesProgramSize, validNodes);
+            blah:
+            foreach (var root in bonus1Mode ? slv.Solve() : GenerateCorrectPrograms(validNodes, validFoldNodes, programSize, filter, cts.Token))
             {
                 //if (((++index) % 200000) == 0)
                 //{
@@ -486,6 +489,16 @@
                             cts.Cancel();
 
                             var finalResult = new Lambda1 { Id0 = new NodeId { Name = "x" }, Node0 = solution };
+                            //Console.WriteLine(finalResult.Serialize());
+                            //ulong ii = 0;
+                            //ulong oo = 1;
+                            //bool ok = false;
+                            //if (!ok)
+                            //{
+                            //    slv.AddSample(ii, oo);
+                            //    goto blah;
+                            //}
+
                             return finalResult;
                         }
                     }
@@ -499,10 +512,11 @@
 
         public static void SolveMyProblems()
         {
-            var todo = JArray.Parse(File.ReadAllText(@"..\..\..\..\myproblems.json"));
+            var todo = JArray.Parse(File.ReadAllText(@"..\..\..\myproblems2.json"));
 
             int cnt = 0;
             int cntSolved = 0;
+            Task[] tasks = new Task[4];
             foreach (var task in todo)
             {
                 var solved = (bool?)task["solved"];
@@ -511,20 +525,29 @@
                 var operators = task["operators"].Select(s => (string)s).ToArray();
                 var ops = ProgramTree.GetOpTypes(operators);
 
-                if (solved.HasValue == false && size == 16 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.tfold /* && Bits(ops) < 5*/)
+                if (solved.HasValue == false && (size < 24) && (ops & OpTypes.bonus) != OpTypes.none)
+                //if (solved.HasValue == false && size == 16 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.tfold /* && Bits(ops) < 5*/)
                 //if (solved.HasValue == false && size < 15)
                 //if (solved.HasValue == false && size == 15 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none && Bits(ops) == 5)
                 //if (id == "Jb6H9d6n4E9QUCnBGdMwDfQx")
                 //if (solved.HasValue == true && solved.Value == false && size < 12)
                 {
-                    Console.WriteLine("{0} {1} {2}", id, size, ops);
-
-                    if (Solve(id, size, operators, false))
+                    bool scheduled = false;
+                    while (!scheduled)
                     {
-                        ++cntSolved;
+                        for (int i = 0; i < tasks.Length; ++i)
+                        {
+                            if (tasks[i].IsCompleted)
+                            {
+                                tasks[i] = Task.Factory.StartNew(() => Solve(id, size, operators, false));
+                                scheduled = true;
+                            }
+                        }
+                        if (!scheduled)
+                        {
+                            Thread.Sleep(5000);
+                        }
                     }
-                    Thread.Sleep(20000);
-
                     ++cnt;
                 }
             }
@@ -540,20 +563,32 @@
             var operators = new[] { "bonus",
         "and",
         "if0",
+        "not",
         "plus",
         "shl1",
         "shr1",
         "shr16",
         "shr4" };
 
-            ulong[] inputs = { //0x0000000000000000, 
+            ulong[] inputs = { 0x0000000000000000, 
                                  0x0000000000010001,
                                  0xFFFFFFFFFFFFFFFF, 
                                  0x23A282379AF7850C, 
                                  0xF3D35174C949BB0D,
                                  0x5821C0CE06703381,
+                                 0x747D37059214E001,
+                                 0xDC7E690308110087,
+                                 0xF9CA13401800C006,
+                                 0x1F9E6183811405A1,
+                                 0x3E7A13A418015807/*,
+                                 0xEEE78231080493D1
+                                 /*,
+                                 0x5821C0CE06703381,
                                  0x709A7ECB026A0001,
-                                 0x040020010008003D/*, 
+                                 0x040020010008003D,
+                                 0xFFFA01186885439D,
+                                 0x7FBC010000200005/*,
+                                 0x73FE60C608853303/*, 
                                  0xFE7C0264DF27E86F, 
                                  0x06CC691C9D9CD006, 
                                  0xE809CD0767D69590, 
@@ -567,14 +602,25 @@
                                 0x0000FDCFD29F7AE5,
 0x8000000000007FFF, 0x4000000000007FFA, 0x54AAAAAAAAAAAAA0, 0xFFFF0000FFFF0000*/
                              };
-            ulong[] outputs = { //0x0000000000000000,
-        0x0000000000010002,
-        0x3FFFFFFFFFFFFFFE,
-        0x23A2C97C9F66BAFA,
-        0xF3D5391B6C334D9E,
+            ulong[] outputs = { 0xFFFFFFFFFFFFFFFF,
+        0x0000000000000001,
+        0xFFFFFFFE00000001,
+        0xFFFFFFFFB8BAFB91,
+        0x00000000079E9A8C,
+        0x0000000002C10E07,
+        0x0000000003A3E9B9,
+        0xFFFFFFFE47032DF9,
+        0x0000000007CE509B,
+        0x0000000000FCF30D,
+        0xFFFFFFFF830BD8B7/*,
+        0x0000000007773C12
+        /*,
         0x6E2A3101880C4061,
         0x8CC11E7DC3048001,
-        0x04002801400A004C/*,
+        0x04002801400A004C,
+        0xFFFC010C6AB614A6,
+        0x7FBD007802200044,
+        0x73FE60C608853303/*,
         0xFC7800409E07C04E,
         0x06CC691C9D9CD006,
         0xE809CD0767D69590,
@@ -668,9 +714,9 @@
 
         public static bool SolveTrainingProgram(bool useSat)
         {
-            int judgesProgramSize = 10;
+            int judgesProgramSize = 42;
             var options = new[] { "tfold" };
-            //options = new string[0];
+            options = new string[0];
             var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, options));
             var programId = training.id;
             Console.WriteLine("Challenge: {0}", string.Join(", ", training.challenge));
@@ -686,9 +732,9 @@
 
         private static void Main(string[] args)
         {
-            //SolveTrainingProgram(true);
-            //SolveMyProblems();
-            SolveOffline();
+            //SolveTrainingProgram(false);
+            SolveMyProblems();
+            //SolveOffline();
             //SolveSatOffline();
         }
         
@@ -699,7 +745,7 @@
 
             var ops = ProgramTree.GetOpTypes(operators);
 
-            ulong[] inputs = ProgramTree.GetInputVectorList(15).ToArray(); //{0x12, 0x137};
+            ulong[] inputs = ProgramTree.GetInputVectorList(10).ToArray(); //{0x12, 0x137};
 
             if (useSat)
             {
@@ -853,9 +899,26 @@
                         Thread.Sleep(sleepSecs);
                     }
 
+                retry:
                     Console.WriteLine("Submitting: {0}", finalResult);
-                    response = API.Guess(new Guess(programId, finalResult));
-                    Console.WriteLine("Gues: {0} {1} {2}", response.status, response.message, string.Join(", ", response.values ?? new string[] { }));
+                    try
+                    {
+                        response = API.Guess(new Guess(programId, finalResult));
+                        Console.WriteLine("Gues: {0} {1} {2}", response.status, response.message, string.Join(", ", response.values ?? new string[] { }));
+                    }
+                    catch (WebException wex)
+                    {
+                        if (wex.Message.IndexOf("Too many requests") < 0)
+                        {
+                            Console.WriteLine("Error: {0}", wex);
+                            //throw;
+                        }
+                        else
+                        {
+                            Thread.Sleep(4000);
+                            goto retry;
+                        }
+                    }
 
                     lastrequest.Restart();
                 }

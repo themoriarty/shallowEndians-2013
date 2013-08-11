@@ -13,6 +13,7 @@ namespace Icfpc2013
         private ulong[] Outputs;
         private long MaxSize;
         private List<Node> ValidNodes;
+        private List<IO> SplitInputs;
 
         class IO
         {
@@ -45,12 +46,33 @@ namespace Icfpc2013
             }
         }
 
+        
+
         public Bonus1Solver(ulong[] inputs, ulong[] outputs, long maxSize, List<Node> validNodes)
         {
             Inputs = inputs;
             Outputs = outputs;
             MaxSize = maxSize;
             ValidNodes = validNodes;
+
+            SplitInputs = SplitIOs().ToList();
+        }
+
+        public void AddSample(ulong input, ulong output)
+        {
+            List<IO> newRet = new List<IO>();
+            foreach (var currentIO in SplitInputs)
+            {
+                var newIO = currentIO.Clone();
+                newIO.Inputs0.Add(input);
+                newIO.Outputs0.Add(output);
+                newRet.Add(newIO);
+                newIO = currentIO.Clone();
+                newIO.Inputs1.Add(input);
+                newIO.Outputs1.Add(output);
+                newRet.Add(newIO);
+            }
+            SplitInputs = newRet;            
         }
 
         IEnumerable<IO> SplitIOs()
@@ -104,13 +126,15 @@ namespace Icfpc2013
 
         public IEnumerable<Node> Solve()
         {
+            List<Node> allRet = new List<Node>();
             int cnt = 0;
             var nonIfNodes = ValidNodes.Where(p => !(p is NodeIf0)).ToList();
-            //var gen = new FTreeGenerator(nonIfNodes, 7);
-            //var tree7 = gen.GenerateAllPrograms().ToArray();
+            var gen = new FTreeGenerator(nonIfNodes, nonIfNodes, 7);
+            var tree7 = gen.GenerateAllPrograms().ToArray();
+            var tree9 = new FTreeGenerator(ValidNodes, ValidNodes, 9).GenerateAllPrograms();
             //var allIos = SplitIOs();
             List<IO> seenIos = new List<IO>();
-            foreach (var io in SplitIOs())
+            foreach (var io in SplitInputs)
             {
                 if (seenIos.Any(sio => sio.Inputs0 == io.Inputs0 || sio.Inputs0 == io.Inputs1))
                 {
@@ -123,37 +147,37 @@ namespace Icfpc2013
                 //}
                 //var slv0 = new AStarSolver(io.Inputs0.ToArray(), io.Outputs0.ToArray(), 7, nonIfNodes);
                 //var slv1 = new AStarSolver(io.Inputs1.ToArray(), io.Outputs1.ToArray(), 7, nonIfNodes);
-                Console.WriteLine("0: {0} -> {1}", String.Join(", ", io.Inputs0), String.Join(", ", io.Outputs0));
-                Console.WriteLine("1: {0} -> {1}", String.Join(", ", io.Inputs1), String.Join(", ", io.Outputs1));
-                var s0l  = new Lambda1{Node0 = Node0.Instance};
-                if (io.Inputs0.Count != 0)
+                //Console.WriteLine("0: {0} -> {1}", String.Join(", ", io.Inputs0), String.Join(", ", io.Outputs0));
+                //Console.WriteLine("1: {0} -> {1}", String.Join(", ", io.Inputs1), String.Join(", ", io.Outputs1));
+                //var s0l  = new Lambda1{Node0 = Node0.Instance};
+                //if (io.Inputs0.Count != 0)
+                //{
+                //    if (true/*io.Inputs0.Count == 1 && io.Inputs0[0] == 18446744073709551615*/)
+                //    {
+                //        s0l = Program.SolveSat(8, nonIfNodes, io.Inputs0.ToArray(), io.Outputs0.ToArray());
+                //        //s0l = Program.SolveSat(8, new List<Node> {new NodeOp2Plus(), new NodeOp1Shr1()}, io.Inputs0.ToArray(), io.Outputs0.ToArray());
+                //    }
+                //    else
+                //    {
+                //        s0l = null;
+                //    }
+                //}
+                //if (s0l != null)
+                foreach (var s0 in tree7)
                 {
-                    if (true/*io.Inputs0.Count == 1 && io.Inputs0[0] == 18446744073709551615*/)
+                    //var s0 = s0l.Node0;
+                    if (Ok(s0, io.Inputs0.ToArray(), io.Outputs0.ToArray()))
                     {
-                        s0l = Program.SolveSat(8, nonIfNodes, io.Inputs0.ToArray(), io.Outputs0.ToArray());
-                        //s0l = Program.SolveSat(8, new List<Node> {new NodeOp2Plus(), new NodeOp1Shr1()}, io.Inputs0.ToArray(), io.Outputs0.ToArray());
-                    }
-                    else
-                    {
-                        s0l = null;
-                    }
-                }
-                if (s0l != null)
-                //foreach (var s0 in slv0.Solve())
-                {
-                    var s0 = s0l.Node0;
-                    //if (Ok(s0, io.Inputs0.ToArray(), io.Outputs0.ToArray()))
-                    {
-                        var s1l = new Lambda1 { Node0 = Node0.Instance };
-                        if (io.Inputs1.Count != 0)
+                        //var s1l = new Lambda1 { Node0 = Node0.Instance };
+                        //if (io.Inputs1.Count != 0)
+                        //{
+                        //    s1l = Program.SolveSat(8, nonIfNodes, io.Inputs1.ToArray(), io.Outputs1.ToArray());
+                        //}
+                        //if (s1l != null)
+                        foreach (var s1 in tree7)
                         {
-                            s1l = Program.SolveSat(8, nonIfNodes, io.Inputs1.ToArray(), io.Outputs1.ToArray());
-                        }
-                        if (s1l != null)
-                        //foreach (var s1 in slv1.Solve())
-                        {
-                            var s1 = s1l.Node0;
-                            //if (Ok(s1, io.Inputs1.ToArray(), io.Outputs1.ToArray()))
+                            //var s1 = s1l.Node0;
+                            if (Ok(s1, io.Inputs1.ToArray(), io.Outputs1.ToArray()))
                             {
                                 // branches found, now we have to reconstruct the condition
                                 ulong[] condOutputs = new ulong[Outputs.Length];
@@ -169,23 +193,35 @@ namespace Icfpc2013
                                     }
                                 }
                                 //var slvCond = new AStarSolver(Inputs.ToArray(), condOutputs, 9, ValidNodes);
-                                var slvCondL = Program.SolveSat(10, ValidNodes, Inputs.ToArray(), condOutputs);
-                                if (slvCondL != null)
-                                //foreach (var cond in slvCond.Solve())
+                                //var slvCondL = Program.SolveSat(10, ValidNodes, Inputs.ToArray(), condOutputs);
+                                //if (slvCondL != null)
+                                foreach (var cond in new FTreeGenerator(ValidNodes, ValidNodes, 9).GenerateAllPrograms())
                                 {
-                                    //if (Ok(cond, Inputs, condOutputs))
+                                    if (Ok(cond, Inputs, condOutputs))
                                     {
-                                        yield return new NodeIf0 { Node0 = slvCondL.Node0, Node1 = s0, Node2 = s1 };
+                                        yield return new NodeIf0 { Node0 = cond, Node1 = s0, Node2 = s1 };
+                                        //break;
+                                        yield break;
                                     }
                                 }
+                                break;
                             }
                         }
-                        goto ok;
+                        break;
                     }
                 }
             ok:
-                Console.WriteLine("{0} done", cnt++);
+                if (cnt % 10 == 0)
+                {
+                    Console.WriteLine("{0}/{1} done", cnt++, SplitInputs.Count);
+                }
             }
+
+            foreach (var r in allRet)
+            {
+                Console.WriteLine(r.Serialize());
+            }
+            //return allRet;
         }
 
     }
