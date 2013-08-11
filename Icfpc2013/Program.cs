@@ -397,49 +397,49 @@
 
         public static void SolveOffline()
         {
-            const int judgesProgramSize = 12;
+            const int judgesProgramSize = 11;
 
-            var programId = "C034SK4oEteBfyoafATcXU9V";
-            var operators = new[] { "and",
-        "if0",
-        "not",
+            var programId = "mkdonJ8gSGtBW5g3OGdjwDnd";
+            var operators = new[] { "if0",
+                "and",
+                "xor",
+                "not",
+        "plus",
         "shl1",
-        "shr4",
-        "xor" };
+        "shr1",
+        "shr4" };
 
             ulong[] inputs = { 0x0000000000000000, 
-                                 0xFFFFFFFFFFFFFFFF, 
-                                 0x23A282379AF7850C, 
-                                 0xF3D35174C949BB0D, 
-                                 0xFE7C0264DF27E86F, 
-                                 0x06CC691C9D9CD006, 
-                                 0xE809CD0767D69590, 
-                                 0x736D7A70B0B2534C, 
+                                 0x0000000000010001,
+                                 0xFFFFFFFFFFFFFFFF, 0x23A282379AF7850C, 0xF3D35174C949BB0D, 0xFE7C0264DF27E86F, 0x06CC691C9D9CD006, 0xE809CD0767D69590, 0x736D7A70B0B2534C, 0x0000FFFFFFFFFFFF,
                                 0x00000580A1AB9001,
                                 0x000017FBEACECACE,
                                 0x00006E8E0097C680,
                                 0x000050475BF54101,
                                 0x0000880A7F62D368,
                                 0x0000FDCFD29F7AE5,
-                                0x4000000000007FFA,
-                                0x54AAAAAAAAAAAAA0
+0x8000000000007FFF, 0x4000000000007FFA, 0x54AAAAAAAAAAAAA0, 0xFFFF0000FFFF0000
                              };
-            ulong[] outputs = { 0x0FFFFFFFFFFFFFFF,
+            ulong[] outputs = { 0x0000000000000000,
+                                  0x0000000000000000,
+        0x0000000000000001,
         0x0000000000000000,
-        0x0DC5D7DC865087AF,
-        0x00C2CAE8B36B644F,
-        0x00183FD9B20D8179,
-        0x0F93396E362632FF,
-        0x017F632F898296A6,
-        0x08C92858F4F4DACB,
-        0x0FFFFFA7F5E546FF,
-        0x0FFFFE8041531353,
-        0x0FFFF9171FF68397,
-        0x0FFFFAFB8A40ABEF,
-        0x0FFFF77F5809D2C9,
-        0x0FFFF02302D60851,
-        0x0BFFFFFFFFFFF800,
-        0x0FFFFFFFFFFFFFFF};
+        0x0000000000000001,
+        0x0000000000000001,
+        0x0000000000000000,
+        0x0000000000000000,
+        0x0000000000000000,
+        0x0000000000000001,
+        0x0000000000000001,
+        0x0000000000000000,
+        0x0000000000000000,
+        0x0000000000000001,
+        0x0000000000000000,
+        0x0000000000000001,
+        0x0000000000000001,
+        0x0000000000000000,
+        0x0000000000000000,
+        0x0000000000000000};
 
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
