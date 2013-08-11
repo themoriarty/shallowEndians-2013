@@ -14,9 +14,11 @@
     using Newtonsoft.Json.Linq;
 
     using SATGeneratation;
+    using System.Text;
 
     public class Program
     {
+        public static bool UseSimpleTFold = false;
         #region Public Methods and Operators
 
         public static int Bits(OpTypes ops)
@@ -118,6 +120,23 @@
                 //yield break;
             }
 #endif
+        }
+
+
+
+        public static string GenerateOutput(string prodId, int progSize, string[] ops, ulong[] inputs, ulong[] outputs)
+        {
+            StringBuilder b = new StringBuilder();
+            b.Append("START:");
+            b.Append(prodId);
+            b.Append("\n");
+            b.Append(progSize);
+            b.Append("\n\n");
+            b.Append(string.Join(" ", inputs));
+            b.Append("\n");
+            b.Append(string.Join(" ", outputs));
+
+            return b.ToString();
         }
 
         public static Lambda1 SolveSat(int judgesProgramSize, OpTypes validOps, ulong[] inputs, ulong[] outputs)
@@ -223,8 +242,7 @@
                     inputNodes2.Add(new MetaArgNode { Name = string.Format("bn{0}", i) });
                 }
 
-                bool runSimplerAssumptionFirst = false;
-                if (runSimplerAssumptionFirst)
+                if (UseSimpleTFold)
                 {
                     Console.WriteLine("Running simpler assumption for tfold SAT");
                     res1 = SATGeneratation.Utils.SolveNodeArray(processedInputs, outputs, inputNodes2, permitted);
@@ -235,7 +253,7 @@
                 }
                 else
                 {
-                    if(runSimplerAssumptionFirst)
+                    if (UseSimpleTFold)
                     {
                         Console.WriteLine("SAT Tfold simple assumption failed, running complex tree");
                     }
@@ -259,6 +277,11 @@
             if (pos != res.Count)
             {
                 //throw new Exception("pos != end");
+            }
+
+            if (res[0].ComputedOpcode == OpCodes.Zero)
+            {
+                throw new Exception("SAT failed");
             }
 
             if (tfoldMode)
