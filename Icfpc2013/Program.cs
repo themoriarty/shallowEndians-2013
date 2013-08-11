@@ -343,7 +343,7 @@
             int index = 0;
             foreach (var root in GenerateCorrectPrograms(validNodes, validFoldNodes, programSize, cts.Token))
             {
-                //if (((++index) % 1000) == 0)
+                //if (((++index) % 200000) == 0)
                 //{
                 //    Console.WriteLine("{0} {1}", root.Serialize(), root.Size());
                 //}
@@ -501,7 +501,7 @@
 
         public static bool SolveTrainingProgram(bool useSat)
         {
-            int judgesProgramSize = 11;
+            int judgesProgramSize = 15;
             var options = new[] { "fold" };
             //options = new string[0];
             var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, options));
