@@ -9,23 +9,23 @@ namespace SATGeneratation
 {
     public class TwoArg : ArgNode
     {
-        public BoolExpr GenerateConstraints(Context ctx, Solver solver, BitVecExpr prInput, BitVecExpr prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
+        public BoolExpr GenerateConstraints(Context ctx, Solver solver, BitVecExpr[] prInput, BitVecExpr[] prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
         {
             List<BoolExpr> andClauses = new List<BoolExpr>();
-            BitVecExpr arg0Output = ctx.MkBVConst(Name + "_bva0_", 64);
+            var arg0Output = GenerateOutputVars(ctx, Output.Length, Name + "_bva0_");
             if (Arg0 != null)
             {
-                andClauses.Add(ctx.MkEq(Arg0.Output, arg0Output));
+                andClauses.Add(EqAll(ctx, Arg0.Output, arg0Output));
             }
             else if (nodes != null && curNodeIndex != nodes.Count - 1)
             {
-                andClauses.Add(ctx.MkEq(arg0Output, nodes[curNodeIndex + 1].Output));
+                andClauses.Add(EqAll(ctx, arg0Output, nodes[curNodeIndex + 1].Output));
             }
 
-            BitVecExpr arg1Output = ctx.MkBVConst(Name + "_bva1_", 64);
+            var arg1Output = GenerateOutputVars(ctx, Output.Length, Name + "_bva1_");
             if (Arg1 != null)
             {
-                andClauses.Add(ctx.MkEq(Arg1.Output, arg1Output));
+                andClauses.Add(EqAll(ctx, Arg1.Output, arg1Output));
             }
             else if (nodes != null && curNodeIndex != nodes.Count - 1 && tree != null)
             {
@@ -38,7 +38,7 @@ namespace SATGeneratation
                     //var selPin = ctx.MkSelect(tree.PinLink, ctx.MkInt(i));
                     //var pinCheck = ctx.MkEq(selPin, ctx.MkInt(1));
 
-                    orClauses.Add(ctx.MkAnd(eqCheck, ctx.MkEq(arg1Output, nodes[i].Output)));
+                    orClauses.Add(ctx.MkAnd(eqCheck, EqAll(ctx, arg1Output, nodes[i].Output)));
                     foundArg = true;
                 }
                 if (!foundArg)
@@ -55,10 +55,10 @@ namespace SATGeneratation
                 andClauses.Add(ctx.MkFalse());
             }
 
-            var andCond = ctx.MkAnd(ctx.MkEq(Arity, ctx.MkInt(2)), ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.And)), ctx.MkEq(Output, ctx.MkBVAND(arg0Output, arg1Output)));
-            var orCond = ctx.MkAnd(ctx.MkEq(Arity, ctx.MkInt(2)), ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Or)), ctx.MkEq(Output, ctx.MkBVOR(arg0Output, arg1Output)));
-            var xorCond = ctx.MkAnd(ctx.MkEq(Arity, ctx.MkInt(2)), ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Xor)), ctx.MkEq(Output, ctx.MkBVXOR(arg0Output, arg1Output)));
-            var plusCond = ctx.MkAnd(ctx.MkEq(Arity, ctx.MkInt(2)), ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Plus)), ctx.MkEq(Output, ctx.MkBVAdd(arg0Output, arg1Output)));
+            var andCond = ctx.MkAnd(ctx.MkEq(Arity, ctx.MkInt(2)), ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.And)), EqAll(ctx, Output, AndAll(ctx, arg0Output, arg1Output)));
+            var orCond = ctx.MkAnd(ctx.MkEq(Arity, ctx.MkInt(2)), ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Or)), EqAll(ctx, Output, OrAll(ctx, arg0Output, arg1Output)));
+            var xorCond = ctx.MkAnd(ctx.MkEq(Arity, ctx.MkInt(2)), ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Xor)), EqAll(ctx, Output, XorAll(ctx, arg0Output, arg1Output)));
+            var plusCond = ctx.MkAnd(ctx.MkEq(Arity, ctx.MkInt(2)), ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Plus)), EqAll(ctx, Output, AddAll(ctx, arg0Output, arg1Output)));
             List<BoolExpr> expressions = new List<BoolExpr>(); ;
             if (permitted[(int)OpCodes.And])
             {
@@ -84,7 +84,7 @@ namespace SATGeneratation
             return ctx.MkAnd(andClauses.ToArray());
         }
 
-        public override void AddConstraints(Context ctx, Solver solver, BitVecExpr prInput, BitVecExpr prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
+        public override void AddConstraints(Context ctx, Solver solver, BitVecExpr[] prInput, BitVecExpr[] prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
         {
             solver.Assert(GenerateConstraints(ctx, solver, prInput, prOutput, permitted, nodes, curNodeIndex, tree));
         }

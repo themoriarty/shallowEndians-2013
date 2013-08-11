@@ -409,21 +409,21 @@
 
         public static void SolveSatOffline()
         {
-            const int judgesProgramSize = 12;
+            const int judgesProgramSize = 13;
 
-            var programId = "A9B9ZTcETn4hWT3Bx5sLk6Jv";
-            var operators = new[] { "and", "if0", "plus", "shr1", "shr16", "shr4" };
+            var programId = "pT0hM36gGHADqBPNOYK0hkkq";
+            var operators = new[] { "if0", "plus", "shr1", "shr16", "shr4" };
 
-            // Solution: (lambda (x) (xor x (xor x (plus x x))))
+            //// Solution: (lambda (x) (xor x (xor x (plus x x))))
+            //foreach (var x in ProgramTree.GetInputVectorList(200))
+            //{
+            //    Console.Write("{0:X}, ", x);
+            //}
+            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x097E6E055D07F036, 0xA30604E66793F909, 0x000000000001F8EC };
+            ulong[] outputs = { 0x0000000000000000, 0x00FFFFFFFFFFFFFF, 0x00097E6E055D07F0, 0x00A30604E66793F9, 0x0000000000000218 };
 
-            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x707708E25622A01C, 0x2ED773588336EF20, 0x4BAE5BB138FCF580, 0xEC3738AD9C394E2C, 0x1DC06F4ED6CBF8D0, 0x4AE3EBE3AF6ECFBE };
-            ulong[] outputs = { 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x1DC06F4ED6CBF8D1, 0x0000000000000001 };
-
-            int reducesInputCount = 5;
-            inputs = inputs.Take(reducesInputCount).ToArray();
-            outputs = outputs.Take(reducesInputCount).ToArray();
-
-            Console.WriteLine("ProgramId: {0}", programId);
+            var startTime = DateTime.Now;
+            Console.WriteLine("ProgramId: {0}. Start time: ", programId, startTime);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
 
             var ops = ProgramTree.GetOpTypes(operators);
@@ -432,7 +432,7 @@
             var solution = SolveSat(judgesProgramSize, ops, inputs, outputs);
             var finalResult = solution != null ? solution.Serialize() : "NO RESULT";
 
-            Console.WriteLine(finalResult);
+            Console.WriteLine("Result: {0}, execution time: {1}", finalResult, DateTime.Now - startTime);
         }
 
         public static bool SolveTrainingProgram(bool useSat)
@@ -455,10 +455,10 @@
 
         private static void Main(string[] args)
         {
-            //SolveTrainingProgram(false);
+            //SolveTrainingProgram(true);
             //SolveMyProblems();
-            SolveOffline();
-            //SolveSatOffline();
+            //SolveOffline();
+            SolveSatOffline();
         }
         
         private static bool Solve(string programId, int judgesProgramSize, string[] operators, bool useSat)

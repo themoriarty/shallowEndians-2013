@@ -11,235 +11,235 @@ namespace SATGeneratation
     {
         static void Main(string[] args)
         {
-            bool[] permitted = new bool[Enum.GetValues(typeof(OpCodes)).Length];
-            for (int i = 0; i < (int)OpCodes.Input + 1; ++i)
-            {
-                permitted[i] = true;
-            }
+            //bool[] permitted = new bool[Enum.GetValues(typeof(OpCodes)).Length];
+            //for (int i = 0; i < (int)OpCodes.Input + 1; ++i)
+            //{
+            //    permitted[i] = true;
+            //}
 
 
-            List<ArgNode> nodes = new List<ArgNode>();
-            nodes.Add(new MetaArgNode() { Name = "n1" });
-            nodes.Add(new MetaArgNode() { Name = "ar0n2" });
+            //List<ArgNode> nodes = new List<ArgNode>();
+            //nodes.Add(new MetaArgNode() { Name = "n1" });
+            //nodes.Add(new MetaArgNode() { Name = "ar0n2" });
 
-            {
-                ulong[] inputs = { 0x1, 0x4 };
-                ulong[] outputs = { 0x2, 0x8 };
-                permitted[(int)OpCodes.Shl1] = true;
-                List<ArgNode> res = Utils.SolveNodeArray(inputs, outputs, nodes, permitted);
-                Console.WriteLine("[Node array] Shl1 output {0}, {1}", res[0].ComputedOpcode, res[1].ComputedOpcode);
-                permitted[(int)OpCodes.Shl1] = false;
-            }
+            //{
+            //    ulong[] inputs = { 0x1, 0x4 };
+            //    ulong[] outputs = { 0x2, 0x8 };
+            //    permitted[(int)OpCodes.Shl1] = true;
+            //    List<ArgNode> res = Utils.SolveNodeArray(inputs, outputs, nodes, permitted);
+            //    Console.WriteLine("[Node array] Shl1 output {0}, {1}", res[0].ComputedOpcode, res[1].ComputedOpcode);
+            //    permitted[(int)OpCodes.Shl1] = false;
+            //}
 
-            {
-                ulong[] inputs = { 0x11, 0x10 };
-                ulong[] outputs = { 0x1, 0x00};
-                nodes.Add(new MetaArgNode() { Name = "ar0n3" });
-                permitted[(int)OpCodes.And] = true;
-                List<ArgNode> res = Utils.SolveNodeArray(inputs, outputs, nodes, permitted);
-                Console.WriteLine("[Node array] And output {0}, {1} {2}", res[0].ComputedOpcode, res[1].ComputedOpcode, res[2].ComputedOpcode);
-                permitted[(int)OpCodes.And] = false;
-            }
+            //{
+            //    ulong[] inputs = { 0x11, 0x10 };
+            //    ulong[] outputs = { 0x1, 0x00};
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n3" });
+            //    permitted[(int)OpCodes.And] = true;
+            //    List<ArgNode> res = Utils.SolveNodeArray(inputs, outputs, nodes, permitted);
+            //    Console.WriteLine("[Node array] And output {0}, {1} {2}", res[0].ComputedOpcode, res[1].ComputedOpcode, res[2].ComputedOpcode);
+            //    permitted[(int)OpCodes.And] = false;
+            //}
 
-            {
-                ulong[] inputs = { 0x10, 0x100, 0x0101 };
-                //ulong[] outputs = { 0x11, 0x101, 0x0101, 0x011111, 0x0111111, 0x01111111 };
-                ulong[] outputs = { 0x09, 0x81, 0x081 };
-                nodes.Add(new MetaArgNode() { Name = "ar0n3" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n4" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n5" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n6" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n7" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n8" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n9" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n10" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n11" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n12" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n13" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n14" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n15" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n16" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n17" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n18" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n19" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n20" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n21" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n22" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n23" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n24" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n25" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n26" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n27" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n28" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n29" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n30" });
-                permitted[(int)OpCodes.And] = true;
-                permitted[(int)OpCodes.Or] = true;
-                permitted[(int)OpCodes.If0] = true;
-                permitted[(int)OpCodes.Shr1] = true;
-                permitted[(int)OpCodes.Shr4] = true;
-                permitted[(int)OpCodes.Shr16] = true;
-                List<ArgNode> res = Utils.SolveNodeArray(inputs, outputs, nodes, permitted);
-                Console.Write("[Node array] And example output :::");
-                for (int i = 0; i < res.Count; i++)
-                {
-                    Console.Write(res[i].ComputedOpcode + " ");
-                }
-                Console.Write("\n");
-                permitted[(int)OpCodes.And] = false;
-                permitted[(int)OpCodes.Or] = false;
-            }
+            //{
+            //    ulong[] inputs = { 0x10, 0x100, 0x0101 };
+            //    //ulong[] outputs = { 0x11, 0x101, 0x0101, 0x011111, 0x0111111, 0x01111111 };
+            //    ulong[] outputs = { 0x09, 0x81, 0x081 };
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n3" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n4" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n5" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n6" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n7" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n8" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n9" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n10" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n11" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n12" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n13" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n14" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n15" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n16" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n17" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n18" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n19" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n20" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n21" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n22" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n23" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n24" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n25" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n26" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n27" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n28" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n29" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n30" });
+            //    permitted[(int)OpCodes.And] = true;
+            //    permitted[(int)OpCodes.Or] = true;
+            //    permitted[(int)OpCodes.If0] = true;
+            //    permitted[(int)OpCodes.Shr1] = true;
+            //    permitted[(int)OpCodes.Shr4] = true;
+            //    permitted[(int)OpCodes.Shr16] = true;
+            //    List<ArgNode> res = Utils.SolveNodeArray(inputs, outputs, nodes, permitted);
+            //    Console.Write("[Node array] And example output :::");
+            //    for (int i = 0; i < res.Count; i++)
+            //    {
+            //        Console.Write(res[i].ComputedOpcode + " ");
+            //    }
+            //    Console.Write("\n");
+            //    permitted[(int)OpCodes.And] = false;
+            //    permitted[(int)OpCodes.Or] = false;
+            //}
 
-            return;
+            //return;
 
-            {
-                ulong[] inputs = { 0x10, 0x100, 0x0101 };
-                ulong[] outputs = { 0x11, 0x101, 0x0101 };
-                nodes.Add(new MetaArgNode() { Name = "ar0n3" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n4" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n5" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n6" });
-                /*nodes.Add(new MetaArgNode() { Name = "ar0n7" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n8" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n9" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n10" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n11" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n12" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n13" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n14" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n15" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n16" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n17" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n18" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n19" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n20" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n21" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n22" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n23" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n24" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n25" });
-                nodes.Add(new MetaArgNode() { Name = "ar0n26" });*/
-                permitted[(int)OpCodes.And] = true;
-                permitted[(int)OpCodes.Or] = true;
-                permitted[(int)OpCodes.Shl1] = true;
-                permitted[(int)OpCodes.Shr1] = true;
-                List<ArgNode> res = Utils.SolveNodeArray(inputs, outputs, nodes, permitted);
-                Console.Write("[Node array] And example output :::");
-                for (int i = 0; i < res.Count; i++)
-                {
-                    Console.Write(res[i].ComputedOpcode + " ");
-                }
-                Console.Write("\n");
-                permitted[(int)OpCodes.And] = false;
-                permitted[(int)OpCodes.Or] = false;
-            }
-            return;
+            //{
+            //    ulong[] inputs = { 0x10, 0x100, 0x0101 };
+            //    ulong[] outputs = { 0x11, 0x101, 0x0101 };
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n3" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n4" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n5" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n6" });
+            //    /*nodes.Add(new MetaArgNode() { Name = "ar0n7" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n8" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n9" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n10" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n11" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n12" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n13" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n14" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n15" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n16" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n17" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n18" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n19" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n20" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n21" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n22" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n23" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n24" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n25" });
+            //    nodes.Add(new MetaArgNode() { Name = "ar0n26" });*/
+            //    permitted[(int)OpCodes.And] = true;
+            //    permitted[(int)OpCodes.Or] = true;
+            //    permitted[(int)OpCodes.Shl1] = true;
+            //    permitted[(int)OpCodes.Shr1] = true;
+            //    List<ArgNode> res = Utils.SolveNodeArray(inputs, outputs, nodes, permitted);
+            //    Console.Write("[Node array] And example output :::");
+            //    for (int i = 0; i < res.Count; i++)
+            //    {
+            //        Console.Write(res[i].ComputedOpcode + " ");
+            //    }
+            //    Console.Write("\n");
+            //    permitted[(int)OpCodes.And] = false;
+            //    permitted[(int)OpCodes.Or] = false;
+            //}
+            //return;
 
 
-            OneArg OneArgProto = new OneArg() { Name = "OneArg" };
-            OneArgProto.Arg0 = new ZeroArg() { Name = "OneArgC0" };
+            //OneArg OneArgProto = new OneArg() { Name = "OneArg" };
+            //OneArgProto.Arg0 = new ZeroArg() { Name = "OneArgC0" };
 
-            TwoArg TwoArgProto = new TwoArg() { Name = "TwoArg" };
-            TwoArgProto.Arg0 = new ZeroArg() { Name = "TwoArgC0" };
-            TwoArgProto.Arg1 = new ZeroArg() { Name = "TwoArgC1" };
+            //TwoArg TwoArgProto = new TwoArg() { Name = "TwoArg" };
+            //TwoArgProto.Arg0 = new ZeroArg() { Name = "TwoArgC0" };
+            //TwoArgProto.Arg1 = new ZeroArg() { Name = "TwoArgC1" };
 
-            ThreeArg ThreeArgProto = new ThreeArg() { Name = "ThreeArg" };
-            ThreeArgProto.Arg0 = new ZeroArg() { Name = "ThreeArg0" };
-            ThreeArgProto.Arg1 = new ZeroArg() { Name = "ThreeArg1" };
-            ThreeArgProto.Arg2 = new ZeroArg() { Name = "ThreeArg2" };
+            //ThreeArg ThreeArgProto = new ThreeArg() { Name = "ThreeArg" };
+            //ThreeArgProto.Arg0 = new ZeroArg() { Name = "ThreeArg0" };
+            //ThreeArgProto.Arg1 = new ZeroArg() { Name = "ThreeArg1" };
+            //ThreeArgProto.Arg2 = new ZeroArg() { Name = "ThreeArg2" };
             
-            {
-                ulong[] inputs = { 0x1, 0x2 };
-                ulong[] outputs = { 0x2, 0x4 };
-                permitted[(int)OpCodes.Shl1] = true;
-                OneArg sol = (OneArg) Utils.SolvePrototypeTree(inputs, outputs, OneArgProto, permitted);
-                Console.WriteLine("Shl1 output {0}, {1}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode);
-                permitted[(int)OpCodes.Shl1] = false;
-            }
+            //{
+            //    ulong[] inputs = { 0x1, 0x2 };
+            //    ulong[] outputs = { 0x2, 0x4 };
+            //    permitted[(int)OpCodes.Shl1] = true;
+            //    OneArg sol = (OneArg) Utils.SolvePrototypeTree(inputs, outputs, OneArgProto, permitted);
+            //    Console.WriteLine("Shl1 output {0}, {1}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode);
+            //    permitted[(int)OpCodes.Shl1] = false;
+            //}
 
-            {
-                ulong[] inputs = { 0x2, 0x4 };
-                ulong[] outputs = { 0x1, 0x2 };
-                permitted[(int)OpCodes.Shr1] = true;
-                OneArg sol = (OneArg)Utils.SolvePrototypeTree(inputs, outputs, OneArgProto, permitted);
-                Console.WriteLine("Shr1 output {0}, {1}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode);
-                permitted[(int)OpCodes.Shr1] = false;
-            }
+            //{
+            //    ulong[] inputs = { 0x2, 0x4 };
+            //    ulong[] outputs = { 0x1, 0x2 };
+            //    permitted[(int)OpCodes.Shr1] = true;
+            //    OneArg sol = (OneArg)Utils.SolvePrototypeTree(inputs, outputs, OneArgProto, permitted);
+            //    Console.WriteLine("Shr1 output {0}, {1}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode);
+            //    permitted[(int)OpCodes.Shr1] = false;
+            //}
 
-            {
-                ulong[] inputs = { 0x10, 0x100 };
-                ulong[] outputs = { 0x1, 0x10 };
-                permitted[(int)OpCodes.Shr4] = true;
-                OneArg sol = (OneArg)Utils.SolvePrototypeTree(inputs, outputs, OneArgProto, permitted);
-                Console.WriteLine("Shr4 output {0}, {1}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode);
-                permitted[(int)OpCodes.Shr4] = false;
-            }
+            //{
+            //    ulong[] inputs = { 0x10, 0x100 };
+            //    ulong[] outputs = { 0x1, 0x10 };
+            //    permitted[(int)OpCodes.Shr4] = true;
+            //    OneArg sol = (OneArg)Utils.SolvePrototypeTree(inputs, outputs, OneArgProto, permitted);
+            //    Console.WriteLine("Shr4 output {0}, {1}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode);
+            //    permitted[(int)OpCodes.Shr4] = false;
+            //}
 
-            {
-                ulong[] inputs = { 0x10000, 0x100000 };
-                ulong[] outputs = { 0x1, 0x10 };
-                permitted[(int)OpCodes.Shr16] = true;
-                OneArg sol = (OneArg)Utils.SolvePrototypeTree(inputs, outputs, OneArgProto, permitted);
-                Console.WriteLine("Shr16 output {0}, {1}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode);
-                permitted[(int)OpCodes.Shr16] = false;
-            }
+            //{
+            //    ulong[] inputs = { 0x10000, 0x100000 };
+            //    ulong[] outputs = { 0x1, 0x10 };
+            //    permitted[(int)OpCodes.Shr16] = true;
+            //    OneArg sol = (OneArg)Utils.SolvePrototypeTree(inputs, outputs, OneArgProto, permitted);
+            //    Console.WriteLine("Shr16 output {0}, {1}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode);
+            //    permitted[(int)OpCodes.Shr16] = false;
+            //}
 
-            {
-                ulong[] inputs = { 0x1000000000000000, 0x1100000000000000 };
-                ulong[] outputs = { 0xEFFFFFFFFFFFFFFF, 0xEEFFFFFFFFFFFFFF };
-                permitted[(int)OpCodes.Not] = true;
-                OneArg sol = (OneArg)Utils.SolvePrototypeTree(inputs, outputs, OneArgProto, permitted);
-                Console.WriteLine("Not output {0}, {1}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode);
-                permitted[(int)OpCodes.Not] = false;
-            }
+            //{
+            //    ulong[] inputs = { 0x1000000000000000, 0x1100000000000000 };
+            //    ulong[] outputs = { 0xEFFFFFFFFFFFFFFF, 0xEEFFFFFFFFFFFFFF };
+            //    permitted[(int)OpCodes.Not] = true;
+            //    OneArg sol = (OneArg)Utils.SolvePrototypeTree(inputs, outputs, OneArgProto, permitted);
+            //    Console.WriteLine("Not output {0}, {1}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode);
+            //    permitted[(int)OpCodes.Not] = false;
+            //}
 
-            {
-                ulong[] inputs = { 0x1, 0x11111, 0x111110 };
-                ulong[] outputs = { 0x1, 0x1, 0x0 };
-                permitted[(int)OpCodes.And] = true;
-                TwoArg sol = (TwoArg)Utils.SolvePrototypeTree(inputs, outputs, TwoArgProto, permitted);
-                Console.WriteLine("And output {0}, {1}, {2}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode, sol.Arg1.ComputedOpcode);
-                permitted[(int)OpCodes.And] = false;
-            }
+            //{
+            //    ulong[] inputs = { 0x1, 0x11111, 0x111110 };
+            //    ulong[] outputs = { 0x1, 0x1, 0x0 };
+            //    permitted[(int)OpCodes.And] = true;
+            //    TwoArg sol = (TwoArg)Utils.SolvePrototypeTree(inputs, outputs, TwoArgProto, permitted);
+            //    Console.WriteLine("And output {0}, {1}, {2}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode, sol.Arg1.ComputedOpcode);
+            //    permitted[(int)OpCodes.And] = false;
+            //}
 
-            {
-                ulong[] inputs = { 0x1, 0x11110, 0x111110 };
-                ulong[] outputs = { 0x1, 0x11111, 0x111111 };
-                permitted[(int)OpCodes.Or] = true;
-                TwoArg sol = (TwoArg)Utils.SolvePrototypeTree(inputs, outputs, TwoArgProto, permitted);
-                Console.WriteLine("Or output {0}, {1}, {2}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode, sol.Arg1.ComputedOpcode);
-                permitted[(int)OpCodes.Or] = false;
-            }
+            //{
+            //    ulong[] inputs = { 0x1, 0x11110, 0x111110 };
+            //    ulong[] outputs = { 0x1, 0x11111, 0x111111 };
+            //    permitted[(int)OpCodes.Or] = true;
+            //    TwoArg sol = (TwoArg)Utils.SolvePrototypeTree(inputs, outputs, TwoArgProto, permitted);
+            //    Console.WriteLine("Or output {0}, {1}, {2}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode, sol.Arg1.ComputedOpcode);
+            //    permitted[(int)OpCodes.Or] = false;
+            //}
 
-            {
-                ulong[] inputs = { 0x1, 7, 10, 23 };
-                ulong[] outputs = { 0x2, 8, 11, 24 };
-                permitted[(int)OpCodes.Plus] = true;
-                TwoArg sol = (TwoArg)Utils.SolvePrototypeTree(inputs, outputs, TwoArgProto, permitted);
-                Console.WriteLine("Plus output {0}, {1}, {2}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode, sol.Arg1.ComputedOpcode);
-                permitted[(int)OpCodes.Plus] = false;
-            }
+            //{
+            //    ulong[] inputs = { 0x1, 7, 10, 23 };
+            //    ulong[] outputs = { 0x2, 8, 11, 24 };
+            //    permitted[(int)OpCodes.Plus] = true;
+            //    TwoArg sol = (TwoArg)Utils.SolvePrototypeTree(inputs, outputs, TwoArgProto, permitted);
+            //    Console.WriteLine("Plus output {0}, {1}, {2}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode, sol.Arg1.ComputedOpcode);
+            //    permitted[(int)OpCodes.Plus] = false;
+            //}
 
-            {
-                ulong[] inputs = { 0x1, 0x11110, 0x111110 };
-                ulong[] outputs = { 0x0, 0x11111, 0x111111 };
-                permitted[(int)OpCodes.Xor] = true;
-                TwoArg sol = (TwoArg)Utils.SolvePrototypeTree(inputs, outputs, TwoArgProto, permitted);
-                Console.WriteLine("Xor output {0}, {1}, {2}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode, sol.Arg1.ComputedOpcode);
-                permitted[(int)OpCodes.Xor] = false;
-            }
+            //{
+            //    ulong[] inputs = { 0x1, 0x11110, 0x111110 };
+            //    ulong[] outputs = { 0x0, 0x11111, 0x111111 };
+            //    permitted[(int)OpCodes.Xor] = true;
+            //    TwoArg sol = (TwoArg)Utils.SolvePrototypeTree(inputs, outputs, TwoArgProto, permitted);
+            //    Console.WriteLine("Xor output {0}, {1}, {2}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode, sol.Arg1.ComputedOpcode);
+            //    permitted[(int)OpCodes.Xor] = false;
+            //}
 
-            {
-                ulong[] inputs = { 0x0, 0x1111, 0x1 };
-                ulong[] outputs = { 0x1, 0x0, 0x0 };
-                permitted[(int)OpCodes.If0] = true;
-                ThreeArg sol = (ThreeArg)Utils.SolvePrototypeTree(inputs, outputs, ThreeArgProto, permitted);
-                Console.WriteLine("If0 output {0}, {1}, {2}, {3}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode, sol.Arg1.ComputedOpcode, sol.Arg2.ComputedOpcode);
-                permitted[(int)OpCodes.If0] = false;
-            }
+            //{
+            //    ulong[] inputs = { 0x0, 0x1111, 0x1 };
+            //    ulong[] outputs = { 0x1, 0x0, 0x0 };
+            //    permitted[(int)OpCodes.If0] = true;
+            //    ThreeArg sol = (ThreeArg)Utils.SolvePrototypeTree(inputs, outputs, ThreeArgProto, permitted);
+            //    Console.WriteLine("If0 output {0}, {1}, {2}, {3}", sol.ComputedOpcode, sol.Arg0.ComputedOpcode, sol.Arg1.ComputedOpcode, sol.Arg2.ComputedOpcode);
+            //    permitted[(int)OpCodes.If0] = false;
+            //}
 
         }
-
+/*
         static void Main2(string[] args)
         {
             bool[] permitted = new bool[Enum.GetValues(typeof(OpCodes)).Length];
@@ -800,5 +800,6 @@ namespace SATGeneratation
 
 
         }
+*/
     }
 }

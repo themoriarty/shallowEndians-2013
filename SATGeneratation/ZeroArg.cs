@@ -9,11 +9,11 @@ namespace SATGeneratation
 {
     public class ZeroArg : ArgNode
     {
-        public BoolExpr GenerateConstraints(Context ctx, Solver solver, BitVecExpr prInput, BitVecExpr prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
+        public BoolExpr GenerateConstraints(Context ctx, Solver solver, BitVecExpr[] prInput, BitVecExpr[] prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
         {
-            var oneCond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.One)), ctx.MkEq(Output, ctx.MkBV(1, 64)));
-            var zeroCond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Zero)), ctx.MkEq(Output, ctx.MkBV(0, 64)));
-            var inputCond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Input)), ctx.MkEq(Output, prInput));
+            var oneCond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.One)), EqAll(ctx, Output, ctx.MkBV(1, 64)));
+            var zeroCond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Zero)), EqAll(ctx, Output, ctx.MkBV(0, 64)));
+            var inputCond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Input)), EqAll(ctx, Output, prInput));
             List<BoolExpr> expressions = new List<BoolExpr>();
             if (permitted[(int)OpCodes.One])
             {
@@ -30,7 +30,7 @@ namespace SATGeneratation
             return ctx.MkOr(expressions.ToArray());
         }
 
-        public override void AddConstraints(Context ctx, Solver solver, BitVecExpr prInput, BitVecExpr prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
+        public override void AddConstraints(Context ctx, Solver solver, BitVecExpr[] prInput, BitVecExpr[] prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
         {
             solver.Assert(GenerateConstraints(ctx, solver, prInput, prOutput, permitted, nodes, curNodeIndex, tree));
         }

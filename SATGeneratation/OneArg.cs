@@ -22,28 +22,28 @@ namespace SATGeneratation
             return ctx.MkAnd(andExpressions.ToArray());
         }
 
-        public BoolExpr GenerateConstraints(Context ctx, Solver solver, BitVecExpr prInput, BitVecExpr prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
+        public BoolExpr GenerateConstraints(Context ctx, Solver solver, BitVecExpr[] prInput, BitVecExpr[] prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
         {
             List<BoolExpr> andExpressions = new List<BoolExpr>();
-            BitVecExpr arg0Output = ctx.MkBVConst(Name + "_bva0_", 64);
+            var arg0Output = GenerateOutputVars(ctx, Output.Length, Name + "_bva0_");
             if (Arg0 != null)
             {
-                andExpressions.Add(ctx.MkEq(Arg0.Output, arg0Output));
+                andExpressions.Add(EqAll(ctx, Arg0.Output, arg0Output));
             }
             else if (nodes != null && curNodeIndex != nodes.Count - 1)
             {
-                andExpressions.Add(ctx.MkEq(arg0Output, nodes[curNodeIndex + 1].Output));
+                andExpressions.Add(EqAll(ctx, arg0Output, nodes[curNodeIndex + 1].Output));
             }
             else
             {
                 andExpressions.Add(ctx.MkFalse());
             }
 
-            var notCond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Not)), ctx.MkEq(Output, ctx.MkBVNot(arg0Output)));
-            var shl1Cond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Shl1)), ctx.MkEq(Output, ctx.MkBVSHL(arg0Output, ctx.MkBV(1, 64))));
-            var shr1Cond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Shr1)), ctx.MkEq(Output, ctx.MkBVLSHR(arg0Output, ctx.MkBV(1, 64))));
-            var shr4Cond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Shr4)), ctx.MkEq(Output, ctx.MkBVLSHR(arg0Output, ctx.MkBV(4, 64))));
-            var shr16Cond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Shr16)), ctx.MkEq(Output, ctx.MkBVLSHR(arg0Output, ctx.MkBV(16, 64))));
+            var notCond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Not)), EqAll(ctx, Output, NotAll(ctx, arg0Output)));
+            var shl1Cond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Shl1)), EqAll(ctx, Output, ShlAll(ctx, arg0Output, ctx.MkBV(1, 64))));
+            var shr1Cond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Shr1)), EqAll(ctx, Output, ShrAll(ctx, arg0Output, ctx.MkBV(1, 64))));
+            var shr4Cond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Shr4)), EqAll(ctx, Output, ShrAll(ctx, arg0Output, ctx.MkBV(4, 64))));
+            var shr16Cond = ctx.MkAnd(ctx.MkEq(OpCode, ctx.MkInt((int)OpCodes.Shr16)), EqAll(ctx, Output, ShrAll(ctx, arg0Output, ctx.MkBV(16, 64))));
 
             List<BoolExpr> expressions = new List<BoolExpr>();
             if (permitted[(int)OpCodes.Not])
@@ -75,7 +75,7 @@ namespace SATGeneratation
             return ctx.MkAnd(andExpressions.ToArray());
         }
 
-        public override void AddConstraints(Context ctx, Solver solver, BitVecExpr prInput, BitVecExpr prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
+        public override void AddConstraints(Context ctx, Solver solver, BitVecExpr[] prInput, BitVecExpr[] prOutput, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
         {
             solver.Assert(GenerateConstraints(ctx, solver, prInput, prOutput, permitted, nodes, curNodeIndex, tree));
         }

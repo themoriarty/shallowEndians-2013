@@ -10,49 +10,49 @@ namespace SATGeneratation
     using Microsoft.Z3;
     public class Utils
     {
-        public static ArgNode CloneTreeStructure(ArgNode root, Context ctx, string nameSuffix)
+        public static ArgNode CloneTreeStructure(ArgNode root, Context ctx, string nameSuffix, int outLength)
         {
             if (root is ZeroArg)
             {
                 var ret = new ZeroArg();
-                ret.Initialize(ctx, root.Name + nameSuffix);
+                ret.Initialize(ctx, root.Name + nameSuffix, outLength);
                 return ret;
             }
             else if (root is OneArg)
             {
                 var ret = new OneArg();
-                ret.Initialize(ctx, root.Name + nameSuffix);
-                ret.Arg0 = CloneTreeStructure((root as OneArg).Arg0, ctx, nameSuffix);
+                ret.Initialize(ctx, root.Name + nameSuffix, outLength);
+                ret.Arg0 = CloneTreeStructure((root as OneArg).Arg0, ctx, nameSuffix, outLength);
                 return ret;
             }
             else if (root is TwoArg)
             {
                 var ret = new TwoArg();
-                ret.Initialize(ctx, root.Name + nameSuffix);
-                ret.Arg0 = CloneTreeStructure((root as TwoArg).Arg0, ctx, nameSuffix);
-                ret.Arg1 = CloneTreeStructure((root as TwoArg).Arg1, ctx, nameSuffix);
+                ret.Initialize(ctx, root.Name + nameSuffix, outLength);
+                ret.Arg0 = CloneTreeStructure((root as TwoArg).Arg0, ctx, nameSuffix, outLength);
+                ret.Arg1 = CloneTreeStructure((root as TwoArg).Arg1, ctx, nameSuffix, outLength);
                 return ret;
             }
             else if (root is ThreeArg)
             {
                 var ret = new ThreeArg();
-                ret.Initialize(ctx, root.Name + nameSuffix);
-                ret.Arg0 = CloneTreeStructure((root as ThreeArg).Arg0, ctx, nameSuffix);
-                ret.Arg1 = CloneTreeStructure((root as ThreeArg).Arg1, ctx, nameSuffix);
-                ret.Arg2 = CloneTreeStructure((root as ThreeArg).Arg2, ctx, nameSuffix);
+                ret.Initialize(ctx, root.Name + nameSuffix, outLength);
+                ret.Arg0 = CloneTreeStructure((root as ThreeArg).Arg0, ctx, nameSuffix, outLength);
+                ret.Arg1 = CloneTreeStructure((root as ThreeArg).Arg1, ctx, nameSuffix, outLength);
+                ret.Arg2 = CloneTreeStructure((root as ThreeArg).Arg2, ctx, nameSuffix, outLength);
                 return ret;
             }
             else if (root is MetaArgNode)
             {
                 var ret = new MetaArgNode();
-                ret.Initialize(ctx, root.Name + nameSuffix);
+                ret.Initialize(ctx, root.Name + nameSuffix, outLength);
                 return ret;
             }
 
             throw new InvalidProgramException("Unknown type " + root.GetType());
         }
 
-        public static void PopulateConstraints(ArgNode root, Context ctx, Solver solv, BitVecExpr input, BitVecExpr output, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
+        public static void PopulateConstraints(ArgNode root, Context ctx, Solver solv, BitVecExpr[] input, BitVecExpr[] output, bool[] permitted, List<ArgNode> nodes, int curNodeIndex, TreeStructure tree)
         {
             root.AddConstraints(ctx, solv, input, output, permitted, nodes, curNodeIndex, tree);
             foreach (ArgNode child in root.GetChildren())
@@ -67,7 +67,7 @@ namespace SATGeneratation
             var opcodeTop = (IntExpr)m.Evaluate(root.OpCode);
             root.ComputedOpcode = (OpCodes)Int32.Parse(opcodeTop.ToString());
             Console.WriteLine("Opcode for node " + root.Name + " is " + root.ComputedOpcode);
-            Console.WriteLine("Output for node " + root.Name + " is " + m.Evaluate(root.Output));
+            //Console.WriteLine("Output for node " + root.Name + " is " + m.Evaluate(root.Output));
             Console.WriteLine("Arity for node " + root.Name + " is " + m.Evaluate(root.Arity));
             foreach (ArgNode child in root.GetChildren())
             {
@@ -220,6 +220,10 @@ namespace SATGeneratation
             solv.Assert(ctx.MkOr(expressions.ToArray()));
         }
 
+        private static BitVecExpr[] NumbersToBitVec(Context ctx, ulong[] numbers)
+        {
+            return numbers.Select(x => ctx.MkBV(x, 64)).ToArray();
+        }
         public static List<ArgNode> SolveNodeArray(ulong[] inputs, ulong[] outputs, List<ArgNode> nodes, bool[] permitted)
         {
             if (inputs.Length == 0 || inputs.Length != outputs.Length)
@@ -230,41 +234,38 @@ namespace SATGeneratation
             using (Context ctx = new Context(new Dictionary<string, string>() { { "model", "true" } }))
             {
                 Solver s = ctx.MkSolver();
-                List<ArgNode>[] results = new List<ArgNode>[inputs.Length];
+                //List<ArgNode>[] results = new List<ArgNode>[inputs.Length];
                 TreeStructure tree = new TreeStructure(ctx, "progtree", nodes.Count);
                 s.Assert(tree.GetTreeLevelConstrains(ctx));
 
 
-                for (int i = 0; i < inputs.Length; ++i)
+                List<ArgNode> result = new List<ArgNode>();
+                foreach(ArgNode n in nodes)
                 {
-                    results[i] = new List<ArgNode>();
-                    foreach(ArgNode n in nodes)
-                    {
-                        results[i].Add(CloneTreeStructure(n, ctx, "_" + inputs[i]));
-                    }
-
-                    for(int j = 0; j < nodes.Count; ++j)
-                    {
-                        PopulateConstraints(results[i][j], ctx, s, ctx.MkBV(inputs[i], 64), ctx.MkBV(outputs[i], 64), permitted, results[i], j, tree);
-                    }
-                    s.Assert(ctx.MkEq(results[i][0].Output, ctx.MkBV(outputs[i], 64)));
+                    result.Add(CloneTreeStructure(n, ctx, "_input", outputs.Length));
                 }
 
-                // Makes multiple inputs work at the same time
-                for (int i = 1; i < inputs.Length; ++i)
+                for(int j = 0; j < nodes.Count; ++j)
                 {
-                    for (int j = 0; j < results[0].Count; ++j)
-                    {
-                        MakeNodeTypesEqual(ctx, s, results[0][j], results[i][j]);
-                    }
+                    PopulateConstraints(result[j], ctx, s, NumbersToBitVec(ctx, inputs), NumbersToBitVec(ctx, outputs), permitted, result, j, tree);
                 }
+                s.Assert(ArgNode.EqAll(ctx, result[0].Output, NumbersToBitVec(ctx, outputs)));
+
+                //// Makes multiple inputs work at the same time
+                //for (int i = 1; i < inputs.Length; ++i)
+                //{
+                //    for (int j = 0; j < results[0].Count; ++j)
+                //    {
+                //        MakeNodeTypesEqual(ctx, s, results[0][j], results[i][j]);
+                //    }
+                //}
 
                 // Input, 0 and 1 are always permitted
                 for (int i = (int)OpCodes.Input + 1; i < permitted.Length; ++i)
                 {
                     if (permitted[i])
                     {
-                        MakeSureOpcodeAppearsAtLeastOnce(ctx, s, results[0], (OpCodes)i);
+                        MakeSureOpcodeAppearsAtLeastOnce(ctx, s, result, (OpCodes)i);
                     }
                 }
 
@@ -283,20 +284,20 @@ namespace SATGeneratation
 
                     for (int i = 0; i < nodes.Count; ++i)
                     {
-                        Console.WriteLine("Node[{0}] = {1} Arity = {2}", i, (OpCodes)Int32.Parse(s.Model.Evaluate(results[0][i].OpCode).ToString()), s.Model.Evaluate(results[0][i].Arity));
+                        Console.WriteLine("Node[{0}] = {1} Arity = {2}", i, (OpCodes)Int32.Parse(s.Model.Evaluate(result[i].OpCode).ToString()), s.Model.Evaluate(result[i].Arity));
                     }
-                    PopulateSolution(results[0], s, tree);
+                    PopulateSolution(result, s, tree);
                 }
                 else
                 {
                     Console.WriteLine("Failure");
                 }
 
-                return results[0];
+                return result;
             }
 
         }
-
+        /*
         public static ArgNode SolvePrototypeTree(ulong[] inputs, ulong[] outputs, ArgNode prototypeTreeRoot, bool[] permitted)
         {
             if (inputs.Length == 0 || inputs.Length != outputs.Length)
@@ -343,5 +344,6 @@ namespace SATGeneratation
                 return results[0];
             }
         }
+         */
     }
 }

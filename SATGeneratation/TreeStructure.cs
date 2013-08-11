@@ -49,6 +49,14 @@
                 treeConstrains.Add(GetTreeLevelConstrains(ctx, i));
             }
 
+            //  OR
+            //      AND
+            //          TreeSize == 1
+            //          argcount[0] == 0
+            //      AND
+            //          TreeSize != 1
+            //          argcount[0] != 0
+            //
             treeConstrains.Add(
                 ctx.MkOr(
                     ctx.MkAnd(ctx.MkEq(ctx.MkInt(TreeSize), ctx.MkInt(1)), ctx.MkEq(ctx.MkSelect(ArgumentCount, ctx.MkInt(0)), ctx.MkInt(0))), 
@@ -59,15 +67,15 @@
             var argConstraints = new List<BoolExpr>();
             for (int i = 1; i < TreeSize; ++i)
             {
-                argConstraints.Add(ctx.MkLt((ArithExpr)ctx.MkSelect(ReverseLink, ctx.MkInt(i)), ctx.MkInt(TreeSize)));
-                argConstraints.Add(ctx.MkGe((ArithExpr)ctx.MkSelect(ReverseLink, ctx.MkInt(i)), ctx.MkInt(0)));
-
+                var parent = ctx.MkSelect(ReverseLink, ctx.MkInt(i));
+                argConstraints.Add(ctx.MkLt((ArithExpr)parent, ctx.MkInt(TreeSize)));
+                argConstraints.Add(ctx.MkGe((ArithExpr)parent, ctx.MkInt(0)));
 
                 var selInRevList = ctx.MkSelect(ReverseLink, ctx.MkInt(i));
                 var selPin = ctx.MkSelect(PinLink, ctx.MkInt(i));
-                var selParent1 = ctx.MkSelect(FwLink1, selInRevList);
-                var selParent2 = ctx.MkSelect(FwLink2, selInRevList);
-                var selParent3 = ctx.MkSelect(FwLink3, selInRevList);
+                var selParent1 = ctx.MkSelect(FwLink1, selInRevList); // first arg of the parent
+                var selParent2 = ctx.MkSelect(FwLink2, selInRevList); // second arg of the parent
+                var selParent3 = ctx.MkSelect(FwLink3, selInRevList); // third arg of the parent
                 var selParentArity = ctx.MkSelect(ArgumentCount, selInRevList);
                 // arity >= 1 And Pin = 0 And FwLink 1 = i
                 // arity >= 2 And Pin = 1 And FwLink 2 = i
@@ -85,9 +93,9 @@
 
 
                 flinkConsraints.Add(ctx.MkOr(
-                    ctx.MkAnd(arge1, pin0, ctx.MkEq(selParent1, ctx.MkInt(i))),
-                    ctx.MkAnd(arge2, pin1, ctx.MkEq(selParent2, ctx.MkInt(i))),
-                    ctx.MkAnd(arge3, pin2, ctx.MkEq(selParent3, ctx.MkInt(i)))
+                    ctx.MkAnd(arge1, pin0, ctx.MkEq(selParent1, ctx.MkInt(i))), // we are 0th arg of 1-, 2-, 3- arg parent
+                    ctx.MkAnd(arge2, pin1, ctx.MkEq(selParent2, ctx.MkInt(i))), // we are 1st arg of 2-, 3- arg parent
+                    ctx.MkAnd(arge3, pin2, ctx.MkEq(selParent3, ctx.MkInt(i)))  // we are 2nd arg of 3-arg parent
                     ));
 
                 // Ordering of flink
