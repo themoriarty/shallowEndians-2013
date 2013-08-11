@@ -1,0 +1,48 @@
+f6dX5VNxHEliYSphv2KnOPPT 16 if0, tfold, shr1, or
+ProgramId: f6dX5VNxHEliYSphv2KnOPPT
+Training: if0, or, shr1, tfold
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xD8E4755D6F460C1A, 0xC8DB19F5D56567AD, 0x0085F8373B347C2B, 0x0DB3935300645EEC, 0x0F6C74CF75
+29404A, 0x4BEB041E4DC2BEF4, 0x216AB546A8FE98B5, 0x1A84E410FE824686, 0xB7F866EFB48B57B4, 0xE7E1383679462410, 0x94C60A94BB4B1973, 0x10FF6DF188
+EE07D6, 0x4E5B3679C799A739}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0x00000000000000FF, 0x00000000000000D8, 0x00000000000000C8, 0x0000000000000000, 0x000000000000000D, 0x000000000
+000000F, 0x000000000000004B, 0x0000000000000021, 0x000000000000001A, 0x00000000000000B7, 0x00000000000000E7, 0x0000000000000094, 0x000000000
+0000010, 0x000000000000004E}
+Using BFS!
+Using PTreeGeneratorContainer - parallel
+Using FTreeGenerator!
+Using FTreeGenerator!
+Using FTreeGenerator!
+Using FTreeGenerator!
+Using FTreeGenerator!
+Using FTreeGenerator!
+Using FTreeGenerator!
+* computation completed in 0
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (or (if0 (if0 x1 x1 x1) x1 x1) (shr1 (shr1 0))))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+iwR3HhrnJq7T7MYiVXzzJwPg 16 if0, tfold, not, xor
+ProgramId: iwR3HhrnJq7T7MYiVXzzJwPg
+Training: if0, not, tfold, xor
+Input: {0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x4EEBF16E2198469F, 0xA986C998F78B9A65, 0xA2C57077E8DDF691, 0x3C6E1A9F8F3F3625, 0xE526A4724D
+1CFCBD, 0x707708E25622A01C, 0x2ED773588336EF20, 0x4BAE5BB138FCF580, 0xEC3738AD9C394E2C, 0x1DC06F4ED6CBF8D0, 0x4AE3EBE3AF6ECFBE, 0xC033EDA87D
+CCED24, 0xE8C2DBCE9329D7F2}
+HTTP response for URL http://icfpc2013.cloudapp.net/eval?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Output: {0x0000000000000000, 0x00000000000000FF, 0x000000000000004E, 0x00000000000000A9, 0x00000000000000A2, 0x000000000000003C, 0x000000000
+00000E5, 0x0000000000000070, 0x000000000000002E, 0x000000000000004B, 0x00000000000000EC, 0x000000000000001D, 0x000000000000004A, 0x000000000
+00000C0, 0x00000000000000E8}
+Using BFS!
+Using PTreeGeneratorContainer - parallel
+Using FTreeGenerator!
+Using FTreeGenerator!
+Using FTreeGenerator!
+Using FTreeGenerator!
+Using FTreeGenerator!
+Using FTreeGenerator!
+Using FTreeGenerator!
+* computation completed in 0
+Submitting: (lambda (x) (fold x 0 (lambda (x1 x2) (xor (if0 (if0 x1 x1 x1) x1 x1) (not (not 0))))))
+HTTP response for URL http://icfpc2013.cloudapp.net/guess?auth=0228lbnS6eUkEgnFKAvtWPCsjeEJsEBaBcMKA87KvpsH1H is OK - OK
+Gues: win
+cnt=2 cntSolved=2
+Press any key to continue . . .
