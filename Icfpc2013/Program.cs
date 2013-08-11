@@ -401,7 +401,7 @@
 
                 //if (solved.HasValue == false && size == 14 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none /* && Bits(ops) == 3*/)
                 //if (solved.HasValue == false && size == 12)
-                if (solved.HasValue == false && size == 15 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none && Bits(ops) == 5)
+                if (solved.HasValue == false && size < 15 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none/* && Bits(ops) == 5*/)
                 //if (id == "Jb6H9d6n4E9QUCnBGdMwDfQx")
                 //if (solved.HasValue == true && solved.Value == false && size < 12)
                 {
@@ -447,14 +447,14 @@
 
         public static void SolveSatOffline()
         {
-            const int judgesProgramSize = 15;
+            const int judgesProgramSize = 13;
 
             var programId = "6nE6n1FvE1QtnmOeriZCqv6O";
-            var operators = new[] { "if0", "not", "or", "plus", "shr16" };
+            var operators = new[] { "if0", "shr1", "shr4", "shr16", "plus" };
 
             // Solution: (lambda (x) (xor x (xor x (plus x x))))
-            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xD8E4755D6F460C1A, 0xC8DB19F5D56567AD };
-            ulong[] outputs = { 0x0000000000000000, 0x0000FFFFFFFFFFFD, 0xB1C8EABADE8C1834, 0x91B633EBAACACF5A };
+            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x097E6E055D07F036, 0xA30604E66793F909, 0x000000000001F8EC, 0x000000000003F4C2 };
+            ulong[] outputs = { 0x0000000000000000, 0x00FFFFFFFFFFFFFF, 0x00097E6E055D07F0, 0x00A30604E66793F9, 0x0000000000000218, 0x00000000000003F4 };
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
 
@@ -464,7 +464,6 @@
             //TreeStructure.UseFwLinks = false;
             var solution = SolveSat(judgesProgramSize, ops, inputs, outputs);
 
-
             var finalResult = solution != null ? solution.Serialize() : "NO RESULT";
 
             Console.WriteLine("Result: {0}, execution time: {1}", finalResult, DateTime.Now - startTime);
@@ -472,7 +471,7 @@
 
         public static bool SolveTrainingProgram(bool useSat)
         {
-            int judgesProgramSize = 14;
+            int judgesProgramSize = 11;
             var options = new[] { "tfold" };
             //options = new string[0];
             var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, options));

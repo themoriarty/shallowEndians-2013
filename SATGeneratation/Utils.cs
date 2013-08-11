@@ -233,7 +233,8 @@ namespace SATGeneratation
 
             using (Context ctx = new Context(new Dictionary<string, string>() { { "model", "true" } }))
             {
-                Solver s = ctx.MkSolver();
+                Tactic t = ctx.MkTactic("smt");
+                Solver s = ctx.MkSolver(t);
                 List<ArgNode>[] results = new List<ArgNode>[inputs.Length];
                 TreeStructure tree = new TreeStructure(ctx, "progtree", nodes.Count);
                 s.Assert(tree.GetTreeLevelConstrains(ctx));
@@ -266,7 +267,7 @@ namespace SATGeneratation
                 // Input, 0 and 1 are always permitted
                 for (int i = (int)OpCodes.Input + 1; i < permitted.Length; ++i)
                 {
-                    if (permitted[i])
+                    if (permitted[i] && i != (int)OpCodes.Input2)
                     {
                         MakeSureOpcodeAppearsAtLeastOnce(ctx, s, results[0], (OpCodes)i);
                     }
@@ -280,9 +281,9 @@ namespace SATGeneratation
 
                         Console.WriteLine("Success Tree");
 
-                        Console.WriteLine("ArgCount:\n" + s.Model.FuncInterp(tree.ArgumentCount.FuncDecl));
-                        Console.WriteLine("Revlinks:\n" + s.Model.FuncInterp(tree.ReverseLink.FuncDecl));
-                        Console.WriteLine("Pins:\n" + s.Model.FuncInterp(tree.PinLink.FuncDecl));
+                        //Console.WriteLine("ArgCount:\n" + s.Model.FuncInterp(tree.ArgumentCount.FuncDecl));
+                        //Console.WriteLine("Revlinks:\n" + s.Model.FuncInterp(tree.ReverseLink.FuncDecl));
+                        //Console.WriteLine("Pins:\n" + s.Model.FuncInterp(tree.PinLink.FuncDecl));
                         //Console.WriteLine("FW1:\n" + s.Model.FuncInterp(tree.FwLink1.FuncDecl));
 
                     for (int i = 0; i < nodes.Count; ++i)
@@ -311,7 +312,8 @@ namespace SATGeneratation
 
             using (Context ctx = new Context(new Dictionary<string, string>() { { "model", "true" } }))
             {
-                Solver s = ctx.MkSolver();
+                Tactic t = ctx.MkTactic("smt");
+                Solver s = ctx.MkSolver(t);
                 List<ArgNode>[] results = new List<ArgNode>[inputs.Length*8];
                 TreeStructure tree = new TreeStructure(ctx, "progtree", nodes.Count);
                 s.Assert(tree.GetTreeLevelConstrains(ctx));
@@ -367,7 +369,7 @@ namespace SATGeneratation
                 // Input, 0 and 1 are always permitted
                 for (int i = (int)OpCodes.Input + 1; i < permitted.Length; ++i)
                 {
-                    if (permitted[i])
+                    if (permitted[i] && i != (int)OpCodes.Input2)
                     {
                         MakeSureOpcodeAppearsAtLeastOnce(ctx, s, results[0], (OpCodes)i);
                     }
@@ -437,12 +439,11 @@ namespace SATGeneratation
                 // Input, 0 and 1 are always permitted
                 for (int i = (int)OpCodes.Input + 1; i < permitted.Length; ++i)
                 {
-                    if (permitted[i])
+                    if (permitted[i] && i != (int)OpCodes.Input2)
                     {
                         MakeSureOpcodeAppearsAtLeastOnce(ctx, s, results[0], (OpCodes)i);
                     }
                 }
-
 
                 if (s.Check() == Status.SATISFIABLE)
                 {
