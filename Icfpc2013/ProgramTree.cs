@@ -153,7 +153,49 @@ namespace Icfpc2013
             validNodes = new List<Node>();
             validFoldNodes = new List<Node>();
 
- 
+            if ((ops & OpTypes.fold) != OpTypes.none)
+            {
+                validNodes.Add(new NodeFold());
+            }
+
+            if ((ops & OpTypes.if0) != OpTypes.none)
+            {
+                var op = new NodeIf0();
+                validNodes.Add(op);
+                validFoldNodes.Add(op);
+            }
+
+            if ((ops & OpTypes.and) != OpTypes.none)
+            {
+                var op = new NodeOp2And();
+                validNodes.Add(op);
+                validFoldNodes.Add(op);
+            }
+
+            if ((ops & OpTypes.or) != OpTypes.none)
+            {
+                var op = new NodeOp2Or();
+                validNodes.Add(op);
+                validFoldNodes.Add(op);
+            }
+
+            if ((ops & OpTypes.xor) != OpTypes.none)
+            {
+                var op = new NodeOp2Xor();
+                validNodes.Add(op);
+                validFoldNodes.Add(op);
+            }
+
+            if ((ops & OpTypes.plus) != OpTypes.none)
+            {
+                var op = new NodeOp2Plus();
+                validNodes.Add(op);
+                validFoldNodes.Add(op);
+            }
+
+
+
+
             if (tfoldMode)
             {
                 validNodes.Add(new NodeId { Name = "x1" });
@@ -165,11 +207,6 @@ namespace Icfpc2013
                 validFoldNodes.Add(new NodeId { Name = "x1" });
                 validFoldNodes.Add(new NodeId { Name = "x2" });
             }
-
-            validNodes.Add(Node0.Instance);
-            validNodes.Add(Node1.Instance);
-            validFoldNodes.Add(Node0.Instance);
-            validFoldNodes.Add(Node1.Instance);
 
             if ((ops & OpTypes.not) != OpTypes.none)
             {
@@ -206,45 +243,10 @@ namespace Icfpc2013
                 validFoldNodes.Add(op);
             }
 
-            if ((ops & OpTypes.and) != OpTypes.none)
-            {
-                var op = new NodeOp2And();
-                validNodes.Add(op);
-                validFoldNodes.Add(op);
-            }
-
-            if ((ops & OpTypes.or) != OpTypes.none)
-            {
-                var op = new NodeOp2Or();
-                validNodes.Add(op);
-                validFoldNodes.Add(op);
-            }
-
-            if ((ops & OpTypes.xor) != OpTypes.none)
-            {
-                var op = new NodeOp2Xor();
-                validNodes.Add(op);
-                validFoldNodes.Add(op);
-            }
-
-            if ((ops & OpTypes.plus) != OpTypes.none)
-            {
-                var op = new NodeOp2Plus();
-                validNodes.Add(op);
-                validFoldNodes.Add(op);
-            }
-
-            if ((ops & OpTypes.if0) != OpTypes.none)
-            {
-                var op = new NodeIf0();
-                validNodes.Add(op);
-                validFoldNodes.Add(op);
-            }
-
-            if ((ops & OpTypes.fold) != OpTypes.none)
-            {
-                validNodes.Add(new NodeFold());
-            }
+            validNodes.Add(Node0.Instance);
+            validNodes.Add(Node1.Instance);
+            validFoldNodes.Add(Node0.Instance);
+            validFoldNodes.Add(Node1.Instance);
         }
 
         #endregion
