@@ -79,10 +79,10 @@
     <Compile Include="API\TrainRequest.cs" />
     <Compile Include="API\Utils.cs" />
     <Compile Include="Compiler.cs" />
-    <Compile Include="FTreeGenerator2.cs" />
     <Compile Include="DynamicTree.cs" />
     <Compile Include="FTreeGenerator.cs" />
     <Compile Include="ExecContext.cs" />
+    <Compile Include="IncrementingBT.cs" />
     <Compile Include="Ops\NodeOp3.cs" />
     <Compile Include="Ops\Lambda2.cs" />
     <Compile Include="Ops\Lambda1.cs" />
@@ -108,6 +108,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="ProgramTree.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PTreeGeneratorContainer.cs" />
     <Compile Include="Random.cs" />
     <Compile Include="TreeGenerator.cs" />
   </ItemGroup>

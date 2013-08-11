@@ -33,51 +33,7 @@
             return cnt;
         }
 
-        private static void Main4(string[] args)
-        {
-            const int judgesProgramSize = 7;
-            //var options = new string[] { "tfold" };
-            //var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, null));
-            //var programId = training.id;
-
-            //Console.WriteLine("Challenge: {0}", string.Join(", ", training.challenge));
-
-            //var operators = training.operators;
-
-            Solve("aW7PipK64krdEbU9OxYMoFV1", judgesProgramSize, new string[]{"or",
-        "plus",
-        "shl1"/*,
-        "xor"*/}, false);
-
-            //const int judgesProgramSize = 8;
-            //var programId = "9WqCcqFo4tIoJVnBm1OW9gFX";
-            //var operators = new string[] { "shr1", "shr4", "tfold" };
-
-            //Solve(programId, judgesProgramSize, operators);
-
-            //var todo = JArray.Parse(File.ReadAllText(@"..\..\..\..\myproblems.json"));
-
-            //foreach (var task in todo)
-            //{
-            //    //Console.WriteLine("\n");
-            //    var solved = (bool?)task["solved"];
-            //    var id = (string)task["id"];
-            //    var size = (int)task["size"];
-            //    var operators = task["operators"].Select(s => (string)s).ToArray();
-            //    var ops = ProgramTree.GetOpTypes(operators);
-
-            //    if (solved.HasValue == false && size == 8 && ((ops & (OpTypes.fold | OpTypes.if0)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.tfold)
-            //    {
-
-            //        Console.WriteLine("{0} {1} {2}", id, size, ops);
-
-            //        //Solve(id, size, operators);
-            //        //Thread.Sleep(20000);
-            //    }
-
-            //}
-        }
-
+        
         static IEnumerable<Node> AddOp(Node oldRoot, Node newNode)
         {
             Node ret = newNode.Clone();
@@ -131,12 +87,12 @@
             }
         }
 
-        static IEnumerable<Node> GenerateCorrectPrograms(List<Node> validNodes, int targetSize)
+        static IEnumerable<Node> GenerateCorrectPrograms(List<Node> validNodes, int targetSize, CancellationToken token)
         {
 
 #if true
-            var builder = new FTreeGenerator(validNodes, targetSize);
-            foreach (var root in builder.GenerateAllPrograms())
+            var builder = new PTreeGeneratorContainer(validNodes, targetSize);
+            foreach (var root in builder.GenerateAllPrograms(token))
             {
                 yield return root;
             }
@@ -345,7 +301,9 @@
                 programSize -= 4;
             }
 
-            foreach (var root in GenerateCorrectPrograms(ProgramTree.GetAvailableNodes(validOps, tfoldMode), programSize))
+            CancellationTokenSource cts = new CancellationTokenSource();
+
+            foreach (var root in GenerateCorrectPrograms(ProgramTree.GetAvailableNodes(validOps, tfoldMode), programSize, cts.Token))
             {
                 if (root.Size() == programSize)
                 {
@@ -388,12 +346,16 @@
 
                         if (currentOps == validOps)
                         {
+                            cts.Cancel();
+
                             var finalResult = new Lambda1 { Id0 = new NodeId { Name = "x" }, Node0 = solution };
                             return finalResult;
                         }
                     }
                 }
             }
+
+            cts.Cancel();
 
             return null;
         }
@@ -402,6 +364,8 @@
         {
             var todo = JArray.Parse(File.ReadAllText(@"..\..\..\..\myproblems.json"));
 
+            int cnt = 0;
+            int cntSolved = 0;
             foreach (var task in todo)
             {
                 var solved = (bool?)task["solved"];
@@ -410,43 +374,46 @@
                 var operators = task["operators"].Select(s => (string)s).ToArray();
                 var ops = ProgramTree.GetOpTypes(operators);
 
-                if (solved.HasValue == false && size < 12 && ((ops & (OpTypes.fold | OpTypes.if0)) == OpTypes.none) /*&& (ops & OpTypes.tfold) == OpTypes.tfold*/ /* && Bits(ops) == 3*/)
+                //if (solved.HasValue == false && size == 14 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none /* && Bits(ops) == 3*/)
+                //if (solved.HasValue == false && size == 12)
+                if (solved.HasValue == false && size == 15 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none && Bits(ops) == 5)
+                //if (id == "Jb6H9d6n4E9QUCnBGdMwDfQx")
+                //if (solved.HasValue == true && solved.Value == false && size < 12)
                 {
                     Console.WriteLine("{0} {1} {2}", id, size, ops);
 
-                    //Solve(id, size, operators);
+                    //if (Solve(id, size, operators, true))
+                    //{
+                    //    ++cntSolved;
+                    //}
                     //Thread.Sleep(20000);
+
+                    ++cnt;
                 }
             }
+
+            Console.WriteLine("cnt={0} cntSolved={1}", cnt, cntSolved);
         }
 
         public static void SolveOffline()
         {
-            const int judgesProgramSize = 11;
+            const int judgesProgramSize = 13;
 
-            var programId = "7eegF4nrTKkUz0fkrdnBwPvz";
-            var operators = new[] { "if0",
-        "plus",
-        "shr16",
-        "shr4",
-        "xor"};
-            
-            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x0580A1AB9001056D, 0x17FBEACECACE0709, 0x6E8E0097C68096A7, 0x50475BF54101FEE4, 0x880A7F62D368B805, 0xFDCFD29F7AE5550B };
-            ulong[] outputs = { 0x0000000000000000,
-        0x0000FFFFFFFFFFFF,
-        0x00000580A1AB9001,
-        0x000017FBEACECACE,
-        0x00006E8E0097C680,
-        0x000050475BF54101,
-        0x0000880A7F62D368,
-        0x0000FDCFD29F7AE5 };
+            var programId = "D9lVlxOdxauIiafOLkDS9om6";
+            var operators = new[] { "if0", "tfold", "shr4", "shr16", "or" };
+
+            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x8B8DCC5011923FDE, 0x22006E622C672963, 0x4801A2390D5DCD16, 0xC9F88E422EC10F4C, 0x3CB96DDBC67E6503, 0x8041DA9DBD03076B, 0x3C68DE0EADC71541, 0xD4495F0A40C44A3D, 0xA9473AF0FC289D30, 0x72AA449E32A22113, 0x25BB4BC62CEC41CE, 0x0C3278A9908842FD, 0x079044B1008C2FBE, 0x0700000000000000 };
+            ulong[] outputs = { 0x0000000000000000, 0x00000000000000FF, 0x000000000000008B, 0x0000000000000022, 0x0000000000000048, 0x00000000000000C9, 0x000000000000003C, 0x0000000000000080, 0x000000000000003C, 0x00000000000000D4, 0x00000000000000A9, 0x0000000000000072, 0x0000000000000025, 0x000000000000000C, 0x0000000000000007, 0x0000000000000000 };
 
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
 
+            Console.WriteLine("Input: {{{0}}}", string.Join(", ", inputs.Select(s => string.Format("0x{0:X16}", s)).ToArray()));
+            Console.WriteLine("Output: {{{0}}}", string.Join(", ", outputs.Select(s => string.Format("0x{0:X16}", s)).ToArray()));
+
+
             var ops = ProgramTree.GetOpTypes(operators);
 
-            
             var solution = Solve(judgesProgramSize, ops, inputs, outputs);
             var finalResult = solution != null ? solution.Serialize() : "NO RESULT";
 
@@ -464,7 +431,6 @@
 
             ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x097E6E055D07F036, 0xA30604E66793F909, 0x000000000001F8EC };
             ulong[] outputs = { 0x0000000000000000, 0x00FFFFFFFFFFFFFF, 0x00097E6E055D07F0, 0x00A30604E66793F9, 0x0000000000000218 };
-
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
 
@@ -485,9 +451,9 @@
 
         public static bool SolveTrainingProgram(bool useSat)
         {
-            int judgesProgramSize = 10;
+            int judgesProgramSize = 13;
             var options = new[] { "tfold" };
-            options = new string[0];
+            //options = new string[0];
             var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, options));
             var programId = training.id;
             Console.WriteLine("Challenge: {0}", string.Join(", ", training.challenge));
@@ -516,11 +482,19 @@
 
             var ops = ProgramTree.GetOpTypes(operators);
 
-            ulong[] inputs = ProgramTree.GetInputVectorList(8).ToArray(); //{0x12, 0x137};
+            ulong[] inputs = ProgramTree.GetInputVectorList(15).ToArray(); //{0x12, 0x137};
+
+            if (useSat)
+            {
+                Console.WriteLine("Reducing number of inputs...");
+                inputs = inputs.Take(4).ToArray();
+            }
+
             var inputStrings = inputs.Select(s => string.Format("0x{0:X16}", s)).ToArray();
 
             Console.WriteLine("Input: {{{0}}}", string.Join(", ", inputStrings));
 
+            var lastrequest = Stopwatch.StartNew();
             var outputsResponse = API.Eval(new EvalRequest(programId, null, inputStrings));
 
             if (outputsResponse.status != "ok" || outputsResponse.outputs == null)
@@ -549,7 +523,7 @@
                     {
                         Console.WriteLine("Using SAT!");
 
-                        if ((ops & OpTypes.if0) != OpTypes.none || judgesProgramSize > 8)
+                        if ((ops & OpTypes.if0) != OpTypes.none || judgesProgramSize > 0)
                         {
                             Console.WriteLine("Using SAT only!");
                             solution = SolveSat(judgesProgramSize, ops, inputs, outputs);
@@ -621,11 +595,13 @@
             var response = API.Guess(new Guess(programId, finalResult));
             Console.WriteLine("Gues: {0} {1} {2}", response.status, response.message, string.Join(", ", response.values ?? new string[] { }));
 
-            if (response.status == "mismatch" && useSat)
+            if (response.status == "mismatch")
             {
+                lastrequest.Restart();
+
                 while (response.status == "mismatch")
                 {
-                    Console.WriteLine("SAT MISMATCH!!!");
+                    Console.WriteLine("MISMATCH!!!");
                     var newInput = ulong.Parse(response.values[0].Replace("0x", string.Empty), NumberStyles.HexNumber);
                     var newOutput = ulong.Parse(response.values[1].Replace("0x", string.Empty), NumberStyles.HexNumber);
 
@@ -640,12 +616,33 @@
                     Console.WriteLine("New Input: {{{0}}}", string.Join(", ", inputs.Select(s => string.Format("0x{0:X16}", s)).ToArray()));
                     Console.WriteLine("New Output: {{{0}}}", string.Join(", ", outputs.Select(s => string.Format("0x{0:X16}", s)).ToArray()));
 
-                    solution = SolveSat(judgesProgramSize, ops, inputs, outputs);
+                    sw.Restart();
+                    if (useSat)
+                    {
+                        solution = SolveSat(judgesProgramSize, ops, inputs, outputs);
+                    }
+                    else
+                    {
+                        solution = Solve(judgesProgramSize, ops, inputs, outputs);
+                    }
+                    Console.WriteLine("* computation completed in {0}", sw.ElapsedMilliseconds / 1000);
+
                     finalResult = solution.Serialize();
+
+                    var elapsed = lastrequest.ElapsedMilliseconds;
+
+                    if (elapsed < 10000)
+                    {
+                        var sleepSecs = 10000 - (int)elapsed;
+                        Console.WriteLine("Wait for {0} msec before resubmitting result.", sleepSecs);
+                        Thread.Sleep(sleepSecs);
+                    }
 
                     Console.WriteLine("Submitting: {0}", finalResult);
                     response = API.Guess(new Guess(programId, finalResult));
                     Console.WriteLine("Gues: {0} {1} {2}", response.status, response.message, string.Join(", ", response.values ?? new string[] { }));
+
+                    lastrequest.Restart();
                 }
             }
 
