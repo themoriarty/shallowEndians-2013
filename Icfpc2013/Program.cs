@@ -196,7 +196,7 @@
 
             if (pos != res.Count)
             {
-                throw new Exception("pos != end");
+                //throw new Exception("pos != end");
             }
 
             var result = new ProgramTree { Program = new Lambda1 { Node0 = rootNode, Id0 = new NodeId { Name = "x" } } };
@@ -238,6 +238,8 @@
                 case OpCodes.Input:
                     return new NodeId() {Name = "x"};
                     break;
+                case OpCodes.Input2:
+                    return new NodeId() { Name = "y" };
                 case OpCodes.And:
                     node1 = BuildFromSat(solution, ref index);
                     node2 = BuildFromSat(solution, ref index);
@@ -428,19 +430,19 @@
             // Solution: (lambda (x) (xor x (xor x (plus x x))))
             ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0xD8E4755D6F460C1A, 0xC8DB19F5D56567AD };
             ulong[] outputs = { 0x0000000000000000, 0x0000FFFFFFFFFFFD, 0xB1C8EABADE8C1834, 0x91B633EBAACACF5A };
-
-            int reducesInputCount = 5;
-            inputs = inputs.Take(reducesInputCount).ToArray();
-            outputs = outputs.Take(reducesInputCount).ToArray();
-
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
 
             var ops = ProgramTree.GetOpTypes(operators);
 
             var startTime = DateTime.Now;
-
+            TreeStructure.UseFwLinks = false;
+            sw.Start();
             var solution = SolveSat(judgesProgramSize, ops, inputs, outputs);
+            sw.Stop();
+
+            Console.WriteLine("It took " + sw.ElapsedMilliseconds / 1000.0 + " sec\n\n");
+
             var finalResult = solution != null ? solution.Serialize() : "NO RESULT";
 
             Console.WriteLine("Result: {0}, execution time: {1}", finalResult, DateTime.Now - startTime);
@@ -466,7 +468,7 @@
 
         private static void Main(string[] args)
         {
-            //SolveTrainingProgram(false);
+            //SolveTrainingProgram(true);
             //SolveMyProblems();
             //SolveOffline();
             SolveSatOffline();

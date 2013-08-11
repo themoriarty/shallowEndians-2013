@@ -10,16 +10,17 @@ namespace SATGeneratation
     {
         Zero = 0,
         One = 1,
-        Input = 2,
-        And = 3,
-        Or = 4,
-        Xor = 5,
-        Plus = 6,
-        Not = 7,
-        Shl1 = 8,
-        Shr1 = 9,
-        Shr4 = 10,
-        Shr16 = 11,
-        If0 = 12
+        Input2 = 2,
+        Input = 3,
+        And = 4,
+        Or = 5,
+        Xor = 6,
+        Plus = 7,
+        Not = 8,
+        Shl1 = 9,
+        Shr1 = 10,
+        Shr4 = 11,
+        Shr16 = 12,
+        If0 = 13
     }
 }
