@@ -973,7 +973,8 @@
 
             int cnt = 0;
             int cntSolved = 0;
-            foreach (var task in todo)
+            var orderedList = todo.OrderBy(s => (int)s["size"]).ThenBy(s => s["operators"].Count()).ToList();
+            foreach (var task in orderedList)
             {
                 var solved = (bool?)task["solved"];
                 var id = (string)task["id"];
@@ -982,24 +983,26 @@
                 var ops = ProgramTree.GetOpTypes(operators);
 
                 //if (solved.HasValue == false && size == 17 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.tfold && Bits(ops) < 7)
-                //if (solved.HasValue == false && size < 14)
+                if (solved.HasValue == false && size < 15)
                 //if (solved.HasValue == false && size == 15 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none && Bits(ops) == 5)
-                if (id == "yLhLthAhzsROkibpnr8In656")
+                //if (id == "yLhLthAhzsROkibpnr8In656")
                 //if (solved.HasValue == true && solved.Value == false && size < 12)
                 {
                     Console.WriteLine("{0} {1} {2}", id, size, ops);
 
                     try
                     {
-                        if (SolveGbfs(id, size, operators))
-                        {
-                            Console.WriteLine("------------------------ SOLVED");
-                            ++cntSolved;
-                        }
-                        else
-                        {
-                            Console.WriteLine("------------------------ FAILED");
-                        }
+                        //if (SolveGbfs(id, size, operators))
+                        //{
+                        //    Console.WriteLine("------------------------ SOLVED");
+                        //    ++cntSolved;
+                        //}
+                        //else
+                        //{
+                        //    Console.WriteLine("------------------------ FAILED");
+                        //}
+                        // DEBUG
+                        //Thread.Sleep(5000);
                     }
                     catch (Exception ex)
                     {
@@ -1008,8 +1011,6 @@
                         Thread.Sleep(5000);
                     }
 
-                    // DEBUG
-                    Thread.Sleep(5000);
 
                     ++cnt;
                 }
