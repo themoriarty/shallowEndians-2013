@@ -111,13 +111,11 @@ namespace SATGeneratation
         {
             Model m = solv.Model;
             var revZ3 = m.FuncInterp(tree.ReverseLink.FuncDecl);
-            var pinsZ3 = m.FuncInterp(tree.PinLink.FuncDecl);
             int[] rev = new int[tree.TreeSize];
             int[] pins = new int[tree.TreeSize];
             for (int i = 0; i < rev.Length; ++i)
             {
                 rev[i] = Int32.Parse(revZ3.Else.ToString());
-                pins[i] = Int32.Parse(pinsZ3.Else.ToString());
             }
 
             for (int i = 0; i < revZ3.Entries.Length; ++i) 
@@ -125,9 +123,9 @@ namespace SATGeneratation
                 rev[Int32.Parse(revZ3.Entries[i].Args[0].ToString())] = Int32.Parse(revZ3.Entries[i].Value.ToString());
             }
 
-            for (int i = 0; i < pinsZ3.Entries.Length; ++i)
+            for (int i = 1; i < tree.PinLink.Length; ++i)
             {
-                pins[Int32.Parse(pinsZ3.Entries[i].Args[0].ToString())] = Int32.Parse(pinsZ3.Entries[i].Value.ToString());
+                pins[i] = Int32.Parse(m.Evaluate(tree.PinLink[i]).ToString());
             }
 
             int progIndex = 0;
@@ -292,7 +290,7 @@ namespace SATGeneratation
 
                         //Console.WriteLine("ArgCount:\n" + s.Model.FuncInterp(tree.ArgumentCount.FuncDecl));
                         //Console.WriteLine("Revlinks:\n" + s.Model.FuncInterp(tree.ReverseLink.FuncDecl));
-                        //Console.WriteLine("Pins:\n" + s.Model.FuncInterp(tree.PinLink.FuncDecl));
+                        //Console.WriteLine("Pins:\n" + string.Join(", ", tree.PinLink.Select(t => s.Model.Eval(t))));
                         //Console.WriteLine("FW1:\n" + s.Model.FuncInterp(tree.FwLink1.FuncDecl));
 
                     for (int i = 0; i < nodes.Count; ++i)
@@ -408,7 +406,7 @@ namespace SATGeneratation
 
                     Console.WriteLine("ArgCount:\n" + s.Model.FuncInterp(tree.ArgumentCount.FuncDecl));
                     Console.WriteLine("Revlinks:\n" + s.Model.FuncInterp(tree.ReverseLink.FuncDecl));
-                    Console.WriteLine("Pins:\n" + s.Model.FuncInterp(tree.PinLink.FuncDecl));
+                    //Console.WriteLine("Pins:\n" + string.Join(", ", tree.PinLink.Select(t => s.Model.Eval(t))));
                     //Console.WriteLine("FW1:\n" + s.Model.FuncInterp(tree.FwLink1.FuncDecl));
 
                     for (int i = 0; i < nodes.Count; ++i)

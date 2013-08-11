@@ -39,7 +39,7 @@ namespace SATGeneratation
                 {
                     var selNode = ctx.MkSelect(tree.ReverseLink, ctx.MkInt(i));
                     var eqCheck = ctx.MkEq(selNode, ctx.MkInt(curNodeIndex));
-                    var selPin = ctx.MkSelect(tree.PinLink, ctx.MkInt(i));
+                    var selPin = tree.PinLink[i];
                     var pinCheck = ctx.MkEq(selPin, ctx.MkInt(1));
 
                     orClauses.Add(ctx.MkAnd(pinCheck, eqCheck, ctx.MkEq(arg1Output, nodes[i].Output)));
@@ -72,7 +72,7 @@ namespace SATGeneratation
                 {
                     var selNode = ctx.MkSelect(tree.ReverseLink, ctx.MkInt(i));
                     var eqCheck = ctx.MkEq(selNode, ctx.MkInt(curNodeIndex));
-                    var selPin = ctx.MkSelect(tree.PinLink, ctx.MkInt(i));
+                    var selPin = tree.PinLink[i];
                     var pinCheck = ctx.MkEq(selPin, ctx.MkInt(2));
 
                     orClauses.Add(ctx.MkAnd(pinCheck, eqCheck, ctx.MkEq(arg2Output, nodes[i].Output)));

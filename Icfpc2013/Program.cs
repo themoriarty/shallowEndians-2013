@@ -87,15 +87,23 @@
             }
         }
 
-        static IEnumerable<Node> GenerateCorrectPrograms(List<Node> validNodes, int targetSize, CancellationToken token)
+        static IEnumerable<Node> GenerateCorrectPrograms(List<Node> validNodes, List<Node> validFoldNodes, int targetSize, Func<Node, bool> filter, CancellationToken token)
         {
 
 #if true
-            var builder = new PTreeGeneratorContainer(validNodes, targetSize);
+#if true
+            var builder = new PTreeGeneratorContainer(validNodes, validFoldNodes, targetSize, filter);
             foreach (var root in builder.GenerateAllPrograms(token))
             {
                 yield return root;
             }
+#else
+            var builder = new FTreeGenerator(validNodes, validFoldNodes, targetSize);
+            foreach (var root in builder.GenerateAllPrograms())
+            {
+                yield return root;
+            }
+#endif
 #else
 
             int bfsSize = targetSize > 5 ? 5 : targetSize;
@@ -194,14 +202,48 @@
                 permitted[(int)OpCodes.Input2] = true;
             }
 
-            List<ArgNode> res;
+            List<ArgNode> res = null;
             if (tfoldMode)
             {
-                TreeStructure.UseFwLinks = false;
-                res = SATGeneratation.Utils.SolveTFoldArray(inputs, outputs, nodes, permitted);
+                ulong[] processedInputs = new ulong[inputs.Length];
+                for (int i = 0; i < inputs.Length; ++i)
+                {
+                    unchecked
+                    {
+                        processedInputs[i] = (inputs[i] & (ulong)0xFF00000000000000) >> 56;
+                    }
+                }
+
+                List<ArgNode> res1 = null;
+                List<ArgNode> res2 = null;
+
+                List<ArgNode> inputNodes2 = new List<ArgNode>();
+                for (int i = 0; i < size; ++i)
+                {
+                    inputNodes2.Add(new MetaArgNode { Name = string.Format("bn{0}", i) });
+                }
+
+                bool runSimplerAssumptionFirst = false;
+                if (runSimplerAssumptionFirst)
+                {
+                    Console.WriteLine("Running simpler assumption for tfold SAT");
+                    res1 = SATGeneratation.Utils.SolveNodeArray(processedInputs, outputs, inputNodes2, permitted);
+                }
+                if(!(res1 == null || res1[0].ComputedOpcode == OpCodes.Zero))
+                {
+                    res = res1;
+                }
+                else
+                {
+                    if(runSimplerAssumptionFirst)
+                    {
+                        Console.WriteLine("SAT Tfold simple assumption failed, running complex tree");
+                    }
+                    res = SATGeneratation.Utils.SolveTFoldArray(inputs, outputs, inputNodes2, permitted);
+                }
             }
             else
-            {
+            {                
                 res = SATGeneratation.Utils.SolveNodeArray(inputs, outputs, nodes, permitted);
             }
             Console.Write("[Node array] And example output :::");
@@ -328,8 +370,67 @@
 
             CancellationTokenSource cts = new CancellationTokenSource();
 
-            foreach (var root in GenerateCorrectPrograms(ProgramTree.GetAvailableNodes(validOps, tfoldMode), programSize, cts.Token))
+            List<Node> validNodes;
+            List<Node> validFoldNodes;
+            ProgramTree.GetAvailableNodes(validOps, tfoldMode, out validNodes, out validFoldNodes);
+
+
+            Func<Node, bool> filter = (node) =>
+                {
+                    if (node.Size() != programSize)
+                    {
+                        return false;
+                    }
+
+                    var filterSolution = node;
+
+                    if (tfoldMode)
+                    {
+                        filterSolution = new NodeFold { Node0 = new NodeId { Name = "x" }, Node1 = new Node0(), Node2 = new Lambda2 { Id0 = new NodeId { Name = "x1" }, Id1 = new NodeId { Name = "x2" }, Node0 = node } };
+                    }
+
+                    bool filterValid = true;
+                    for (int i = 0; i < inputs.Length; ++i)
+                    {
+                        var ctx = new ExecContext();
+                        ctx.Vars["x"] = inputs[i];
+                        var output = filterSolution.Eval(ctx);
+                        if (output != outputs[i])
+                        {
+                            filterValid = false;
+                            break;
+                        }
+                    }
+
+                    if (filterValid)
+                    {
+                        var currentOps = OpTypes.none;
+                        filterSolution.Op(ref currentOps);
+
+                        if (tfoldMode)
+                        {
+                            currentOps &= ~OpTypes.fold;
+                            currentOps |= OpTypes.tfold;
+                        }
+
+                        if (currentOps == validOps)
+                        {
+                            return true;
+                        }
+                    }
+
+                    return false;
+
+                };
+
+            int index = 0;
+            foreach (var root in GenerateCorrectPrograms(validNodes, validFoldNodes, programSize, filter, cts.Token))
             {
+                //if (((++index) % 200000) == 0)
+                //{
+                //    Console.WriteLine("{0} {1}", root.Serialize(), root.Size());
+                //}
+
                 if (root.Size() == programSize)
                 {
                     var solution = root;
@@ -399,19 +500,19 @@
                 var operators = task["operators"].Select(s => (string)s).ToArray();
                 var ops = ProgramTree.GetOpTypes(operators);
 
-                //if (solved.HasValue == false && size == 14 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none /* && Bits(ops) == 3*/)
-                //if (solved.HasValue == false && size == 12)
-                if (solved.HasValue == false && size < 15 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none/* && Bits(ops) == 5*/)
+                if (solved.HasValue == false && size == 16 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.tfold /* && Bits(ops) < 5*/)
+                //if (solved.HasValue == false && size < 15)
+                //if (solved.HasValue == false && size == 15 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none && Bits(ops) == 5)
                 //if (id == "Jb6H9d6n4E9QUCnBGdMwDfQx")
                 //if (solved.HasValue == true && solved.Value == false && size < 12)
                 {
                     Console.WriteLine("{0} {1} {2}", id, size, ops);
 
-                    //if (Solve(id, size, operators, true))
-                    //{
-                    //    ++cntSolved;
-                    //}
-                    //Thread.Sleep(20000);
+                    if (Solve(id, size, operators, false))
+                    {
+                        ++cntSolved;
+                    }
+                    Thread.Sleep(20000);
 
                     ++cnt;
                 }
@@ -424,11 +525,11 @@
         {
             const int judgesProgramSize = 13;
 
-            var programId = "D9lVlxOdxauIiafOLkDS9om6";
-            var operators = new[] { "if0", "tfold", "shr4", "shr16", "or" };
+            var programId = "nZHmZcwRNbs0nZQrtqTenRAZ";
+            var operators = new[] { "fold", "not", "or", "shl1", "shr16" };
 
-            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x8B8DCC5011923FDE, 0x22006E622C672963, 0x4801A2390D5DCD16, 0xC9F88E422EC10F4C, 0x3CB96DDBC67E6503, 0x8041DA9DBD03076B, 0x3C68DE0EADC71541, 0xD4495F0A40C44A3D, 0xA9473AF0FC289D30, 0x72AA449E32A22113, 0x25BB4BC62CEC41CE, 0x0C3278A9908842FD, 0x079044B1008C2FBE, 0x0700000000000000 };
-            ulong[] outputs = { 0x0000000000000000, 0x00000000000000FF, 0x000000000000008B, 0x0000000000000022, 0x0000000000000048, 0x00000000000000C9, 0x000000000000003C, 0x0000000000000080, 0x000000000000003C, 0x00000000000000D4, 0x00000000000000A9, 0x0000000000000072, 0x0000000000000025, 0x000000000000000C, 0x0000000000000007, 0x0000000000000000 };
+            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x18096DBAA8CB0F8A, 0x5A03DC0159110794, 0xBF4D18DBD2DC49F1, 0x94100789E102FF0B, 0x3C5076D92EEFB498, 0x03FA893DD9A6F2EF, 0x72B925181C0BC875, 0x8C8E286BBB9C0CC2, 0x7B80D4ED4DC17DF7, 0x82817471E9E39FF9, 0x727BF3FCC16BFE05, 0xC6D194DACD6C7DFA, 0xA016ACC8C0E21964 };
+            ulong[] outputs = { 0x000000000000FFFE, 0xFFFFFFFFFFFFFFFE, 0x12DB7551961F7FFE, 0x07B802B2220FFFFE, 0x9A31B7A5B893FFFE, 0x200F13C205FEFFFE, 0xA0EDB25DDF6977FE, 0xF5127BB34DE5FFFE, 0x724A30381790FFFE, 0x1C50D7773819DFFE, 0x01A9DA9B82FBFFFE, 0x02E8E3D3C73FFFFE, 0xF7E7F982D7FC3FFE, 0xA329B59AD8FBFFFE, 0x2D599181C432FFFE };
 
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
@@ -439,10 +540,13 @@
 
             var ops = ProgramTree.GetOpTypes(operators);
 
+            var startTime = DateTime.Now;
+
             var solution = Solve(judgesProgramSize, ops, inputs, outputs);
+
             var finalResult = solution != null ? solution.Serialize() : "NO RESULT";
 
-            Console.WriteLine(finalResult);
+            Console.WriteLine("Result: {0}, execution time: {1}", finalResult, DateTime.Now - startTime);
         }
 
         public static void SolveSatOffline()
@@ -471,9 +575,9 @@
 
         public static bool SolveTrainingProgram(bool useSat)
         {
-            int judgesProgramSize = 20;
+            int judgesProgramSize = 10;
             var options = new[] { "tfold" };
-            options = new string[0];
+            //options = new string[0];
             var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, options));
             var programId = training.id;
             Console.WriteLine("Challenge: {0}", string.Join(", ", training.challenge));
@@ -535,8 +639,6 @@
 
             try
             {
-
-
                 if (useSat)
                 {
                     try

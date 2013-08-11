@@ -13,7 +13,14 @@
         {
             ArgumentCount = (ArrayExpr)ctx.MkConst(name + "a", ctx.MkArraySort(ctx.IntSort, ctx.IntSort));
             ReverseLink = (ArrayExpr)ctx.MkConst(name + "r", ctx.MkArraySort(ctx.IntSort, ctx.IntSort));
-            PinLink = (ArrayExpr)ctx.MkConst(name + "p", ctx.MkArraySort(ctx.IntSort, ctx.IntSort));
+            PinLink = new IntExpr[treeSize];
+
+            for (int i = 0; i < treeSize; i++)
+            {
+                PinLink[i] = ctx.MkIntConst(name + "p" + i.ToString());
+            }
+
+
             FwLink1 = (ArrayExpr)ctx.MkConst(name + "f1", ctx.MkArraySort(ctx.IntSort, ctx.IntSort));
             FwLink2 = (ArrayExpr)ctx.MkConst(name + "f2", ctx.MkArraySort(ctx.IntSort, ctx.IntSort));
             FwLink3 = (ArrayExpr)ctx.MkConst(name + "f3", ctx.MkArraySort(ctx.IntSort, ctx.IntSort));
@@ -27,7 +34,7 @@
 
         public ArrayExpr ArgumentCount { get; set; }
 
-        public ArrayExpr PinLink { get; set; }
+        public IntExpr[] PinLink { get; set; }
 
         public ArrayExpr ReverseLink { get; set; }
 
@@ -58,6 +65,18 @@
                     ctx.MkAnd(ctx.MkEq(ctx.MkInt(TreeSize), ctx.MkInt(1)), ctx.MkEq(ctx.MkSelect(ArgumentCount, ctx.MkInt(0)), ctx.MkInt(0))), 
                     ctx.MkAnd(ctx.MkNot(ctx.MkEq(ctx.MkInt(TreeSize), ctx.MkInt(1))), ctx.MkNot(ctx.MkEq(ctx.MkSelect(ArgumentCount, ctx.MkInt(0)), ctx.MkInt(0))))));
 
+            //for (int i = 0; i < TreeSize; ++i)
+            //{
+            //    treeConstrains.Add(ctx.MkGe((ArithExpr)ctx.MkSelect(ReverseLink, ctx.MkInt(i)), ctx.MkInt(0)));
+            //    treeConstrains.Add(ctx.MkGe((ArithExpr)ctx.MkSelect(FwLink1, ctx.MkInt(i)), ctx.MkInt(0)));
+            //    treeConstrains.Add(ctx.MkGe((ArithExpr)ctx.MkSelect(FwLink2, ctx.MkInt(i)), ctx.MkInt(0)));
+            //    treeConstrains.Add(ctx.MkGe((ArithExpr)ctx.MkSelect(FwLink3, ctx.MkInt(i)), ctx.MkInt(0)));
+            //    treeConstrains.Add(ctx.MkLt((ArithExpr)ctx.MkSelect(ReverseLink, ctx.MkInt(i)), ctx.MkInt(TreeSize)));
+            //    treeConstrains.Add(ctx.MkLt((ArithExpr)ctx.MkSelect(FwLink1, ctx.MkInt(i)), ctx.MkInt(TreeSize)));
+            //    treeConstrains.Add(ctx.MkLt((ArithExpr)ctx.MkSelect(FwLink2, ctx.MkInt(i)), ctx.MkInt(TreeSize)));
+            //    treeConstrains.Add(ctx.MkLt((ArithExpr)ctx.MkSelect(FwLink3, ctx.MkInt(i)), ctx.MkInt(TreeSize)));
+            //}
+
             // Make sure each node has at least one other one node pointing to it
             var flinkConsraints = new List<BoolExpr>();
             var argConstraints = new List<BoolExpr>();
@@ -66,11 +85,8 @@
                 argConstraints.Add(ctx.MkLt((ArithExpr)ctx.MkSelect(ReverseLink, ctx.MkInt(i)), ctx.MkInt(TreeSize)));
                 argConstraints.Add(ctx.MkGe((ArithExpr)ctx.MkSelect(ReverseLink, ctx.MkInt(i)), ctx.MkInt(0)));
 
-
-
-
                 var parIndex = ctx.MkSelect(ReverseLink, ctx.MkInt(i));
-                var selPin = ctx.MkSelect(PinLink, ctx.MkInt(i));
+                var selPin = PinLink[i];
                 var selParent1 = ctx.MkSelect(FwLink1, parIndex);
                 var selParent2 = ctx.MkSelect(FwLink2, parIndex);
                 var selParent3 = ctx.MkSelect(FwLink3, parIndex);
@@ -176,13 +192,15 @@
             // zero-argument node
             topLevel.Add(ctx.MkEq(asel, ctx.MkInt(0)));
 
+
+
             if (i < TreeSize - 1)
             {
                 // one-argument node
                 // reverse link of the next argument
                 var rsel = ctx.MkSelect(ReverseLink, ctx.MkInt(i + 1));
                 // pin of the next argument
-                var psel = ctx.MkSelect(PinLink, ctx.MkInt(i + 1));
+                var psel = PinLink[i + 1];
                 
                 // argsLevel == 1 AND next link is our childer AND next link is our 0th pin
                 topLevel.Add(ctx.MkAnd(ctx.MkEq(asel, ctx.MkInt(1)), ctx.MkEq(rsel, ctx.MkInt(i)), ctx.MkEq(psel, ctx.MkInt(0))));
@@ -195,7 +213,7 @@
                     for (int j = i + 2; j < TreeSize; ++j)
                     {
                         var reverseJth = ctx.MkSelect(ReverseLink, ctx.MkInt(j));
-                        var pinJth = ctx.MkSelect(PinLink, ctx.MkInt(j));
+                        var pinJth = PinLink[j];
                         // jth node is our childer AND it's our 1st pin [ 1 ]
                         secondLevel.Add(ctx.MkAnd(ctx.MkEq(reverseJth, ctx.MkInt(i)), ctx.MkEq(pinJth, ctx.MkInt(1))));
                     }
@@ -211,19 +229,19 @@
                         for (int j = i + 2; j < TreeSize - 1; ++j)
                         {
                             var fourthLevelPart1 = ctx.MkEq(ctx.MkSelect(ReverseLink, ctx.MkInt(j)), ctx.MkInt(i));
-                            var fourthLevelPart2 = ctx.MkEq(ctx.MkSelect(PinLink, ctx.MkInt(j)), ctx.MkInt(1));
+                            var fourthLevelPart2 = ctx.MkEq(PinLink[j], ctx.MkInt(1));
                             var fourthLevelPart3 = new List<BoolExpr>();
 
                             for (int k = j + 1; k < TreeSize; ++k)
                             {
-                                fourthLevelPart3.Add(ctx.MkAnd(ctx.MkEq(ctx.MkSelect(ReverseLink, ctx.MkInt(k)), ctx.MkInt(i)), ctx.MkEq(ctx.MkSelect(PinLink, ctx.MkInt(k)), ctx.MkInt(2))));
+                                fourthLevelPart3.Add(ctx.MkAnd(ctx.MkEq(ctx.MkSelect(ReverseLink, ctx.MkInt(k)), ctx.MkInt(i)), ctx.MkEq(PinLink[k], ctx.MkInt(2))));
                             }
                             thirdLevel.Add(ctx.MkAnd(fourthLevelPart1, fourthLevelPart2, fourthLevelPart3.Count > 1 ? ctx.MkOr(fourthLevelPart3.ToArray()) : fourthLevelPart3.First()));
                         }
 
                         topLevel.Add(ctx.MkAnd(
                             ctx.MkEq(asel, ctx.MkInt(3)), 
-                            ctx.MkEq(rsel, ctx.MkInt(i)), 
+                            ctx.MkEq(rsel, ctx.MkInt(i)),
                             ctx.MkEq(psel, ctx.MkInt(0)), 
                             thirdLevel.Count > 0 ? ctx.MkOr(thirdLevel.ToArray()) : ctx.MkFalse()));
                     }

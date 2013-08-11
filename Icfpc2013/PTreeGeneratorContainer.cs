@@ -18,16 +18,21 @@ namespace Icfpc2013
 
         // TODO: Change order valid operations
         private readonly List<Node> ValidNodes;
+        private readonly List<Node> ValidFoldNodes;
+
+        private readonly Func<Node, bool> filter;
 
         #endregion
 
         #region Constructors and Destructors
 
-        public PTreeGeneratorContainer(List<Node> validNodes, int maxDepth)
+        public PTreeGeneratorContainer(List<Node> validNodes, List<Node> validFoldNodes, int maxDepth, Func<Node, bool> filter)
         {
             Console.WriteLine("Using PTreeGeneratorContainer - parallel");
             ValidNodes = validNodes;
+            ValidFoldNodes = validFoldNodes;
             MaxDepth = maxDepth;
+            this.filter = filter;
         }
 
         #endregion
@@ -46,7 +51,7 @@ namespace Icfpc2013
             for (int i=0; i< ValidNodes.Count; i++)
             {
                 var node = ValidNodes[i];
-                tasks[i] = Task.Factory.StartNew(() => GetPartialResult(ValidNodes, node, MaxDepth, token));
+                tasks[i] = Task.Factory.StartNew(() => GetPartialResult(ValidNodes, ValidFoldNodes, node, MaxDepth, token));
             }
 
             do
@@ -80,15 +85,15 @@ namespace Icfpc2013
 
         private ConcurrentQueue<Node> candidates = new ConcurrentQueue<Node>();
 
-        private void GetPartialResult(List<Node> validNodes, Node node, int maxDepth, CancellationToken token)
+        private void GetPartialResult(List<Node> validNodes, List<Node> validFoldNodes, Node node, int maxDepth, CancellationToken token)
         {
             var ret = new List<Node>();
 
-            var builder = new FTreeGenerator(validNodes, maxDepth);
+            var builder = new FTreeGenerator(validNodes, validFoldNodes, maxDepth);
 
             foreach (var subtree in builder.GetNLevelTree(node, MaxDepth))
             {
-                lock (candidates)
+                if (filter(subtree))
                 {
                     candidates.Enqueue(subtree);
                 }
