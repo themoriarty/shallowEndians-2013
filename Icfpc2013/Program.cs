@@ -240,7 +240,7 @@
 
             if (pos != res.Count)
             {
-                throw new Exception("pos != end");
+                //throw new Exception("pos != end");
             }
 
             var result = new ProgramTree { Program = new Lambda1 { Node0 = rootNode, Id0 = new NodeId { Name = "x" } } };
@@ -282,6 +282,8 @@
                 case OpCodes.Input:
                     return new NodeId() {Name = "x"};
                     break;
+                case OpCodes.Input2:
+                    return new NodeId() { Name = "y" };
                 case OpCodes.And:
                     node1 = BuildFromSat(solution, ref index);
                     node2 = BuildFromSat(solution, ref index);
@@ -453,23 +455,29 @@
 
         public static void SolveSatOffline()
         {
-            const int judgesProgramSize = 8;
+            const int judgesProgramSize = 12;
 
-            var programId = "GBUTtMTIADxBecgU35jl63us";
-            var operators = new[] { "plus", "xor" };
+            var programId = "pT0hM36gGHADqBPNOYK0hkkq";
+            var operators = new[] { "if0", "plus", "shr1", "shr16", "shr4" };
 
             // Solution: (lambda (x) (xor x (xor x (plus x x))))
 
-            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x23A282379AF7850C, 0xF3D35174C949BB0D, 0xFE7C0264DF27E86F, 0x06CC691C9D9CD006, 0xE809CD0767D69590, 0x736D7A70B0B2534C };
-            ulong[] outputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFE, 0x4745046F35EF0A18, 0xE7A6A2E99293761A, 0xFCF804C9BE4FD0DE, 0x0D98D2393B39A00C, 0xD0139A0ECFAD2B20, 0xE6DAF4E16164A698 };
+            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x097E6E055D07F036, 0xA30604E66793F909, 0x000000000001F8EC };
+            ulong[] outputs = { 0x0000000000000000, 0x00FFFFFFFFFFFFFF, 0x00097E6E055D07F0, 0x00A30604E66793F9, 0x0000000000000218 };
 
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
 
             var ops = ProgramTree.GetOpTypes(operators);
 
-
+            Stopwatch sw = new Stopwatch();
+            TreeStructure.UseFwLinks = false;
+            sw.Start();
             var solution = SolveSat(judgesProgramSize, ops, inputs, outputs);
+            sw.Stop();
+
+            Console.WriteLine("It took " + sw.ElapsedMilliseconds / 1000.0 + " sec\n\n");
+
             var finalResult = solution != null ? solution.Serialize() : "NO RESULT";
 
             Console.WriteLine(finalResult);
@@ -495,10 +503,10 @@
 
         private static void Main(string[] args)
         {
-            SolveTrainingProgram(true);
+            //SolveTrainingProgram(true);
             //SolveMyProblems();
             //SolveOffline();
-            //SolveSatOffline();
+            SolveSatOffline();
         }
         
         private static bool Solve(string programId, int judgesProgramSize, string[] operators, bool useSat)
