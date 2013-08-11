@@ -131,10 +131,12 @@
             b.Append(prodId);
             b.Append("\n");
             b.Append(progSize);
-            b.Append("\n\n");
-            b.Append(string.Join(" ", inputs));
             b.Append("\n");
-            b.Append(string.Join(" ", outputs));
+            b.Append(string.Join(" ", ops));
+            b.Append("\n");
+            b.Append(string.Join(" ", inputs.Select(s => string.Format("0x{0:X16}", s))));
+            b.Append("\n");
+            b.Append(string.Join(" ", outputs.Select(s => string.Format("0x{0:X16}", s))));
 
             return b.ToString();
         }
@@ -682,13 +684,21 @@
 
         public static void SolveGbfsOffline()
         {
-            const int judgesProgramSize = 13;
+            //const int judgesProgramSize = 13;
 
-            var programId = "nZHmZcwRNbs0nZQrtqTenRAZ";
-            var operators = new[] { "fold", "not", "or", "shl1", "shr16" };
+            //var programId = "nZHmZcwRNbs0nZQrtqTenRAZ";
+            //var operators = new[] { "fold", "not", "or", "shl1", "shr16" };
 
-            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x18096DBAA8CB0F8A, 0x5A03DC0159110794, 0xBF4D18DBD2DC49F1, 0x94100789E102FF0B, 0x3C5076D92EEFB498, 0x03FA893DD9A6F2EF, 0x72B925181C0BC875, 0x8C8E286BBB9C0CC2, 0x7B80D4ED4DC17DF7, 0x82817471E9E39FF9, 0x727BF3FCC16BFE05, 0xC6D194DACD6C7DFA, 0xA016ACC8C0E21964 };
-            ulong[] outputs = { 0x000000000000FFFE, 0xFFFFFFFFFFFFFFFE, 0x12DB7551961F7FFE, 0x07B802B2220FFFFE, 0x9A31B7A5B893FFFE, 0x200F13C205FEFFFE, 0xA0EDB25DDF6977FE, 0xF5127BB34DE5FFFE, 0x724A30381790FFFE, 0x1C50D7773819DFFE, 0x01A9DA9B82FBFFFE, 0x02E8E3D3C73FFFFE, 0xF7E7F982D7FC3FFE, 0xA329B59AD8FBFFFE, 0x2D599181C432FFFE };
+            //ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x18096DBAA8CB0F8A, 0x5A03DC0159110794, 0xBF4D18DBD2DC49F1, 0x94100789E102FF0B, 0x3C5076D92EEFB498, 0x03FA893DD9A6F2EF, 0x72B925181C0BC875, 0x8C8E286BBB9C0CC2, 0x7B80D4ED4DC17DF7, 0x82817471E9E39FF9, 0x727BF3FCC16BFE05, 0xC6D194DACD6C7DFA, 0xA016ACC8C0E21964 };
+            //ulong[] outputs = { 0x000000000000FFFE, 0xFFFFFFFFFFFFFFFE, 0x12DB7551961F7FFE, 0x07B802B2220FFFFE, 0x9A31B7A5B893FFFE, 0x200F13C205FEFFFE, 0xA0EDB25DDF6977FE, 0xF5127BB34DE5FFFE, 0x724A30381790FFFE, 0x1C50D7773819DFFE, 0x01A9DA9B82FBFFFE, 0x02E8E3D3C73FFFFE, 0xF7E7F982D7FC3FFE, 0xA329B59AD8FBFFFE, 0x2D599181C432FFFE };
+
+            const int judgesProgramSize = 4;
+
+            var programId = "xWHFGVIxpGkd1vHe0iwePfok";
+            var operators = new[] { "shl1", "shr4" };
+
+            ulong[] inputs = {0x0000000000000000, 0x0000000000000001, 0x0000000000000002, 0x0000000000000003, 0x0000000000000004, 0x0000000000000005, 0x0000000000000006, 0x0000000000000007, 0x0000000000000008, 0x0000000000000009, 0x000000000000000A, 0x000000000000000B, 0x000000000000000C, 0x000000000000000D, 0x000000000000000E, 0x000000000000000F};
+            ulong[] outputs = {0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001};
 
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
@@ -702,7 +712,7 @@
             var startTime = DateTime.Now;
 
             //SolverContinuationWrapper solver = new BfsSolverContinuationWrapper(judgesProgramSize, ops, inputs, outputs, FilterSolution, (n) => OfflineChecker(programId, n));
-            SolverContinuationWrapper solver = new SatSolverContinuationWrapper(judgesProgramSize, ops, inputs, outputs, FilterSolution, (n) => OfflineChecker(programId, n));
+            SolverContinuationWrapper solver = new SatSolverContinuationWrapper(judgesProgramSize, ops, operators, inputs, outputs, FilterSolution, (n) => OfflineChecker(programId, n));
 
             var solution = solver.Run();
 

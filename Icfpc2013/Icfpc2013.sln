@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SATGeneratation", "..\SATGe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SolverTests", "..\SolverTests\SolverTests.csproj", "{91E66EC6-D0D0-41C6-9533-79671C7DD392}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SatSolverRunner", "..\SatSolverRunner\SatSolverRunner.csproj", "{B2D3E795-0DEA-46E9-976C-C94CE65CBF2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,14 @@ Global
 		{91E66EC6-D0D0-41C6-9533-79671C7DD392}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91E66EC6-D0D0-41C6-9533-79671C7DD392}.Release|Any CPU.Build.0 = Release|Any CPU
 		{91E66EC6-D0D0-41C6-9533-79671C7DD392}.Release|x64.ActiveCfg = Release|Any CPU
+		{B2D3E795-0DEA-46E9-976C-C94CE65CBF2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2D3E795-0DEA-46E9-976C-C94CE65CBF2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2D3E795-0DEA-46E9-976C-C94CE65CBF2D}.Debug|x64.ActiveCfg = Debug|x64
+		{B2D3E795-0DEA-46E9-976C-C94CE65CBF2D}.Debug|x64.Build.0 = Debug|x64
+		{B2D3E795-0DEA-46E9-976C-C94CE65CBF2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2D3E795-0DEA-46E9-976C-C94CE65CBF2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2D3E795-0DEA-46E9-976C-C94CE65CBF2D}.Release|x64.ActiveCfg = Release|x64
+		{B2D3E795-0DEA-46E9-976C-C94CE65CBF2D}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

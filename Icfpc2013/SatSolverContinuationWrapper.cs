@@ -2,6 +2,8 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.IO;
     using System.Threading;
 
     using Icfpc2013.Ops;
@@ -20,23 +22,16 @@
 
         private int programSize;
 
+        private string[] operators;
+
         #endregion
 
         #region Constructors and Destructors
 
-        public SatSolverContinuationWrapper(int judgesProgramSize, OpTypes validOps, ulong[] inputs, ulong[] outputs, Func<ulong[], ulong[], Node, bool> filter, Func<Node, Tuple<bool, bool, ulong, ulong>> checker)
+        public SatSolverContinuationWrapper(int judgesProgramSize, OpTypes validOps, string[] operators, ulong[] inputs, ulong[] outputs, Func<ulong[], ulong[], Node, bool> filter, Func<Node, Tuple<bool, bool, ulong, ulong>> checker)
             : base(judgesProgramSize, validOps, inputs, outputs, filter, checker)
         {
-            programSize = judgesProgramSize - 1;
-
-            tfoldMode = false;
-            if ((validOps & OpTypes.tfold) != OpTypes.none)
-            {
-                tfoldMode = true;
-                programSize -= 4;
-            }
-
-            ProgramTree.GetAvailableNodes(validOps, tfoldMode, out validNodes, out validFoldNodes);
+            this.operators = operators;
         }
 
         #endregion
@@ -45,87 +40,45 @@
 
         protected override Tuple<bool,bool, ulong, ulong> CheckerImpl(Node node)
         {
-            var filterSolution = node;
-
-            if (tfoldMode)
-            {
-                filterSolution = new NodeFold { Node0 = new NodeId { Name = "x" }, Node1 = new Node0(), Node2 = new Lambda2 { Id0 = new NodeId { Name = "x1" }, Id1 = new NodeId { Name = "x2" }, Node0 = node } };
-            }
-
             if (Canceled)
             {
                 return new Tuple<bool, bool, ulong, ulong>(false, false, 0, 0);
             }
 
-            return Checker(filterSolution);
+            return Checker(node);
         }
 
-        protected override bool FilterImpl(ulong[] testInputs, ulong[] testOutputs, Node node)
-        {
-            if (node.Size() != programSize)
-            {
-                return false;
-            }
-
-            var filterSolution = node;
-
-            if (tfoldMode)
-            {
-                filterSolution = new NodeFold { Node0 = new NodeId { Name = "x" }, Node1 = new Node0(), Node2 = new Lambda2 { Id0 = new NodeId { Name = "x1" }, Id1 = new NodeId { Name = "x2" }, Node0 = node } };
-            }
-
-            bool filterValid = Filter(testInputs, testOutputs, filterSolution);
-
-            if (filterValid)
-            {
-                var currentOps = OpTypes.none;
-                filterSolution.Op(ref currentOps);
-
-                if (tfoldMode)
-                {
-                    currentOps &= ~OpTypes.fold;
-                    currentOps |= OpTypes.tfold;
-                }
-
-                if (currentOps == ValidOps)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-        
         protected override IEnumerable<Node> RunImpl()
         {
-#if true
-#if true
-            var builder = new PTreeGeneratorContainer(validNodes, validFoldNodes, programSize, (node) => this.FilterImpl(Inputs, Outputs, node));
-            foreach (var root in builder.GenerateAllPrograms(cts.Token))
+            Process p = new Process
             {
-                yield return root;
-            }
-#else
-            var builder = new FTreeGenerator(validNodes, validFoldNodes, programSize);
-            foreach (var root in builder.GenerateAllPrograms())
-            {
-                yield return root;
-            }
-#endif
-#else
-
-            int bfsSize = targetSize > 5 ? 5 : targetSize;
-            var builder = new TreeGenerator(validNodes, bfsSize);
-            foreach (var root in builder.GenerateAllPrograms().Where(x => x.Size() >= bfsSize - 1))
-            {                
-                foreach (var p in GenerateProgramsOfCorrectSize(targetSize, targetSize, root, validNodes))
+                StartInfo = new ProcessStartInfo
                 {
-                    //Console.WriteLine("{0} -> {1}", root.Serialize(), p.Serialize());
-                    yield return p;
+                    CreateNoWindow = true,
+                    FileName = @"..\..\..\..\SatSolverRunner\bin\x64\Release\SatSolverRunner.exe",
+                    RedirectStandardInput = true,
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false
                 }
-                //yield break;
-            }
-#endif
+            };
+
+            p.Start();
+            StreamWriter sw = p.StandardInput;
+            StreamReader sr = p.StandardOutput;
+
+            var start = Program.GenerateOutput("dummy", JudgesProgramSize, operators, Inputs, Outputs);
+
+            sw.WriteLine(start);
+
+            string output = sr.ReadLine();
+            Console.WriteLine("output=<<" + output + ">>");
+            
+            yield break;
+
+            //p.WaitForExit();
+            //p.Close();
+
+
         }
 
         protected override void StopImpl()
