@@ -32,7 +32,6 @@
 
             return cnt;
         }
-
         
         static IEnumerable<Node> AddOp(Node oldRoot, Node newNode)
         {
@@ -541,26 +540,32 @@
 
         private static DateTime requestWindowStart = DateTime.MinValue;
 
+        private static object throttleLock = new object(); 
+
         private static void Throttle()
         {
             Console.WriteLine("******************** {0} {1} {2}", DateTime.UtcNow, requestWindowStart, requestsInWindows);
-            if (requestWindowStart == DateTime.MinValue || (DateTime.UtcNow - requestWindowStart).TotalSeconds >= 20)
+
+            lock (throttleLock)
             {
-                requestsInWindows = 0;
-                requestWindowStart = DateTime.UtcNow;
-            }
+                if (requestWindowStart == DateTime.MinValue || (DateTime.UtcNow - requestWindowStart).TotalSeconds >= 20)
+                {
+                    requestsInWindows = 0;
+                    requestWindowStart = DateTime.UtcNow;
+                }
 
-            ++requestsInWindows;
+                ++requestsInWindows;
 
-            if (requestsInWindows > 3)
-            {
-                var sleepMs = (int)(20000 - (DateTime.UtcNow - requestWindowStart).TotalSeconds);
-                Console.WriteLine("Throttling. Sleeping {0} seconds", sleepMs / 1000);
+                if (requestsInWindows > 3)
+                {
+                    var sleepMs = (int)(20000 - (DateTime.UtcNow - requestWindowStart).TotalSeconds);
+                    Console.WriteLine("Throttling. Sleeping {0} seconds", sleepMs / 1000);
 
-                Thread.Sleep(sleepMs);
+                    Thread.Sleep(sleepMs);
 
-                requestsInWindows = 0;
-                requestWindowStart = DateTime.UtcNow;
+                    requestsInWindows = 0;
+                    requestWindowStart = DateTime.UtcNow;
+                }
             }
 
             Console.WriteLine("==================== {0} {1} {2}", DateTime.UtcNow, requestWindowStart, requestsInWindows);
@@ -663,19 +668,8 @@
             return Solve(programId, judgesProgramSize, operators, useSat);
         }
 
-        public static bool SolveGbfsTrainingProgram()
+        private static bool SolveGbfs(string programId, int judgesProgramSize, string[] operators)
         {
-            int judgesProgramSize = 6;
-            var options = new string[] { };
-
-            Throttle();
-            var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, options));
-            
-            var programId = training.id;
-
-            var operators = training.operators;
-            judgesProgramSize = (int)training.size;
-
             ulong[] inputs = ProgramTree.GetInputVectorList(15).ToArray(); //{0x12, 0x137};
             var inputStrings = inputs.Select(s => string.Format("0x{0:X16}", s)).ToArray();
 
@@ -686,7 +680,7 @@
             {
                 throw new Exception("eval failed");
             }
-            
+
             ulong[] outputs = outputsResponse.outputs.Select(s => ulong.Parse(s.Replace("0x", string.Empty), NumberStyles.HexNumber)).ToArray();
 
 
@@ -695,7 +689,7 @@
 
             Console.WriteLine("Input: {{{0}}}", string.Join(", ", inputs.Select(s => string.Format("0x{0:X16}", s)).ToArray()));
             Console.WriteLine("Output: {{{0}}}", string.Join(", ", outputs.Select(s => string.Format("0x{0:X16}", s)).ToArray()));
-            
+
             var ops = ProgramTree.GetOpTypes(operators);
 
             var startTime = DateTime.Now;
@@ -714,7 +708,7 @@
 
             while (tasks.Count > 0)
             {
-                var completed = Task.WaitAny(tasks.ToArray(), TimeSpan.FromSeconds(5*60));
+                var completed = Task.WaitAny(tasks.ToArray(), TimeSpan.FromSeconds(5 * 60));
 
                 var task = (Task<Lambda1>)tasks[completed];
 
@@ -744,6 +738,22 @@
             return solution != null;
         }
 
+        public static bool SolveGbfsTrainingProgram()
+        {
+            int judgesProgramSize = 6;
+            var options = new string[] { };
+
+            Throttle();
+            var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, options));
+            
+            var programId = training.id;
+
+            var operators = training.operators;
+            judgesProgramSize = (int)training.size;
+
+            return SolveGbfs(programId, judgesProgramSize, operators);
+        }
+
         #endregion
 
         #region Methods
@@ -755,8 +765,9 @@
             //SolveOffline();
             //SolveSatOffline();
             //SolveGbfsOffline();
+            SolveGbfsMyProblems();
+            //SolveGbfsTrainingProgram();
 
-            SolveGbfsTrainingProgram();
         }
         
         private static bool Solve(string programId, int judgesProgramSize, string[] operators, bool useSat)
@@ -929,6 +940,56 @@
             }
 
             return response.status == "win";
+        }
+
+
+
+        public static void SolveGbfsMyProblems()
+        {
+            var todo = JArray.Parse(File.ReadAllText(@"..\..\..\..\myproblems.json"));
+
+            int cnt = 0;
+            int cntSolved = 0;
+            foreach (var task in todo)
+            {
+                var solved = (bool?)task["solved"];
+                var id = (string)task["id"];
+                var size = (int)task["size"];
+                var operators = task["operators"].Select(s => (string)s).ToArray();
+                var ops = ProgramTree.GetOpTypes(operators);
+
+                //if (solved.HasValue == false && size == 17 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.tfold && Bits(ops) < 7)
+                if (solved.HasValue == false && size < 14)
+                //if (solved.HasValue == false && size == 15 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none && Bits(ops) == 5)
+                //if (id == "Jb6H9d6n4E9QUCnBGdMwDfQx")
+                //if (solved.HasValue == true && solved.Value == false && size < 12)
+                {
+                    Console.WriteLine("{0} {1} {2}", id, size, ops);
+
+                    try
+                    {
+                        if (SolveGbfs(id, size, operators))
+                        {
+                            Console.WriteLine("------------------------ SOLVED");
+                            ++cntSolved;
+                        }
+                        else
+                        {
+                            Console.WriteLine("------------------------ FAILED");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("------------------------ ERROR: {0}", ex);
+                        
+                        Thread.Sleep(5000);
+                    }
+
+                    ++cnt;
+                }
+            }
+
+            Console.WriteLine("cnt={0} cntSolved={1}", cnt, cntSolved);
         }
 
         #endregion
