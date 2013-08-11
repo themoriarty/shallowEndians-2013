@@ -415,11 +415,11 @@
                 {
                     Console.WriteLine("{0} {1} {2}", id, size, ops);
 
-                    if (Solve(id, size, operators, true))
-                    {
-                        ++cntSolved;
-                    }
-                    Thread.Sleep(20000);
+                    //if (Solve(id, size, operators, true))
+                    //{
+                    //    ++cntSolved;
+                    //}
+                    //Thread.Sleep(20000);
 
                     ++cnt;
                 }
@@ -452,15 +452,19 @@
 
         public static void SolveSatOffline()
         {
-            const int judgesProgramSize = 8;
+            const int judgesProgramSize = 12;
 
-            var programId = "GBUTtMTIADxBecgU35jl63us";
-            var operators = new[] { "plus", "xor" };
+            var programId = "A9B9ZTcETn4hWT3Bx5sLk6Jv";
+            var operators = new[] { "and", "if0", "plus", "shr1", "shr16", "shr4" };
 
             // Solution: (lambda (x) (xor x (xor x (plus x x))))
 
-            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x23A282379AF7850C, 0xF3D35174C949BB0D, 0xFE7C0264DF27E86F, 0x06CC691C9D9CD006, 0xE809CD0767D69590, 0x736D7A70B0B2534C };
-            ulong[] outputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFE, 0x4745046F35EF0A18, 0xE7A6A2E99293761A, 0xFCF804C9BE4FD0DE, 0x0D98D2393B39A00C, 0xD0139A0ECFAD2B20, 0xE6DAF4E16164A698 };
+            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x707708E25622A01C, 0x2ED773588336EF20, 0x4BAE5BB138FCF580, 0xEC3738AD9C394E2C, 0x1DC06F4ED6CBF8D0, 0x4AE3EBE3AF6ECFBE };
+            ulong[] outputs = { 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x1DC06F4ED6CBF8D1, 0x0000000000000001 };
+
+            int reducesInputCount = 5;
+            inputs = inputs.Take(reducesInputCount).ToArray();
+            outputs = outputs.Take(reducesInputCount).ToArray();
 
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
@@ -476,7 +480,7 @@
 
         public static bool SolveTrainingProgram(bool useSat)
         {
-            int judgesProgramSize = 10;
+            int judgesProgramSize = 16;
             var options = new[] { "tfold" };
             options = new string[0];
             var training = API.GetTrainingProblem(new TrainRequest(judgesProgramSize, options));
@@ -494,8 +498,8 @@
 
         private static void Main(string[] args)
         {
-            //SolveTrainingProgram(true);
-            SolveMyProblems();
+            SolveTrainingProgram(true);
+            //SolveMyProblems();
             //SolveOffline();
             //SolveSatOffline();
         }
@@ -508,6 +512,13 @@
             var ops = ProgramTree.GetOpTypes(operators);
 
             ulong[] inputs = ProgramTree.GetInputVectorList(8).ToArray(); //{0x12, 0x137};
+
+            if (useSat)
+            {
+                Console.WriteLine("Reducing number of inputs...");
+                inputs = inputs.Take(4).ToArray();
+            }
+
             var inputStrings = inputs.Select(s => string.Format("0x{0:X16}", s)).ToArray();
 
             Console.WriteLine("Input: {{{0}}}", string.Join(", ", inputStrings));
@@ -634,7 +645,10 @@
                     Console.WriteLine("New Input: {{{0}}}", string.Join(", ", inputs.Select(s => string.Format("0x{0:X16}", s)).ToArray()));
                     Console.WriteLine("New Output: {{{0}}}", string.Join(", ", outputs.Select(s => string.Format("0x{0:X16}", s)).ToArray()));
 
+                    sw.Restart();
                     solution = SolveSat(judgesProgramSize, ops, inputs, outputs);
+                    Console.WriteLine("* computation completed in {0}", sw.ElapsedMilliseconds / 1000);
+
                     finalResult = solution.Serialize();
 
                     var elapsed = lastrequest.ElapsedMilliseconds;
