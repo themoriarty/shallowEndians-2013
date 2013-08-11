@@ -840,7 +840,7 @@
 
         private static void Main(string[] args)
         {
-            SolveTrainingProgram(true);
+            //SolveTrainingProgram(true);
             //SolveMyProblems();
             //SolveOffline();
             //SolveSatOffline();
