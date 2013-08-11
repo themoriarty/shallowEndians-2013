@@ -373,14 +373,14 @@
                 var ops = ProgramTree.GetOpTypes(operators);
 
                 //if (solved.HasValue == false && size == 14 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none /* && Bits(ops) == 3*/)
-                if (solved.HasValue == false && size == 12)
-                //if (solved.HasValue == false && size < 14 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.tfold && Bits(ops) == 4)
-                //if (id == "DHFIBTGnJmvnArn3B5xx0i8x")
+                //if (solved.HasValue == false && size == 12)
+                if (solved.HasValue == false && size == 15 && ((ops & (OpTypes.fold | OpTypes.bonus /*| OpTypes.if0*/)) == OpTypes.none) && (ops & OpTypes.tfold) == OpTypes.none && Bits(ops) == 5)
+                //if (id == "Jb6H9d6n4E9QUCnBGdMwDfQx")
                 //if (solved.HasValue == true && solved.Value == false && size < 12)
                 {
                     Console.WriteLine("{0} {1} {2}", id, size, ops);
 
-                    //if (Solve(id, size, operators, false))
+                    //if (Solve(id, size, operators, true))
                     //{
                     //    ++cntSolved;
                     //}
@@ -397,11 +397,11 @@
         {
             const int judgesProgramSize = 13;
 
-            var programId = "C034SK4oEteBfyoafATcXU9V";
-            var operators = new[] { "if0", "tfold", "not", "shr1", "or" };
+            var programId = "D9lVlxOdxauIiafOLkDS9om6";
+            var operators = new[] { "if0", "tfold", "shr4", "shr16", "or" };
 
-            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x11E001A860B349B8, 0x4167FEEDE279DF34, 0xE243B96BBF77EF6B, 0xE34E2D4576E40AC4, 0x23A282379AF7850C, 0xF3D35174C949BB0D, 0xFE7C0264DF27E86F, 0x06CC691C9D9CD006, 0xE809CD0767D69590, 0x736D7A70B0B2534C, 0x097E6E055D07F036, 0xA30604E66793F909, 0xA2EC6C7ADE3842EF, 0x0000800000000000 };
-            ulong[] outputs = { 0x0000000000000000, 0x00000000000000FF, 0x0000000000000011, 0x0000000000000041, 0x00000000000000E2, 0x00000000000000E3, 0x0000000000000023, 0x00000000000000F3, 0x00000000000000FE, 0x0000000000000006, 0x00000000000000E8, 0x0000000000000073, 0x0000000000000009, 0x00000000000000A3, 0x00000000000000A2, 0x0000000000000000 };
+            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x8B8DCC5011923FDE, 0x22006E622C672963, 0x4801A2390D5DCD16, 0xC9F88E422EC10F4C, 0x3CB96DDBC67E6503, 0x8041DA9DBD03076B, 0x3C68DE0EADC71541, 0xD4495F0A40C44A3D, 0xA9473AF0FC289D30, 0x72AA449E32A22113, 0x25BB4BC62CEC41CE, 0x0C3278A9908842FD, 0x079044B1008C2FBE, 0x0700000000000000 };
+            ulong[] outputs = { 0x0000000000000000, 0x00000000000000FF, 0x000000000000008B, 0x0000000000000022, 0x0000000000000048, 0x00000000000000C9, 0x000000000000003C, 0x0000000000000080, 0x000000000000003C, 0x00000000000000D4, 0x00000000000000A9, 0x0000000000000072, 0x0000000000000025, 0x000000000000000C, 0x0000000000000007, 0x0000000000000000 };
 
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
@@ -466,10 +466,10 @@
 
         private static void Main(string[] args)
         {
-            SolveTrainingProgram(false);
+            //SolveTrainingProgram(false);
             //SolveMyProblems();
             //SolveOffline();
-            //SolveSatOffline();
+            SolveSatOffline();
         }
         
         private static bool Solve(string programId, int judgesProgramSize, string[] operators, bool useSat)
