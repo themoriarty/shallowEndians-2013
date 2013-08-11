@@ -52,6 +52,11 @@
                 filterSolution = new NodeFold { Node0 = new NodeId { Name = "x" }, Node1 = new Node0(), Node2 = new Lambda2 { Id0 = new NodeId { Name = "x1" }, Id1 = new NodeId { Name = "x2" }, Node0 = node } };
             }
 
+            if (Canceled)
+            {
+                return new Tuple<bool, bool, ulong, ulong>(false, false, 0, 0);
+            }
+
             return Checker(filterSolution);
         }
 
@@ -126,6 +131,7 @@
         protected override void StopImpl()
         {
             cts.Cancel();
+            Canceled = true;
         }
 
         #endregion

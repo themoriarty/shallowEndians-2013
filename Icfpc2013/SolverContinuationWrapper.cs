@@ -36,6 +36,8 @@
 
         public Func<Node, Tuple<bool,bool, ulong, ulong>> Checker { get; set; }
 
+        public bool Canceled { get; set; }
+
         #endregion
 
         #region Public Methods and Operators
@@ -108,6 +110,7 @@
         public void Stop()
         {
             this.StopImpl();
+            Canceled = true;
         }
 
         #endregion
