@@ -56,6 +56,7 @@
 
         protected override IEnumerable<Node> RunImpl()
         {
+            Console.WriteLine("SAT START &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
             p = new Process
             {
                 StartInfo = new ProcessStartInfo
@@ -94,6 +95,8 @@
 
                     yield break;
                 }
+
+                Console.WriteLine("SAT SOLUTION $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ {0}", solution);
 
                 var node = ProgramTree.Parse(solution);
 

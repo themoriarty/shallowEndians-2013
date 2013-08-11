@@ -802,7 +802,7 @@
             SolverContinuationWrapper solver = new BfsSolverContinuationWrapper(judgesProgramSize, ops, inputs, outputs, FilterSolution, (n) => Checker(programId, n));
             solvers.Add(solver);
 
-            var tasks = solvers.Select(s => Task.Run(() => solver.Run())).ToList();
+            var tasks = solvers.Select(s => Task.Run(() => s.Run())).ToList();
 
             Lambda1 solution = null;
 
@@ -840,7 +840,7 @@
 
         public static bool SolveGbfsTrainingProgram()
         {
-            int judgesProgramSize = 10;
+            int judgesProgramSize = 13;
             var options = new string[] { };
 
             Throttle();
@@ -865,8 +865,8 @@
             //SolveOffline();
             //SolveSatOffline();
             //SolveGbfsOffline();
-            SolveGbfsMyProblems();
-            //SolveGbfsTrainingProgram();
+            //SolveGbfsMyProblems();
+            SolveGbfsTrainingProgram();
         }
         
         private static bool Solve(string programId, int judgesProgramSize, string[] operators, bool useSat)
