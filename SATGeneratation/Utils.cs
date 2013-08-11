@@ -281,7 +281,7 @@ namespace SATGeneratation
 
                         //Console.WriteLine("ArgCount:\n" + s.Model.FuncInterp(tree.ArgumentCount.FuncDecl));
                         //Console.WriteLine("Revlinks:\n" + s.Model.FuncInterp(tree.ReverseLink.FuncDecl));
-                        Console.WriteLine("Pins:\n" + string.Join(", ", tree.PinLink.Select(t => s.Model.Eval(t))));
+                        //Console.WriteLine("Pins:\n" + string.Join(", ", tree.PinLink.Select(t => s.Model.Eval(t))));
                         //Console.WriteLine("FW1:\n" + s.Model.FuncInterp(tree.FwLink1.FuncDecl));
 
                     for (int i = 0; i < nodes.Count; ++i)
@@ -392,7 +392,7 @@ namespace SATGeneratation
 
                     Console.WriteLine("ArgCount:\n" + s.Model.FuncInterp(tree.ArgumentCount.FuncDecl));
                     Console.WriteLine("Revlinks:\n" + s.Model.FuncInterp(tree.ReverseLink.FuncDecl));
-                    Console.WriteLine("Pins:\n" + string.Join(", ", tree.PinLink.Select(t => s.Model.Eval(t))));
+                    //Console.WriteLine("Pins:\n" + string.Join(", ", tree.PinLink.Select(t => s.Model.Eval(t))));
                     //Console.WriteLine("FW1:\n" + s.Model.FuncInterp(tree.FwLink1.FuncDecl));
 
                     for (int i = 0; i < nodes.Count; ++i)
