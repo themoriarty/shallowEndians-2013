@@ -4,6 +4,12 @@
     {
         #region Public Methods and Operators
 
+        public override OpTypes GetMainOp()
+        {
+            return OpTypes.or;
+        }
+
+
         public override Node Clone()
         {
             return new NodeOp2Or { Node0 = Node0 == null ? null : Node0.Clone(), Node1 = Node1 == null ? null : Node1.Clone() };

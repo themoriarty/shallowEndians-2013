@@ -4,6 +4,11 @@
     {
         #region Public Methods and Operators
 
+        public override OpTypes GetMainOp()
+        {
+            return OpTypes.plus;
+        }
+
         public override Node Clone()
         {
             return new NodeOp2Plus { Node0 = Node0 == null ? null : Node0.Clone(), Node1 = Node1 == null ? null : Node1.Clone() };
@@ -16,7 +21,7 @@
 
         public override string Serialize()
         {
-            return string.Format("(plus {0} {1})", this.Node0.Serialize(), this.Node1.Serialize());
+            return string.Format("(plus {0} {1})", this.Node0 == null ? "NULL" : this.Node0.Serialize(), this.Node1 == null ? "NULL" : this.Node1.Serialize());
         }
 
         public override string ToString(int indentLevel)

@@ -4,6 +4,11 @@
     {
         #region Public Methods and Operators
 
+        public override OpTypes GetMainOp()
+        {
+            return OpTypes.shl1;
+        }
+
         public override Node Clone()
         {
             return new NodeOp1Shl1 { Node0 = Node0 != null ? Node0.Clone() : null };

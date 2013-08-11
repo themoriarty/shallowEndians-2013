@@ -4,6 +4,11 @@
     {
         #region Public Methods and Operators
 
+        public override OpTypes GetMainOp()
+        {
+            return OpTypes.not;
+        }
+
         public override Node Clone()
         {
             return new NodeOp1Not { Node0 = Node0 != null ? Node0.Clone() : null };

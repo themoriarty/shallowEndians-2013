@@ -112,6 +112,12 @@
 #endif
         }
 
+        public static Lambda1 SolveSat(int judgesProgramSize, List<Node> validOps, ulong[] inputs, ulong[] outputs)
+        {
+            var ops = validOps.Select(s => s.GetMainOp()).ToList();
+            return SolveSat(judgesProgramSize, ops.Aggregate(OpTypes.none, (seed, value) => seed | value), inputs, outputs);
+        }
+
         public static Lambda1 SolveSat(int judgesProgramSize, OpTypes validOps, ulong[] inputs, ulong[] outputs)
         {
             int programSize = judgesProgramSize - 1;
@@ -194,6 +200,10 @@
             int pos = 0;
             var rootNode = BuildFromSat(res, ref pos);
 
+            if (res[0].ComputedOpcode == OpCodes.Zero)
+            {
+                return null;
+            }
             if (pos != res.Count)
             {
                 throw new Exception("pos != end");
@@ -293,6 +303,7 @@
             int programSize = judgesProgramSize - 1;
 
             bool tfoldMode = false;
+            bool bonus1Mode = ((validOps & OpTypes.bonus) != OpTypes.none);
             if ((validOps & OpTypes.tfold) != OpTypes.none)
             {
                 tfoldMode = true;
@@ -301,9 +312,21 @@
 
             CancellationTokenSource cts = new CancellationTokenSource();
 
-            var slv = new AStarSolver(inputs, outputs, judgesProgramSize, ProgramTree.GetAvailableNodes(validOps, tfoldMode));
+            IEnumerable<Node> solutions = null;
+            if (bonus1Mode)
+            {
+                var slv = new Bonus1Solver(inputs, outputs, judgesProgramSize, ProgramTree.GetAvailableNodes(validOps, false));
+                solutions = slv.Solve();
+            }
+            else
+            {
+                var slv = new AStarSolver(inputs, outputs, judgesProgramSize, ProgramTree.GetAvailableNodes(validOps, tfoldMode));
+                solutions = slv.Solve();
+            }
 
-            foreach (var root in slv.Solve())
+            
+
+            foreach (var root in solutions)
             {
                 //if (root.Size() == programSize)
                 {
@@ -397,49 +420,94 @@
 
         public static void SolveOffline()
         {
-            const int judgesProgramSize = 11;
+            const int judgesProgramSize = 7;
 
             var programId = "mkdonJ8gSGtBW5g3OGdjwDnd";
-            var operators = new[] { "if0",
-                "and",
-                "xor",
-                "not",
+            var operators = new[] { "bonus",
+        "and",
+        "if0",
         "plus",
         "shl1",
         "shr1",
+        "shr16",
         "shr4" };
 
-            ulong[] inputs = { 0x0000000000000000, 
+            ulong[] inputs = { //0x0000000000000000, 
                                  0x0000000000010001,
-                                 0xFFFFFFFFFFFFFFFF, 0x23A282379AF7850C, 0xF3D35174C949BB0D, 0xFE7C0264DF27E86F, 0x06CC691C9D9CD006, 0xE809CD0767D69590, 0x736D7A70B0B2534C, 0x0000FFFFFFFFFFFF,
+                                 0xFFFFFFFFFFFFFFFF, 
+                                 0x23A282379AF7850C, 
+                                 0xF3D35174C949BB0D,
+                                 0x5821C0CE06703381,
+                                 0x709A7ECB026A0001,
+                                 0x040020010008003D/*, 
+                                 0xFE7C0264DF27E86F, 
+                                 0x06CC691C9D9CD006, 
+                                 0xE809CD0767D69590, 
+                                 0x736D7A70B0B2534C, 
+                                 0x0000FFFFFFFFFFFF,
                                 0x00000580A1AB9001,
                                 0x000017FBEACECACE,
                                 0x00006E8E0097C680,
                                 0x000050475BF54101,
                                 0x0000880A7F62D368,
                                 0x0000FDCFD29F7AE5,
-0x8000000000007FFF, 0x4000000000007FFA, 0x54AAAAAAAAAAAAA0, 0xFFFF0000FFFF0000
+0x8000000000007FFF, 0x4000000000007FFA, 0x54AAAAAAAAAAAAA0, 0xFFFF0000FFFF0000*/
                              };
-            ulong[] outputs = { 0x0000000000000000,
-                                  0x0000000000000000,
-        0x0000000000000001,
-        0x0000000000000000,
-        0x0000000000000001,
-        0x0000000000000001,
-        0x0000000000000000,
-        0x0000000000000000,
-        0x0000000000000000,
-        0x0000000000000001,
-        0x0000000000000001,
-        0x0000000000000000,
-        0x0000000000000000,
-        0x0000000000000001,
-        0x0000000000000000,
-        0x0000000000000001,
-        0x0000000000000001,
-        0x0000000000000000,
-        0x0000000000000000,
-        0x0000000000000000};
+            ulong[] outputs = { //0x0000000000000000,
+        0x0000000000010002,
+        0x3FFFFFFFFFFFFFFE,
+        0x23A2C97C9F66BAFA,
+        0xF3D5391B6C334D9E,
+        0x6E2A3101880C4061,
+        0x8CC11E7DC3048001,
+        0x04002801400A004C/*,
+        0xFC7800409E07C04E,
+        0x06CC691C9D9CD006,
+        0xE809CD0767D69590,
+        0x736D7A70B0B2534C,
+        0x0000FFFFFFFFFFFE*//*,
+        0x0000010001030000,
+        0x000017FBEACECACE,
+        0x00006E8E0097C680,
+        0x0000000613E00000,
+        0x0000880A7F62D368,
+        0x0000F98F801E70C0,
+        0x0000000000007FFE,
+        0x4000000000007FFA,
+        0x54AAAAAAAAAAAAA0,
+        0xFFFF0000FFFF0000*/};
+
+            //(lambda (x_6) (if0 (and (plus (shr4 (shr4 (shr16 (shr1 x_6)))) x_6) 1) (plus (shr1 (shr1 x_6)) x_6) (shl1 (plus (shr1 x_6) (shr16 x_6)))))"
+            //(and (plus (shr4 (shr4 (shr16 (shr1 x_6)))) x_6) 1)
+            var ifCond = new NodeOp2And
+            {
+                Node0 = new NodeOp2Plus
+                {
+                    Node0 = new NodeOp1Shr4
+                    {
+                        Node0 = new NodeOp1Shr4
+                        {
+                            Node0 = new NodeOp1Shr16
+                            {
+                                Node0 = new NodeOp1Shr1
+                                {
+                                    Node0 = new NodeId { Name = "x" }
+                                }
+                            }
+                        }
+                    },
+                    Node1 = new NodeId { Name = "x" }
+                },
+                Node1 = Node1.Instance
+            };
+
+            foreach (var i in inputs)
+            {
+                var ctx = new ExecContext();
+                ctx.Vars["x"] = i;
+                var output = ifCond.Eval(ctx);
+                Console.WriteLine("if0({0}) == {1}", i, output);
+            }
 
             Console.WriteLine("ProgramId: {0}", programId);
             Console.WriteLine("Training: {0}", string.Join(", ", operators));
@@ -458,15 +526,24 @@
 
         public static void SolveSatOffline()
         {
-            const int judgesProgramSize = 12;
+            const int judgesProgramSize = 8;
 
             var programId = "A9B9ZTcETn4hWT3Bx5sLk6Jv";
-            var operators = new[] { "and", "if0", "plus", "shr1", "shr16", "shr4" };
+            //var operators = new[] { "and", "if0", "plus", "shr1", "shr16", "shr4" };
+            var operators = new[] { "and",
+        "if0",
+        "plus",
+        "shl1",
+        "shr1",
+        "shr16",
+        "shr4" };
 
             // Solution: (lambda (x) (xor x (xor x (plus x x))))
 
-            ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x707708E25622A01C, 0x2ED773588336EF20, 0x4BAE5BB138FCF580, 0xEC3738AD9C394E2C, 0x1DC06F4ED6CBF8D0, 0x4AE3EBE3AF6ECFBE };
-            ulong[] outputs = { 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x1DC06F4ED6CBF8D1, 0x0000000000000001 };
+            //ulong[] inputs = { 0x0000000000000000, 0xFFFFFFFFFFFFFFFF, 0x707708E25622A01C, 0x2ED773588336EF20, 0x4BAE5BB138FCF580, 0xEC3738AD9C394E2C, 0x1DC06F4ED6CBF8D0, 0x4AE3EBE3AF6ECFBE };
+            //ulong[] outputs = { 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x0000000000000001, 0x1DC06F4ED6CBF8D1, 0x0000000000000001 };
+            ulong[] inputs = { 0xFFFFFFFFFFFFFFFF };
+            ulong[] outputs = { 0x3FFFFFFFFFFFFFFE };
 
             int reducesInputCount = 5;
             inputs = inputs.Take(reducesInputCount).ToArray();

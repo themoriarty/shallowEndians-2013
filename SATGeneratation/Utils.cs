@@ -264,7 +264,7 @@ namespace SATGeneratation
                 {
                     if (permitted[i])
                     {
-                        MakeSureOpcodeAppearsAtLeastOnce(ctx, s, results[0], (OpCodes)i);
+                        //MakeSureOpcodeAppearsAtLeastOnce(ctx, s, results[0], (OpCodes)i);
                     }
                 }
 

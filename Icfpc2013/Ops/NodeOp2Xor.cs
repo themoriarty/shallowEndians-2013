@@ -9,6 +9,11 @@
             return new NodeOp2Xor { Node0 = Node0 == null ? null : Node0.Clone(), Node1 = Node1 == null ? null : Node1.Clone() };
         }
 
+        public override OpTypes GetMainOp()
+        {
+            return OpTypes.xor;
+        }
+
         public override ulong Eval(ExecContext context)
         {
             return this.Node0.Eval(context) ^ this.Node1.Eval(context);

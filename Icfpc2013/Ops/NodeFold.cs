@@ -6,6 +6,11 @@
     {
         #region Public Properties
 
+        public OpTypes GetMainOp()
+        {
+            return OpTypes.fold;
+        }
+
         public Node Node0 { get; set; }
 
         public Node Node1 { get; set; }

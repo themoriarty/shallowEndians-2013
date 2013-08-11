@@ -4,6 +4,10 @@
     {
         #region Public Methods and Operators
 
+        public OpTypes GetMainOp()
+        {
+            return OpTypes.none;
+        }
         public static Node1 Instance = new Node1();
 
         public Node Clone()

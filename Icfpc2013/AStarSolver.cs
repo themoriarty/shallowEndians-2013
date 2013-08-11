@@ -44,6 +44,20 @@ namespace Icfpc2013
             return ret;
         }
 
+        public string ExplainDistance(Node program, Measurer measurer)
+        {
+            string ret = "";
+            for (int i = 0; i < Inputs.Length; ++i)
+            {
+                var ctx = new ExecContext();
+                ctx.Vars["x"] = Inputs[i];
+                var output = program.Eval(ctx);
+                BigInteger distance = measurer(i, output);
+                ret += String.Format("{0} <-> {1} = {2}. ", output, Outputs[i], distance* distance);
+            }
+            return ret;
+        }
+
         ulong[] GetOutput(Node program)
         {
             ulong[] ret = new ulong[Inputs.Length];
@@ -174,7 +188,7 @@ namespace Icfpc2013
                         var measurer = ChooseMeasurer(op, GetOutput(root));
                         if (measurer != null && root.Size() < maxSize - 1)
                         {
-                            //Console.WriteLine("decided to do {0}", op.Serialize());
+                            Console.WriteLine("decided to do {0}, output of {1}: {2}", op.Serialize(), root.Serialize(), String.Join(", ", GetOutput(root)));
                             var newRoot = op.Clone();
                             (newRoot as NodeOp2).Node0 = root;
                             foreach (var subTree in SolveImpl(null, 0, maxSize - root.Size() - 1, measurer, (BigInteger)(1UL << 63) * (BigInteger)(1UL << 63)))
@@ -227,7 +241,10 @@ namespace Icfpc2013
             var infinity = (BigInteger)(1UL << 63) * (BigInteger)(1UL << 63);
             foreach (var p in SolveImpl(null, 0, MaxSize, DefaultMeasurer, infinity))
             {
-                yield return p;
+                if (Distance(p, DefaultMeasurer) == 0)
+                {
+                    yield return p;
+                }
             }
         }
 
@@ -252,7 +269,7 @@ namespace Icfpc2013
             foreach (var newProgram in newPrograms.OrderBy(x => Distance(x, measurer)))
             {
                 currentSize = newProgram.Size();
-                //Console.WriteLine("{0}currentSize {1}/{2}: {3}. {4}", Indent(currentSize), currentSize, maxSize, newProgram.Serialize(), Distance(newProgram, measurer));
+                Console.WriteLine("{0}currentSize {1}/{2}: {3}. {4} {5}", Indent(currentSize), currentSize, maxSize, newProgram.Serialize(), Distance(newProgram, measurer), ExplainDistance(newProgram, measurer));
                 var newDistance = Distance(newProgram, measurer);
                 if (newDistance == 0)
                 {
@@ -262,16 +279,17 @@ namespace Icfpc2013
                 if (currentDistance > prevScore && newDistance > currentDistance)
                 {
                     // discard
-                    yield break;
+                    //yield break;
                 }
                 if (newProgram.Size() <= maxSize)
                 {
+                    yield return newProgram;
                     foreach (var p in SolveImpl(newProgram, currentSize + 1, maxSize, measurer, root == null ? prevScore : Distance(root, measurer)))
                     {
                         if (Distance(p, measurer) == 0)
                         {
-                            yield return p;
-                            yield break;
+                            //yield return p;
+                            //yield break;
                             //Console.WriteLine("A");
                         }
                         yield return p;

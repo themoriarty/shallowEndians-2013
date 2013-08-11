@@ -6,6 +6,12 @@
     {
         #region Public Properties
 
+        public virtual OpTypes GetMainOp()
+        {
+            throw new Exception("blah");
+        }
+
+
         public Node Node0 { get; set; }
 
         public Node Node1 { get; set; }

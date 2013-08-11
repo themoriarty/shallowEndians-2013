@@ -13,6 +13,10 @@
         #endregion
 
         #region Public Methods and Operators
+        public virtual OpTypes GetMainOp()
+        {
+            throw new Exception("blah");
+        }
 
         public static NodeOp2 Parse(string input)
         {

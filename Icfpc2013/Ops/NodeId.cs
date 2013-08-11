@@ -17,6 +17,12 @@
 
         #endregion
 
+        public OpTypes GetMainOp()
+        {
+            return OpTypes.none;
+        }
+
+
         #region Public Methods and Operators
 
         public static NodeId Parse(string input)

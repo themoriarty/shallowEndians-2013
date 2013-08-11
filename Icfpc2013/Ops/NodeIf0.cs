@@ -6,6 +6,11 @@
     {
         #region Public Methods and Operators
 
+        public override OpTypes GetMainOp()
+        {
+            return OpTypes.if0;
+        }
+
         public static NodeIf0 Parse(string input)
         {
             int pos = 1;

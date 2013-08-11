@@ -6,6 +6,11 @@
 
         public static Node0 Instance = new Node0();
 
+        public OpTypes GetMainOp()
+        {
+            return OpTypes.none;
+        }
+
         public Node Clone()
         {
             return Instance;
