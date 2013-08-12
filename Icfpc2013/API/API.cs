@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Threading;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -305,7 +306,25 @@ namespace Icfpc2013
         public static GuessResponse Guess(Guess GuessRequest)
         {
             HttpStatusCode? code;
-            return Guess(GuessRequest, out code);
+            retry:
+            try
+            {
+                return Guess(GuessRequest, out code);
+            }
+            catch (WebException wex)
+            {
+                if (wex.Message.IndexOf("Too many requests") < 0)
+                {
+                    Console.WriteLine("Error: {0}", wex);
+                    throw;
+                }
+                else
+                {
+                    Thread.Sleep(4000);
+                    goto retry;
+                }
+            }
+
         }
 
         #endregion Guess

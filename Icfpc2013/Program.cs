@@ -537,7 +537,7 @@
                     {
                         for (int i = 0; i < tasks.Length; ++i)
                         {
-                            if (tasks[i].IsCompleted)
+                            if (tasks[i] == null || tasks[i].IsCompleted)
                             {
                                 tasks[i] = Task.Factory.StartNew(() => Solve(id, size, operators, false));
                                 scheduled = true;
@@ -759,6 +759,10 @@
 
             var lastrequest = Stopwatch.StartNew();
             var outputsResponse = API.Eval(new EvalRequest(programId, null, inputStrings));
+            if (outputsResponse == null)
+            {
+                return false;
+            }
 
             if (outputsResponse.status != "ok" || outputsResponse.outputs == null)
             {
