@@ -66,6 +66,11 @@
             Node2.Op(ref ops);
         }
 
+        public override OpTypes GetMainOp()
+        {
+            return OpTypes.if0;
+        }
+
         #endregion
     }
 }

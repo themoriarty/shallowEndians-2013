@@ -26,8 +26,11 @@ namespace Icfpc2013
 
         #region Constructors and Destructors
 
-        public PTreeGeneratorContainer(List<Node> validNodes, List<Node> validFoldNodes, int maxDepth, Func<Node, bool> filter)
+        public PTreeGeneratorContainer(List<Node> validNodes, List<Node> validFoldNodes, int maxDepth, Func<Node, bool> filter, Dictionary<uint, List<Node>> Cache = null, int? cacheDepth = null)
         {
+            this.Cache = Cache;
+            this.cacheDepth = cacheDepth;
+
             Console.WriteLine("Using PTreeGeneratorContainer - parallel");
             ValidNodes = validNodes;
             ValidFoldNodes = validFoldNodes;
@@ -43,6 +46,9 @@ namespace Icfpc2013
         // new NodeOp1Shr4(), new NodeOp2And(), 
         // new NodeOp2Or(), new NodeOp2Plus(), new NodeOp2Xor()};
         #region Public Methods and Operators
+
+        Dictionary<uint, List<Node>> Cache = new Dictionary<uint, List<Node>>();
+        int? cacheDepth = null;
 
         public IEnumerable<Node> GenerateAllPrograms(CancellationToken token)
         {
@@ -89,7 +95,7 @@ namespace Icfpc2013
         {
             var ret = new List<Node>();
 
-            var builder = new FTreeGenerator(validNodes, validFoldNodes, maxDepth);
+            var builder = new FTreeGenerator(validNodes, validFoldNodes, maxDepth, Cache, cacheDepth);
 
             foreach (var subtree in builder.GetNLevelTree(node, MaxDepth))
             {

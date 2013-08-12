@@ -64,6 +64,11 @@
         {
         }
 
+        public OpTypes GetMainOp()
+        {
+            return OpTypes.x;
+        }
+
         #endregion
     }
 }

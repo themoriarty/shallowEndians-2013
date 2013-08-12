@@ -1,4 +1,5 @@
-﻿namespace Icfpc2013.Ops
+﻿using System;
+namespace Icfpc2013.Ops
 {
     public class Node1 : Node
     {
@@ -33,6 +34,11 @@
 
         public void Op(ref OpTypes ops)
         {
+        }
+
+        public OpTypes GetMainOp()
+        {
+            return OpTypes.one;
         }
 
         #endregion

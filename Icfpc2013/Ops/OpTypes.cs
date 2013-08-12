@@ -31,6 +31,14 @@
 
         plus = 2048,
 
-        bonus = 4096
+        bonus = 4096,
+
+        // Used for caching:
+
+        zero = 8192,
+
+        one = 16384,
+
+        x =  32768
     }
 }

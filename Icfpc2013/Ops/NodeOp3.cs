@@ -85,6 +85,11 @@
             throw new NotImplementedException();
         }
 
+        public virtual OpTypes GetMainOp()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

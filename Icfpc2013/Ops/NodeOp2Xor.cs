@@ -40,6 +40,11 @@
 
         }
 
+        public override OpTypes GetMainOp()
+        {
+            return OpTypes.xor;
+        }
+
         #endregion
     }
 }

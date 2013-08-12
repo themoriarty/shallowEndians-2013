@@ -148,6 +148,12 @@ namespace Icfpc2013
             return Parser.ParseOps(operators).Aggregate(OpTypes.none, (seed, value) => seed | value);
         }
 
+        public static OpTypes GetOpTypes(IEnumerable<Node> operators)
+        {
+            var ops = operators.Select(s => s.GetMainOp()).ToList();
+            return ops.Aggregate(OpTypes.none, (seed, value) => seed | value);
+        }
+
         public static void GetAvailableNodes(OpTypes ops, bool tfoldMode, out List<Node> validNodes, out List<Node> validFoldNodes)
         {
             validNodes = new List<Node>();

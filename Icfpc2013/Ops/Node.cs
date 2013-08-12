@@ -18,6 +18,8 @@
 
         void Op(ref OpTypes ops);
 
+        OpTypes GetMainOp();
+
         #endregion
     }
 }

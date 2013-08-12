@@ -21,8 +21,15 @@ namespace Icfpc2013
 
         #region Constructors and Destructors
 
-        public FTreeGenerator(List<Node> validNodes, List<Node> validNodesFold, int maxDepth)
+        public FTreeGenerator(List<Node> validNodes, List<Node> validNodesFold, int maxDepth, Dictionary<uint, List<Node>> Cache = null, int? cacheDepth = null)
         {
+            this.Cache = Cache;
+
+            if (cacheDepth != null)
+            {
+                this.cacheDepth = (int)cacheDepth;
+            }
+
             Console.WriteLine("Using FTreeGenerator!");
             ValidNodes = validNodes;
             ValidNodesFold = validNodesFold;
@@ -38,6 +45,9 @@ namespace Icfpc2013
         // new NodeOp1Shr4(), new NodeOp2And(), 
         // new NodeOp2Or(), new NodeOp2Plus(), new NodeOp2Xor()};
         #region Public Methods and Operators
+
+        Dictionary<uint, List<Node>> Cache = new Dictionary<uint, List<Node>>();
+        int cacheDepth = -1;
 
         public IEnumerable<Node> GenerateAllPrograms()
         {
@@ -59,6 +69,52 @@ namespace Icfpc2013
             if (activeNodes == null)
             {
                 activeNodes = ValidNodes;
+            }
+
+            uint hash = 0;
+
+            /*
+            if (Cache != null)
+            {
+                Console.WriteLine(depth);
+                Console.ReadKey();
+            }
+            */
+
+            if (activeNodes != null && Cache!=null && depth == cacheDepth)
+            {
+                try
+                {
+                    hash = 23;
+                    hash = hash * 31 + (uint)root.GetMainOp();
+                    hash = hash * 31 + (uint)ProgramTree.GetOpTypes(activeNodes);
+
+                    //Console.WriteLine(hash + " " + Cache.Count + " " + root.GetMainOp() + " " + ProgramTree.GetOpTypes(activeNodes));
+                }
+                catch (NotImplementedException)
+                {
+                    Console.WriteLine("Not implemented!");
+                    hash = 0;
+                }
+
+                if (hash > 0)
+                {
+                    List<Node> cachedList;
+                    if (Cache.TryGetValue(hash, out cachedList))
+                    {
+                        Console.WriteLine("HIT!");
+
+                        foreach (var item in cachedList)
+                        {
+                            // Check again!
+                            yield return item;
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("NOT HIT!");
+                    }
+                }
             }
 
             // TODO: remove

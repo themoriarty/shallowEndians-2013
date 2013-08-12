@@ -37,6 +37,11 @@
             Node0.Op(ref ops);
         }
 
+        public override OpTypes GetMainOp()
+        {
+            return OpTypes.shr1;
+        }
+
         #endregion
     }
 }

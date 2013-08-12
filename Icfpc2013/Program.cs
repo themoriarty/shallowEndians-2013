@@ -92,7 +92,7 @@
 
 #if true
 #if true
-            var builder = new PTreeGeneratorContainer(validNodes, validFoldNodes, targetSize, filter);
+            var builder = new PTreeGeneratorContainer(validNodes, validFoldNodes, targetSize, filter, cache, cacheDepth);
             foreach (var root in builder.GenerateAllPrograms(token))
             {
                 yield return root;
@@ -338,6 +338,7 @@
 
             List<Node> validNodes;
             List<Node> validFoldNodes;
+
             ProgramTree.GetAvailableNodes(validOps, tfoldMode, out validNodes, out validFoldNodes);
 
 
@@ -552,12 +553,72 @@
 
         #region Methods
 
+        private static Dictionary<uint, List<Node>> GenerateCache(bool tfoldMode, int depth)
+        {
+            cache = new Dictionary<uint, List<Node>>();
+            cacheDepth = depth;
+
+            //var operators = new string[] { "if0", "tfold", "fold", "not", "shl1", "shr1", "shr4", "shr16", "and", "or", "xor", "plus" };
+
+            //var operators = new string[] { "fold", "not", "or", "shl1", "shr16" };
+            var operators = new string[] { "fold", "not", "or", "shl1", "shr16" };
+
+            var ops = ProgramTree.GetOpTypes(operators);
+
+            List<Node> validNodes;
+            List<Node> validFoldNodes;
+            ProgramTree.GetAvailableNodes(ops, tfoldMode, out validNodes, out validFoldNodes);
+
+            foreach (var node in validNodes)
+            {
+                var builder = new FTreeGenerator(validNodes, validFoldNodes, depth);
+
+                uint hash = 23;
+                hash = hash * 31 + (uint)node.GetMainOp();
+                hash = hash * 31 + (uint)ProgramTree.GetOpTypes(validNodes);
+                //hash = hash * 31 + (uint)ops;
+
+                var candidatesList = new List<Node>();
+
+                Console.WriteLine(validNodes.Count + " " + (uint)ProgramTree.GetOpTypes(validNodes) + " " + ProgramTree.GetOpTypes(validNodes));
+                //Console.ReadKey();
+
+                foreach (var subtree in builder.GetNLevelTree(node, depth, validNodes))
+                {
+                    if (subtree.Size() == depth)
+                    {
+                        candidatesList.Add(subtree);
+                    }
+                }
+
+                if (candidatesList.Count > 0)
+                {
+                    cache.Add(hash, candidatesList);
+                }
+            }
+
+            return cache;
+        }
+
+        static int cacheDepth = 10;
+        static Dictionary<uint, List<Node>> cache = null;
+        static bool cacheTfoldMode = false;
+
         private static void Main(string[] args)
         {
             //SolveTrainingProgram(false);
-            SolveMyProblems();
-            //SolveOffline();
+            //SolveMyProblems();
             //SolveSatOffline();
+
+            var watch = new Stopwatch();
+            watch.Start();
+            cache = GenerateCache(tfoldMode: cacheTfoldMode, depth: cacheDepth);
+            watch.Start();
+            Console.WriteLine("Cache generated in " + watch.Elapsed.Seconds + " seconds");
+
+            SolveOffline();
+
+            Console.ReadKey();
         }
         
         private static bool Solve(string programId, int judgesProgramSize, string[] operators, bool useSat)

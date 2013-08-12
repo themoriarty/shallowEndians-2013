@@ -87,6 +87,11 @@
             Node2.Node0.Op(ref ops);
         }
 
+        public OpTypes GetMainOp()
+        {
+            return OpTypes.fold;
+        }
+
         #endregion
     }
 }
